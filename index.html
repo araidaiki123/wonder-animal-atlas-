@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#173f35">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="命の森図鑑">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="進化・歴史・研究・雑学を詳しく読み、分からない言葉をその場で調べられる動物図鑑">
+  <title>Wonder Animal Atlas｜いのちの森をめくる図鑑</title>
+  <link rel="apple-touch-icon" href="assets/app-icon-512.png">
+  <link rel="icon" href="assets/app-icon-512.png" type="image/png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へ移動</a>
+
+  <header class="site-header" aria-label="メインメニュー">
+    <a class="brand" href="#forest" aria-label="Wonder Animal Atlas トップへ">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span><strong>Wonder Animal Atlas</strong><small>いのちの森編集社</small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="ページ内メニュー">
+      <a href="#forest">はじまりの森</a>
+      <a href="#explore">いのちを探す</a>
+      <a href="#quiz">ふしぎクイズ</a>
+      <a href="#gacha">発見カード</a>
+      <a href="#ranking">注目ティア</a>
+      <a href="#collection">ふしぎ採集帳</a>
+      <a href="#promise">編集室</a>
+    </nav>
+    <div class="reading-standard"><span aria-hidden="true">あ?</span><strong>詳しい本文</strong><small>タップ辞典つき</small></div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="forest" aria-labelledby="hero-title">
+      <div class="hero-art" role="img" aria-label="太古の森、海、草原、極地、山が一つにつながり、クジラ、キリン、ゾウ、ペンギン、タコなど多様な動物が暮らす絵巻"></div>
+      <div class="hero-veil"></div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> いのちの森をめくる図鑑</p>
+        <h1 id="hero-title">知らなかった命へ、<br><em>会いにいこう。</em></h1>
+        <p class="hero-lead">「なぜ、こんな姿になったの？」から始まる、進化と歴史と驚きの旅。答えが一つではないことも、ちゃんと面白い。</p>
+        <div class="hero-actions">
+          <a class="primary-action" href="#explore">森を探検する <span aria-hidden="true">↘</span></a>
+          <button class="quiet-action" id="random-animal">今日の出会いを選ぶ</button>
+        </div>
+        <div class="hero-proof" aria-label="この図鑑の特徴">
+          <span><b id="animal-total">12</b> 収録動物</span>
+          <span><b id="source-total">—</b> 出典</span>
+          <span><b id="claim-total">—</b> 根拠付き主張</span>
+          <span><b id="glossary-total">—</b> タップ辞典</span>
+          <span><b>0</b> 広告・追跡</span>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#today"><span>SCROLL TO DISCOVER</span><i aria-hidden="true"></i></a>
+    </section>
+
+    <section class="today-section" id="today" aria-labelledby="today-title">
+      <div class="section-kicker">TODAY'S WONDER</div>
+      <div class="today-layout">
+        <div>
+          <p class="soft-label">今日のふしぎ</p>
+          <h2 id="today-title">今日だけの<br><em>ふしぎ</em>を選んでいます。</h2>
+        </div>
+        <div class="today-answer">
+          <button class="reveal-button" id="daily-reveal" aria-expanded="false" aria-controls="daily-answer">答えをめくる</button>
+          <div id="daily-answer" hidden>
+            <p id="daily-answer-text"></p>
+            <button class="text-link" id="daily-open">この動物の物語へ <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+        <div class="orbit" aria-hidden="true"><span class="portrait-sprite" id="daily-portrait"></span><i></i></div>
+      </div>
+    </section>
+
+    <section class="learning-hub" id="learning" aria-labelledby="learning-title">
+      <div class="learning-hub-copy">
+        <p class="soft-label">YOUR DISCOVERY TRAIL</p>
+        <h2 id="learning-title">知るほど、森に<br><em>光がふえる。</em></h2>
+        <p>本文の専門性は落としません。分からない言葉はその場でタップし、短い意味・詳しい意味・この図鑑での例を通信なしですぐ確認できます。</p>
+      </div>
+      <div class="learning-stats" aria-label="学びの記録">
+        <article><span aria-hidden="true">✦</span><strong id="point-total">0</strong><small>使えるひらめき</small></article>
+        <article><span aria-hidden="true">∞</span><strong id="lifetime-point-total">0</strong><small>累計ひらめき</small></article>
+        <article><span aria-hidden="true">?</span><strong id="quiz-correct-total">0</strong><small>初回答で正解</small></article>
+        <article><span aria-hidden="true">◇</span><strong id="card-progress-total">0 / 320</strong><small>発見カード</small></article>
+      </div>
+      <div class="learning-shortcuts">
+        <a href="#quiz">クイズに挑戦 <span aria-hidden="true">→</span></a>
+        <a href="#gacha">カードをめくる <span aria-hidden="true">→</span></a>
+        <button type="button" id="open-glossary-list">ことばの辞典を見る <span aria-hidden="true">→</span></button>
+      </div>
+    </section>
+
+    <section class="quiz-section" id="quiz" aria-labelledby="quiz-title">
+      <div class="feature-heading">
+        <div>
+          <p class="soft-label">WONDER QUIZ</p>
+          <h2 id="quiz-title">急がず考える、<br><em>5つのふしぎ。</em></h2>
+        </div>
+        <p>時間制限も減点もありません。今日の5問は、図鑑の根拠付き情報だけから作られています。</p>
+      </div>
+      <div class="quiz-shell">
+        <aside class="quiz-day-card" aria-label="今日のクイズ進み具合">
+          <span>TODAY</span>
+          <strong id="quiz-day-progress">0 / 5問</strong>
+          <div class="quiz-dots" id="quiz-dots" aria-hidden="true"></div>
+          <p>初めに選んだ答えが正解なら、使えるひらめきと累計ひらめきがそれぞれ <b>+20</b>。使えるひらめきは発見カードに使えます。</p>
+        </aside>
+        <article class="quiz-card" id="quiz-card" aria-live="polite">
+          <div class="quiz-card-top"><span id="quiz-animal-label">読み込み中</span><small id="quiz-number">QUESTION</small></div>
+          <h3 id="quiz-question" tabindex="-1">今日の問題を準備しています…</h3>
+          <div class="quiz-choices" id="quiz-choices" role="group" aria-labelledby="quiz-question"></div>
+          <div id="quiz-term-shelf"></div>
+          <div class="quiz-feedback" id="quiz-feedback" tabindex="-1" hidden></div>
+          <div class="quiz-actions">
+            <button class="secondary-action" id="quiz-source" hidden>根拠を見る</button>
+            <button class="primary-action" id="quiz-next" hidden>次の問題へ</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="gacha-section" id="gacha" aria-labelledby="gacha-title">
+      <div class="feature-heading is-light">
+        <div>
+          <p class="soft-label">DISCOVERY CARDS</p>
+          <h2 id="gacha-title" tabindex="-1">ふしぎの光を、<br><em>そっとめくる。</em></h2>
+        </div>
+        <p>カードの光ランクは5段階。動物の注目ティアとは別物で、絶滅の危険度や命の価値を表すものではありません。</p>
+      </div>
+      <div class="discovery-layout">
+        <article class="daily-capsule">
+          <div class="capsule-orbit" aria-hidden="true"><i></i><span>✦</span></div>
+          <p class="soft-label">TODAY'S ONE</p>
+          <h3>今日の1枚</h3>
+          <p id="daily-card-copy">1日1回、カードを1枚めくれます。連続日数や取り逃しはありません。</p>
+          <button class="gacha-primary" id="daily-card-draw">今日の1枚をめくる</button>
+          <button class="clock-recovery" id="clock-recovery" hidden>日付を直したので再開する</button>
+        </article>
+        <div class="draw-console">
+          <div class="unopened-summary">
+            <span>カードに使えるひらめき</span>
+            <strong><b id="gacha-point-total">0</b> ポイント</strong>
+            <small>累計は減らずに記録されます｜同じカードとの再会：葉っぱ <b id="leaf-total">0</b>枚</small>
+          </div>
+          <div class="draw-actions">
+            <button id="single-card-draw"><span aria-hidden="true">◇</span><strong>1枚めくる</strong><small id="single-cost-copy">100ポイント</small></button>
+            <button id="ten-card-draw"><span aria-hidden="true">✦</span><strong>10枚まとめて見る</strong><small id="ten-cost-copy">900ポイント</small></button>
+          </div>
+          <p class="draw-safety">お金・広告・購入はありません。カードをめくったときだけ使えるひらめきが減ります。累計ひらめきと図鑑本文は失われず、カードを持っていなくても全文を読めます。</p>
+          <div class="leaf-exchange">
+            <div><strong>葉っぱのしおり</strong><small>葉っぱ30枚で、まだない「芽吹き」カードを1枚選べます。</small></div>
+            <label for="leaf-animal-select">動物を選ぶ<select id="leaf-animal-select"></select></label>
+            <button type="button" id="leaf-exchange-button">葉っぱ30枚で選ぶ</button>
+          </div>
+          <details class="probability-panel">
+            <summary>光ランクの確率と安心設計</summary>
+            <p>通常の1枚：芽吹き50%・木漏れ日27%・星明かり13%・月虹7%・生命の宝冠3%</p>
+            <div id="rank-probabilities"></div>
+            <p id="pity-status">最高光の安全保証カウンター：0 / 30</p>
+            <div class="guarantee-note"><strong>10枚の保証枠</strong><p>最初の9枚に星明かりIII以上がなかった場合だけ、10枚目はIII以上から選びます。その枠は星明かり56.52%・月虹30.43%・生命の宝冠13.04%です。30枚保証に当たる枠は生命の宝冠100%です。</p></div>
+            <p>動物は64種を一巡するまで同じ種類が重ならない「袋方式」。動物の注目ティアによる出やすさの差はありません。30枚以内に「生命の宝冠」が必ず1枚入ります。これは安全設計の説明で、続けることを勧める表示ではありません。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="tier-section" id="ranking" aria-labelledby="tier-title">
+      <div class="tier-heading">
+        <div><p class="soft-label">ANIMAL ATTENTION TIERS</p><h2 id="tier-title">人気と保全から見る、<br><em>図鑑注目ティア。</em></h2></div>
+        <div class="tier-disclaimer"><strong>動物の優劣ではありません</strong><p>公開された人気調査と野生での絶滅リスクから決めた学習・演出用の指標です。強さ、知能、進化の進み具合、生態系での重要性、命の価値を順位付けしません。</p></div>
+      </div>
+      <div class="tier-legend" aria-label="ティアの見方"><span class="tier-s">S 高い注目</span><span class="tier-a">A 高い注目</span><span class="tier-b">B 注目</span><span class="tier-c">C 基本収録</span><span class="tier-unranked">— 未算定（調査外）</span></div>
+      <div class="rank-filter" id="tier-filter" role="group" aria-label="注目ティアで絞り込む"></div>
+      <div class="tier-grid" id="tier-grid"></div>
+      <aside class="tier-benchmark" id="tier-benchmark"></aside>
+      <details class="tier-method">
+        <summary>ティアの決め方・出典・注意点を見る</summary>
+        <div>
+          <p><strong>人気点：</strong>日本の2024年調査を50%、2018年の査読研究を30%、英国の2015年調査を20%で統合します。調査にない動物は0点ではなく「未測定」です。</p>
+          <p><strong>保全による最低ティア：</strong>CR→S、EN/VU→A、NT→B、LC→C。DD（情報不足）・NE（未評価）・再評価待ちは安全を意味しないため最低ティアを付けません。</p>
+          <p><strong>IUCN区分：</strong>珍しさそのものではなく、特定の分類単位・地域・評価時点における野生絶滅リスクです。地域評価や飼育個体を世界全体へ広げません。</p>
+          <div class="tier-source-links">
+            <a href="https://www.cross-m.co.jp/hubfs/news_release_20240605.pdf" target="_blank" rel="noopener noreferrer">日本の動物園調査 ↗</a>
+            <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0199149" target="_blank" rel="noopener noreferrer">人気動物の査読研究 ↗</a>
+            <a href="https://yougov.com/en-gb/articles/11632-animals" target="_blank" rel="noopener noreferrer">YouGov補助調査 ↗</a>
+            <a href="https://nrl.iucnredlist.org/" target="_blank" rel="noopener noreferrer">IUCN区分 ↗</a>
+          </div>
+          <small id="tier-method-date">算定日 —</small>
+        </div>
+      </details>
+    </section>
+
+    <section class="species-scope" id="world-count" aria-labelledby="world-count-title">
+      <div class="scope-intro">
+        <p class="soft-label">HOW MANY ANIMALS?</p>
+        <h2 id="world-count-title">「全部」は、<br><em>まだ誰も知らない。</em></h2>
+        <p>種の数は、発見と分類の見直しで変わります。だからこの図鑑は、巨大な名前の索引と、出典まで読める監修済みの物語を分けて育てます。</p>
+      </div>
+      <div class="scope-numbers">
+        <article><span>分類目録への収録</span><strong>1,792,173<small>種</small></strong><p>Catalogue of Life XR（2026年7月17日版）のAnimalia。絶滅種を含み、欠落や誤りも残る収録数です。</p></article>
+        <article><span>未発見を含む研究上の推定</span><strong>約777<small>万種</small></strong><p>2011年の査読研究による推定。種の考え方や分子研究で変わり得るため、確定値ではありません。</p></article>
+        <article class="is-atlas"><span>この試作版の完全監修</span><strong>64<small>種</small></strong><p>344出典・257の根拠付き主張・128問のクイズを確認済み。カードは見た目違いを含め320枚です。</p></article>
+      </div>
+      <div class="scope-links">
+        <a href="https://www.catalogueoflife.org/" target="_blank" rel="noopener noreferrer">Catalogue of Lifeを見る <span aria-hidden="true">↗</span></a>
+        <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001127" target="_blank" rel="noopener noreferrer">推定研究を見る <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="explore-section" id="explore" aria-labelledby="explore-title">
+      <div class="explore-heading">
+        <div>
+          <p class="soft-label">EXPLORE THE LIVING WORLD</p>
+          <h2 id="explore-title">気になる命を、<br><em>問い</em>から探そう。</h2>
+        </div>
+        <p>名前を知らなくても大丈夫。「海」「再生」「首」「飛ばない」など、気になった言葉から出会えます。</p>
+      </div>
+
+      <div class="search-panel">
+        <div class="question-trails" aria-label="問いから選ぶ">
+          <span>問いから探す</span>
+          <div id="question-trails"></div>
+        </div>
+        <label class="search-box" for="animal-search">
+          <span aria-hidden="true">⌕</span>
+          <input id="animal-search" type="search" placeholder="動物名、海、再生、進化の謎…" autocomplete="off">
+          <kbd>⌘ K</kbd>
+        </label>
+        <div class="filter-row" id="filter-row" role="group" aria-label="生息環境で絞り込む"></div>
+      </div>
+
+      <div class="explore-progress">
+        <div>
+          <span class="soft-label">YOUR FIELD NOTES</span>
+          <strong id="view-progress-text">まだ出会っていません</strong>
+        </div>
+        <progress id="view-progress" aria-labelledby="view-progress-text" value="0" max="64">0 / 64</progress>
+        <a href="#collection">採集帳を見る</a>
+      </div>
+      <div class="result-meta" aria-live="polite"><span id="result-count">0</span>の命が見つかりました</div>
+      <div class="animal-grid" id="animal-grid" aria-live="polite"></div>
+      <div class="empty-state" id="empty-state" hidden>
+        <span aria-hidden="true">🪶</span>
+        <h3>まだ見つからない問いです</h3>
+        <p>だいじょうぶ。検索と絞り込みを消して、森の入口へ戻れます。</p>
+        <button class="primary-action" id="clear-search">全部の動物を見る</button>
+      </div>
+    </section>
+
+    <section class="collection-section" id="collection" aria-labelledby="collection-title">
+      <div class="collection-heading">
+        <div>
+          <p class="soft-label">MY WONDER CABINET</p>
+          <h2 id="collection-title">ふしぎを集める、<br><em>小さな採集帳。</em></h2>
+        </div>
+        <p><strong id="favorite-count">0</strong>匹を保存中。星を付けた動物は、この端末の中だけに残ります。</p>
+      </div>
+      <div class="favorite-grid" id="favorite-grid"></div>
+      <div class="collection-empty" id="favorite-empty">
+        <span aria-hidden="true">✧</span>
+        <h3>最初のふしぎを集めよう</h3>
+        <p>動物カードの星を押すと、ここでもう一度会えます。</p>
+        <a class="primary-action" href="#explore">動物を探す</a>
+      </div>
+      <div class="card-cabinet" aria-labelledby="card-cabinet-title">
+        <div class="card-cabinet-heading">
+          <div><p class="soft-label">DISCOVERY CABINET</p><h3 id="card-cabinet-title">発見カードの標本箱</h3></div>
+          <p><strong id="owned-species-total">0 / 64</strong>種・<strong id="owned-variant-total">0 / 320</strong>枚を発見</p>
+        </div>
+        <div class="album-achievements" id="album-achievements"></div>
+        <div class="rank-filter" id="rank-filter" role="group" aria-label="カードの光ランクで絞り込む"></div>
+        <div class="rank-filter" id="group-filter" role="group" aria-label="動物の分類で絞り込む"></div>
+        <div class="album-controls"><button type="button" id="owned-filter" aria-pressed="false">発見済みだけ表示</button></div>
+        <div class="discovery-grid" id="discovery-grid"></div>
+        <p class="cabinet-note">影になっているカードも、動物の物語は図鑑からいつでも読めます。</p>
+      </div>
+    </section>
+
+    <section class="path-section" aria-labelledby="path-title">
+      <div class="path-intro">
+        <p class="soft-label">THREE PATHS</p>
+        <h2 id="path-title">同じ命に、<br>3つの入口。</h2>
+        <p>難しさではなく、知りたい角度で選ぶ。どの道も最後は「まだ分からないこと」へつながります。</p>
+      </div>
+      <div class="path-cards">
+        <button class="path-card" data-theme="からだ"><span>01</span><i aria-hidden="true">◌</i><h3>姿のひみつ</h3><p>骨、羽毛、皮膚、感覚。形と働きのつながりから探す。</p></button>
+        <button class="path-card" data-theme="進化"><span>02</span><i aria-hidden="true">⌁</i><h3>進化の分かれ道</h3><p>一直線ではない系統樹を、環境と証拠からたどる。</p></button>
+        <button class="path-card" data-theme="研究"><span>03</span><i aria-hidden="true">✣</i><h3>証拠と研究の歴史</h3><p>化石、ゲノム、観察。見方が変わった証拠を読む。</p></button>
+      </div>
+    </section>
+
+    <section class="promise-section" id="promise" aria-labelledby="promise-title">
+      <div class="promise-mark" aria-hidden="true">証</div>
+      <div>
+        <p class="soft-label">OUR EDITORIAL PROMISE</p>
+        <h2 id="promise-title">ワクワクと、<br><em>確かさ</em>を両立する。</h2>
+      </div>
+      <div class="promise-copy">
+        <p>この試作版は、博物館・研究機関・査読論文を入口に独自の日本語で編集しています。進化を「目的」では説明せず、確定・有力説・未解明を分けます。</p>
+        <a href="#explore">動物ページで出典を見る <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand"><span class="brand-mark">✦</span><strong>Wonder Animal Atlas</strong></div>
+    <p>ローカル試作版｜広告なし・追跡なし・外部送信なし</p>
+    <small>© 2026 いのちの森編集社 — Prototype</small>
+  </footer>
+
+  <nav class="mobile-nav" aria-label="スマホメニュー">
+    <a href="#forest"><span aria-hidden="true">⌂</span>森</a>
+    <a href="#explore"><span aria-hidden="true">⌕</span>図鑑</a>
+    <a href="#quiz"><span aria-hidden="true">?</span>クイズ</a>
+    <a href="#gacha"><span aria-hidden="true">◇</span>カード</a>
+    <a href="#collection"><span aria-hidden="true">☆</span>標本箱</a>
+  </nav>
+
+  <dialog class="animal-dialog" id="animal-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-toolbar">
+      <form method="dialog">
+        <button class="dialog-close" id="dialog-close" value="close" aria-label="詳細を閉じる">×</button>
+      </form>
+    </div>
+    <div id="dialog-content"></div>
+  </dialog>
+
+  <aside class="glossary-dialog" id="glossary-dialog" role="dialog" aria-modal="false" aria-labelledby="glossary-dialog-title" hidden>
+    <button class="dialog-close glossary-close" id="glossary-close" aria-label="言葉の説明を閉じる">×</button>
+    <div class="glossary-popup-mark" aria-hidden="true">あ</div>
+    <p class="soft-label" id="glossary-category">ことば辞典</p>
+    <h2 id="glossary-dialog-title">言葉</h2>
+    <p class="glossary-reading" id="glossary-reading"></p>
+    <p class="glossary-definition" id="glossary-definition"></p>
+    <p class="glossary-adult" id="glossary-adult"></p>
+    <p class="glossary-example" id="glossary-example"></p>
+    <button class="secondary-action" id="glossary-done">わかった</button>
+  </aside>
+
+  <dialog class="glossary-list-dialog" id="glossary-list-dialog" aria-labelledby="glossary-list-title">
+    <div class="glossary-list-toolbar">
+      <div><p class="soft-label">OFFLINE WORD LIBRARY</p><h2 id="glossary-list-title">ことばの辞典</h2></div>
+      <button class="dialog-close" id="glossary-list-close" aria-label="ことば辞典を閉じる">×</button>
+    </div>
+    <label class="glossary-search" for="glossary-search"><span aria-hidden="true">⌕</span><input id="glossary-search" type="search" placeholder="進化、化石、ゲノム…" autocomplete="off"></label>
+    <p class="glossary-list-count" id="glossary-list-count" aria-live="polite"></p>
+    <div class="glossary-list" id="glossary-list"></div>
+  </dialog>
+
+  <dialog class="card-result-dialog" id="card-result-dialog" aria-labelledby="card-result-title" aria-describedby="card-result-summary">
+    <div class="result-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="crown-cutin" id="crown-cutin" aria-hidden="true" hidden><span class="crown-ring"></span><b>✦</b><em>生命の宝冠</em></div>
+    <div class="result-toolbar">
+      <button class="result-top-close" id="result-top-close">結果を閉じる</button>
+      <button class="result-skip" id="result-skip">演出をスキップ</button>
+    </div>
+    <div class="result-shell">
+      <p class="soft-label">NEW DISCOVERIES</p>
+      <h2 id="card-result-title" tabindex="-1">発見カードを開きました</h2>
+      <p id="card-result-summary" class="card-result-summary"></p>
+      <div class="card-result-grid" id="card-result-grid"></div>
+      <div class="card-result-actions">
+        <button class="secondary-action" id="result-close">標本箱へしまう</button>
+        <button class="primary-action" id="result-read" hidden>この動物を読む</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

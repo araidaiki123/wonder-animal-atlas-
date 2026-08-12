@@ -1,0 +1,19 @@
+{
+  "name": "Wonder Animal Atlas｜いのちの森図鑑",
+  "short_name": "命の森図鑑",
+  "description": "進化・歴史・雑学を、根拠と一緒にめくる動物図鑑",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f0e5",
+  "theme_color": "#173f35",
+  "icons": [
+    {
+      "src": "assets/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

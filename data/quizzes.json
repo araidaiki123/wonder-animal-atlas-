@@ -1,0 +1,2974 @@
+[
+ {
+  "id": "quiz-blue-whale-01",
+  "animalId": "blue-whale",
+  "question": "約5000万年前の初期クジラ類について、登録された資料が示す内容はどれ？",
+  "choices": [
+   "陸上を歩ける四肢を持つ系統がいた",
+   "現生シロナガスクジラが陸上を歩いていた",
+   "すべての初期クジラ類が現在と同じ姿だった",
+   "四肢については資料に記録がない"
+  ],
+  "correctIndex": 0,
+  "explanation": "約5000万年前の初期クジラ類には、陸上を歩ける四肢を持つ系統がいました。現生シロナガスクジラそのものを指す記録ではありません。",
+  "claimId": "blue-whale.claims.0",
+  "taxonScope": "初期クジラ類",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-whale-smithsonian"
+  ],
+  "checkedAt": "2026-08-10",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-blue-whale-02",
+  "animalId": "blue-whale",
+  "question": "計測機器を付けたシロナガスクジラの採食研究で、直接観察と推定を正しく分けた説明はどれ？",
+  "choices": [
+   "採食頻度を観察し、酸素使用量とエネルギー収支は行動と既報値から推定した",
+   "酸素使用量だけを化石から直接測定した",
+   "すべての海域の全個体で同じ採食回数を確認した",
+   "巨大化の進化原因を実験だけで確定した"
+  ],
+  "correctIndex": 0,
+  "explanation": "餌密度に応じた採食頻度は観察されましたが、酸素使用量とエネルギー収支は計測行動と既報値からの推定です。",
+  "claimId": "blue-whale.claims.2",
+  "taxonScope": "計測機器を装着して観察した現生シロナガスクジラ",
+  "evidenceMode": "観察・推定",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-blue-foraging-2015"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-giraffe-01",
+  "animalId": "giraffe",
+  "question": "現生キリンの長い首をつくる頸椎は、いくつある？",
+  "choices": [
+   "7個",
+   "首の長さと同じ数だけ増える",
+   "個体ごとに必ず大きく異なる",
+   "資料では数えられていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "現生キリンの頸椎は、多くの哺乳類と同じ7個です。数が増えたのではなく、一つ一つが長くなっています。",
+  "claimId": "giraffe.trivia.0",
+  "taxonScope": "現生キリン",
+  "evidenceMode": "比較記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-giraffe-genome"
+  ],
+  "checkedAt": "2026-08-10",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-giraffe-02",
+  "animalId": "giraffe",
+  "question": "約1700万年前のDiscokeryxの化石から提案されたのは、どのような適応？",
+  "choices": [
+   "円盤状の頭と頑丈な首を使う頭突きへの適応",
+   "現生キリンの直接祖先であることの確定",
+   "高い木の葉だけを食べたことの直接観察",
+   "現生キリンの首の起源を一つの原因で説明すること"
+  ],
+  "correctIndex": 0,
+  "explanation": "Discokeryxでは頭突きへの適応が提案されました。ただし絶滅したキリン上科の一系統で、現生キリンの直接祖先とは扱えません。",
+  "claimId": "giraffe.claims.3",
+  "taxonScope": "絶滅キリン上科Discokeryx",
+  "evidenceMode": "化石解析・仮説",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-giraffoid-science"
+  ],
+  "checkedAt": "2026-08-10",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-platypus-01",
+  "animalId": "platypus",
+  "question": "カモノハシの分類と子育てについて正しい説明はどれ？",
+  "choices": [
+   "卵を産み、乳腺から乳を分泌する単孔類の哺乳類",
+   "鳥と哺乳類の途中にある未完成な動物",
+   "卵を産むため鳥類に分類される",
+   "乳を与えない爬虫類"
+  ],
+  "correctIndex": 0,
+  "explanation": "カモノハシは卵を産しますが、乳腺から乳を分泌する単孔類の哺乳類です。鳥と哺乳類の途中ではありません。",
+  "claimId": "platypus.claims.0",
+  "taxonScope": "カモノハシ",
+  "evidenceMode": "資料記録・ゲノム比較",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-platypus-museum",
+   "src-monotreme-nature"
+  ],
+  "checkedAt": "2026-08-10",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-platypus-02",
+  "animalId": "platypus",
+  "question": "1986年のカモノハシ実験で確認された、くちばしの働きはどれ？",
+  "choices": [
+   "微弱な電場を感じ、物体の発見や回避に使う",
+   "未来の天候を正確に予測する",
+   "陸上で磁石だけを頼りに長距離移動する",
+   "電気を発生させて獲物を気絶させる"
+  ],
+  "correctIndex": 0,
+  "explanation": "行動と電気生理の実験から、くちばしが微弱な電場を感じ、物体の発見や回避に使えることが示されました。",
+  "claimId": "platypus.claims.2",
+  "taxonScope": "実験条件下のカモノハシ",
+  "evidenceMode": "実験",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-platypus-electric-1986"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-emperor-penguin-01",
+  "animalId": "emperor-penguin",
+  "question": "コウテイペンギンの繁殖と卵について、資料に合う説明はどれ？",
+  "choices": [
+   "定着氷上で繁殖し、卵は約65日でふ化する",
+   "樹上で繁殖し、卵は数時間でふ化する",
+   "すべての海氷を避けて砂漠で繁殖する",
+   "卵を産まず、子を直接産む"
+  ],
+  "correctIndex": 0,
+  "explanation": "コウテイペンギンは定着氷上で繁殖し、雄が卵を足の上で温めます。ふ化まで約65日です。",
+  "claimId": "emperor-penguin.claims.1",
+  "taxonScope": "コウテイペンギン",
+  "evidenceMode": "観察・資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-emperor-bas"
+  ],
+  "checkedAt": "2026-08-10",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-emperor-penguin-02",
+  "animalId": "emperor-penguin",
+  "question": "2009年の衛星画像を解析した研究が推定した組み合わせはどれ？",
+  "choices": [
+   "46繁殖地と約23万8000繁殖ペア",
+   "現在の全個体数を誤差なく確定",
+   "南極以外の繁殖地だけを1か所確認",
+   "化石から約65日の抱卵期間を測定"
+  ],
+  "correctIndex": 0,
+  "explanation": "2009年の衛星画像から46繁殖地と約23万8000繁殖ペアが推定されました。現在値ではなく、当時の基準です。",
+  "claimId": "emperor-penguin.trivia.3",
+  "taxonScope": "2009年の衛星画像で確認したコウテイペンギン繁殖集団",
+  "evidenceMode": "衛星観察・推定",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-emperor-space-2012"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-axolotl-01",
+  "animalId": "axolotl",
+  "question": "飼育したメキシコサンショウウオへT4やT3を外から与えた実験では、何が起きた？",
+  "choices": [
+   "変態が誘導された",
+   "自然の上流制御がすべて解明された",
+   "どの個体でも再生能力が完全に失われた",
+   "野生個体群の変態頻度が直接測定された"
+  ],
+  "correctIndex": 0,
+  "explanation": "飼育個体への甲状腺ホルモン処理で変態が誘導されました。自然状態の上流制御をすべて解明した実験ではありません。",
+  "claimId": "axolotl.claims.1",
+  "taxonScope": "ホルモン処理した飼育個体",
+  "evidenceMode": "実験",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-axolotl-thyroid-2023"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-axolotl-02",
+  "animalId": "axolotl",
+  "question": "再生研究の対象範囲を正しく説明しているのはどれ？",
+  "choices": [
+   "切断四肢と尾の中の脊髄は、別々の飼育実験で調べられた",
+   "人の手足が同じ方法ですぐ再生すると確認された",
+   "あらゆる傷が必ず完全に治ると証明された",
+   "再生は野生個体を遠くから見ただけで判断された"
+  ],
+  "correctIndex": 0,
+  "explanation": "切断四肢の再生と、小型飼育個体の尾切断後に脊髄が再び伸びる過程は、別々の実験で確認されました。",
+  "claimId": "axolotl.claims.3",
+  "taxonScope": "四肢・尾を対象にした飼育実験",
+  "evidenceMode": "実験",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-axolotl-limb-2017",
+   "src-axolotl-spinal-2016"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-giant-pacific-octopus-01",
+  "animalId": "giant-pacific-octopus",
+  "question": "南中央アラスカで発信器を付けたミズダコ40個体の観察結果はどれ？",
+  "choices": [
+   "観察時間の94%を静止または隠れて過ごし、夜間に活動が多かった",
+   "世界中の全個体が94%の時間を泳ぎ続けた",
+   "化石だけから夜間活動を推定した",
+   "飼育8個体の人への反応だけを測った"
+  ],
+  "correctIndex": 0,
+  "explanation": "南中央アラスカで追跡した40個体では、観察時間の94%が静止または隠れた状態で、活動は夜間に多くなりました。種全体の固定値ではありません。",
+  "claimId": "giant-pacific-octopus.claims.1",
+  "taxonScope": "南中央アラスカで追跡した40個体",
+  "evidenceMode": "追跡観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-gpo-movement-2012"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-giant-pacific-octopus-02",
+  "animalId": "giant-pacific-octopus",
+  "question": "アラスカ湾で卵数を推定できた雌33個体の範囲はどれ？",
+  "choices": [
+   "約4万1600〜23万9000個",
+   "すべて同じ1個",
+   "世界中の全雌で100万個ちょうど",
+   "卵数はこの研究では扱われていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "卵数を推定できた雌33個体では約4万1600〜23万9000個でした。154個体は成熟状態などを調べた全標本数で、卵数推定の標本数ではありません。",
+  "claimId": "giant-pacific-octopus.claims.3",
+  "taxonScope": "アラスカ湾で調べた雌33個体",
+  "evidenceMode": "標本調査・推定",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-gpo-reproduction-2014"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-african-savanna-elephant-01",
+  "animalId": "african-savanna-elephant",
+  "question": "アフリカサバンナゾウの鼻について、登録された研究に合う説明はどれ？",
+  "choices": [
+   "骨格を持たない筋肉性ハイドロスタットで、先端の2本の突起を使って物をつまめる",
+   "鼻の内部に長い骨が一本だけ通っている",
+   "先端の突起はなく、物をつかめない",
+   "鼻の働きは化石からしか分からない"
+  ],
+  "correctIndex": 0,
+  "explanation": "鼻は骨格を持たない筋肉性ハイドロスタットです。アフリカサバンナゾウは先端の上下2本の指状突起を使って物をつまめます。",
+  "claimId": "african-savanna-elephant.claims.0",
+  "taxonScope": "アフリカサバンナゾウ",
+  "evidenceMode": "観察・形態解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-elephant-peerj-trunk"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-african-savanna-elephant-02",
+  "animalId": "african-savanna-elephant",
+  "question": "牙のない雌が増えた研究結果について、対象範囲を正しく示すのはどれ？",
+  "choices": [
+   "内戦期に強い密猟を受けたゴロンゴーザ国立公園の雌集団",
+   "アフリカのすべてのゾウとすべての時代",
+   "飼育下の雄だけを調べた世界共通の結果",
+   "絶滅した長鼻類の化石だけから得た結果"
+  ],
+  "correctIndex": 0,
+  "explanation": "この記録は、ゴロンゴーザ国立公園の雌集団で、内戦期の密猟後に牙なし形質の頻度が上がった事例です。種全体へ一般化できません。",
+  "claimId": "african-savanna-elephant.claims.2",
+  "taxonScope": "ゴロンゴーザ国立公園の雌集団",
+  "evidenceMode": "集団観察・遺伝解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-elephant-tusklessness"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-sea-otter-01",
+  "animalId": "sea-otter",
+  "question": "ラッコが冷たい海で体温を保つ仕組みとして、資料に合うのはどれ？",
+  "choices": [
+   "極めて密な毛に空気を保つ",
+   "厚い脂肪層だけに頼る",
+   "体温を海水と同じまで下げ続ける",
+   "毎日陸上で冬眠する"
+  ],
+  "correctIndex": 0,
+  "explanation": "ラッコは厚い脂肪層を持たず、極めて密な毛に空気を保持して冷たい海で保温します。",
+  "claimId": "sea-otter.claims.0",
+  "taxonScope": "ラッコ",
+  "evidenceMode": "観察・資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-otter-monterey",
+   "src-otter-genetics"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-sea-otter-02",
+  "animalId": "sea-otter",
+  "question": "アラスカの複数地域を比べた研究結果を、一般化しすぎずに表したものはどれ？",
+  "choices": [
+   "ラッコが多い場所ほどウニが少なく海藻が多い傾向があったが、効果には地域差がある",
+   "ラッコ一頭だけで世界中の海藻が必ず増える",
+   "すべての地域でウニと海藻が同じ数になった",
+   "海藻との関係は調査されていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "調査対象となったアラスカの複数地域では、ラッコ、ウニ、海藻の量に関連が見られましたが、効果には地域差があります。",
+  "claimId": "sea-otter.claims.2",
+  "taxonScope": "アラスカの調査対象集団と沿岸生態系",
+  "evidenceMode": "地域比較観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-otter-usgs-kelp"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-peregrine-falcon-01",
+  "animalId": "peregrine-falcon",
+  "question": "ハヤブサの速度について、測定条件を正しく分けた説明はどれ？",
+  "choices": [
+   "時速320キロ超は急降下の測定例で、通常の移動飛行はおよそ時速40〜55キロ",
+   "いつでも時速320キロを保って移動する",
+   "時速320キロは歩行速度の記録",
+   "速度は一度も測られていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "時速320キロ超は狩りの急降下での測定例です。通常の移動飛行はおよそ時速40〜55キロとされています。",
+  "claimId": "peregrine-falcon.trivia.0",
+  "taxonScope": "測定条件下のハヤブサ",
+  "evidenceMode": "速度観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-falcon-cornell-life"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-peregrine-falcon-02",
+  "animalId": "peregrine-falcon",
+  "question": "北米のハヤブサ集団で、DDEと関連して確認された問題はどれ？",
+  "choices": [
+   "卵殻の薄化、繁殖失敗、個体群減少",
+   "すべての鳥類の卵が同時に巨大化",
+   "翼が一世代で完全に消失",
+   "渡りをする全個体が別種へ変化"
+  ],
+  "correctIndex": 0,
+  "explanation": "北米ではDDTの代謝物DDEがハヤブサの卵殻を薄くし、繁殖失敗と個体群減少につながりました。対象は北米の集団です。",
+  "claimId": "peregrine-falcon.claims.1",
+  "taxonScope": "北米のハヤブサ集団",
+  "evidenceMode": "化学分析・集団記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-falcon-dde",
+   "src-falcon-fws"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-green-sea-turtle-01",
+  "animalId": "green-sea-turtle",
+  "question": "アオウミガメの英名にあるgreenは、何に由来する？",
+  "choices": [
+   "脂肪が緑色に見えること",
+   "甲羅が必ず鮮やかな緑色であること",
+   "緑色の砂浜だけで産卵すること",
+   "海草以外を絶対に食べないこと"
+  ],
+  "correctIndex": 0,
+  "explanation": "greenは甲羅の色ではなく、脂肪が緑色に見えることに由来します。",
+  "claimId": "green-sea-turtle.trivia.0",
+  "taxonScope": "アオウミガメの名称",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-green-noaa"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-green-sea-turtle-02",
+  "animalId": "green-sea-turtle",
+  "question": "産卵地間の母系DNAの地理的構造が支持する傾向はどれ？",
+  "choices": [
+   "雌が出生地域へ戻る傾向",
+   "すべての雌が毎年同じ日に同じ巣へ戻ることの確定",
+   "雄だけが陸上で一生を過ごす傾向",
+   "カメ類全体が同じ産卵地を使うこと"
+  ],
+  "correctIndex": 0,
+  "explanation": "産卵地間で見られる母系DNAの地理的構造は、アオウミガメの雌が出生地域へ戻る傾向を支持します。個体ごとの絶対的行動を示すものではありません。",
+  "claimId": "green-sea-turtle.claims.2",
+  "taxonScope": "アオウミガメの雌集団",
+  "evidenceMode": "遺伝解析・仮説",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-green-bowen-1992",
+   "src-green-noaa"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-naked-mole-rat-01",
+  "animalId": "naked-mole-rat",
+  "question": "ハダカデバネズミの真社会性の群れを正しく表したものはどれ？",
+  "choices": [
+   "通常1頭の繁殖雌、少数の繁殖雄、繁殖を助ける多数の個体からなる",
+   "全個体が必ず同じ回数だけ繁殖する",
+   "親子関係を持たず一頭だけで暮らす",
+   "鳥類だけに見られる群れなので哺乳類では確認されない"
+  ],
+  "correctIndex": 0,
+  "explanation": "通常は1頭の繁殖雌と少数の繁殖雄が繁殖し、多数の個体が群れの維持や子育てを助けます。",
+  "claimId": "naked-mole-rat.claims.0",
+  "taxonScope": "ハダカデバネズミ",
+  "evidenceMode": "行動観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-nmr-jarvis-1981",
+   "src-nmr-smithsonian"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-naked-mole-rat-02",
+  "animalId": "naked-mole-rat",
+  "question": "「ハダカデバネズミは絶対にがんにならない」という説明を、登録資料はどう扱う？",
+  "choices": [
+   "がん症例が報告されているため、絶対という表現は誤り",
+   "すべての個体で生涯がんが起きないと証明済み",
+   "がんについては哺乳類では研究できない",
+   "培養細胞の研究だけで野生個体の最大寿命まで確定した"
+  ],
+  "correctIndex": 0,
+  "explanation": "腫瘍は少ないとされますが、実際のがん症例が報告されています。そのため『絶対にがんにならない』とは言えません。",
+  "claimId": "naked-mole-rat.trivia.3",
+  "taxonScope": "報告されたハダカデバネズミのがん症例",
+  "evidenceMode": "症例記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-nmr-cancer-cases-2016"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-western-honey-bee-01",
+  "animalId": "western-honey-bee",
+  "question": "セイヨウミツバチの女王蜂と働き蜂について正しい説明はどれ？",
+  "choices": [
+   "どちらも雌で、栄養入力と遺伝子調節の違いが異なる成体形質に関わる",
+   "互いに別種で、共通する遺伝情報を持たない",
+   "働き蜂はすべて雄である",
+   "成体になってから一つの遺伝子だけで必ず役割が入れ替わる"
+  ],
+  "correctIndex": 0,
+  "explanation": "女王蜂と働き蜂は別種ではなく、どちらも雌です。幼虫期の栄養入力と遺伝子調節の違いが成体形質に関わります。",
+  "claimId": "western-honey-bee.claims.0",
+  "taxonScope": "セイヨウミツバチの雌",
+  "evidenceMode": "発生実験",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-honey-caste-2008"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-western-honey-bee-02",
+  "animalId": "western-honey-bee",
+  "question": "約9000年前の土器から検出されたものと、そこから直接は言えないことの組み合わせはどれ？",
+  "choices": [
+   "蜜蝋に特徴的な化学的痕跡／現代と同じ養蜂の完成",
+   "生きた女王蜂／尻振りダンスの方向",
+   "蜂の全ゲノム／当時の巣箱の形",
+   "二倍体雄の化石／csd遺伝子の配列"
+  ],
+  "correctIndex": 0,
+  "explanation": "土器から確認されたのは蜜蝋に特徴的な化学的痕跡です。蜂産品の利用は示しますが、蜂蜜そのものや現代と同じ養蜂の完成を直接証明しません。",
+  "claimId": "western-honey-bee.trivia.3",
+  "taxonScope": "新石器時代の土器に残った蜜蝋の化学的痕跡",
+  "evidenceMode": "化学分析・資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-honey-human-2015"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-lion-01",
+  "animalId": "lion",
+  "question": "セレンゲティの長期研究で、ライオンのたてがみの色の濃さと関連が確認されたのはどれ？",
+  "choices": [
+   "栄養状態やテストステロンと関連し、繁殖に有利な一方で暑さの代償がある",
+   "生まれた場所の土の色とそっくりになる",
+   "その日の気分によって毎日変わる",
+   "色は何とも関連しないことが確認された"
+  ],
+  "correctIndex": 0,
+  "explanation": "セレンゲティの長期研究では、色の濃いたてがみは栄養状態やテストステロンと関連し、繁殖上有利な一方、体表温度の上昇など暑さの代償を伴うことが示されました。",
+  "claimId": "lion.claims.0",
+  "taxonScope": "セレンゲティのライオン個体群",
+  "evidenceMode": "長期野外研究",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-lion-umn"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-lion-02",
+  "animalId": "lion",
+  "question": "ライオンの群れで、狩りの主な担い手はだれ？",
+  "choices": [
+   "血縁のメスたち",
+   "たてがみの立派なオスだけ",
+   "群れの子どもたち",
+   "群れの全員が必ず同時に狩る"
+  ],
+  "correctIndex": 0,
+  "explanation": "プライドの狩りの主な担い手はメスたちです。複数のメスが別々の方向から獲物に忍び寄って仕掛けます。",
+  "claimId": "lion.trivia.0",
+  "taxonScope": "ライオン(種全体の一般的傾向)",
+  "evidenceMode": "行動記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-lion-nzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-tiger-01",
+  "animalId": "tiger",
+  "question": "トラが過去200年ほどで失った歴史的分布域の割合は？",
+  "choices": [
+   "およそ93%",
+   "およそ10%",
+   "およそ50%",
+   "分布域はむしろ広がった"
+  ],
+  "correctIndex": 0,
+  "explanation": "トラは過去200年ほどで歴史的分布域のおよそ93%を失いました。野生個体数は約4,500頭と推定されています。",
+  "claimId": "tiger.claims.3",
+  "taxonScope": "野生のトラ個体群全体",
+  "evidenceMode": "分布・個体数記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-tiger-panthera"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-tiger-02",
+  "animalId": "tiger",
+  "question": "トラと水の関係について、記録に合う説明はどれ？",
+  "choices": [
+   "泳ぎが得意で、幅8キロほどの川や湖も渡れる",
+   "水を極端に恐れて決して近づかない",
+   "まったく泳げないので島には分布できない",
+   "水中でしか狩りをしない"
+  ],
+  "correctIndex": 0,
+  "explanation": "トラは泳ぎが得意で、幅8キロほどの川や湖も楽に渡るとされ、水の中での狩りも記録されています。",
+  "claimId": "tiger.trivia.0",
+  "taxonScope": "トラ(種全体)",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-tiger-nzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-cheetah-01",
+  "animalId": "cheetah",
+  "question": "GPS首輪による野生チーターの狩りの計測で分かったことはどれ？",
+  "choices": [
+   "最高記録は時速約93キロだが、多くの狩りは中程度の速度で行われる",
+   "すべての狩りで常に時速120キロを出している",
+   "野生では時速30キロ以上出せない",
+   "速度は今まで一度も計測されたことがない"
+  ],
+  "correctIndex": 0,
+  "explanation": "野生の狩り367回の計測では、最高記録は秒速25.9メートル(時速約93キロ)でしたが、多くの狩りは中程度の速度で行われていました。",
+  "claimId": "cheetah.claims.0",
+  "taxonScope": "GPS首輪で計測されたボツワナの野生チーター",
+  "evidenceMode": "速度計測",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-cheetah-nature"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-cheetah-02",
+  "animalId": "cheetah",
+  "question": "チーターの遺伝的な均質さを示す例として報告されたのはどれ？",
+  "choices": [
+   "血縁のない個体の間でも皮膚移植が受け入れられた",
+   "全個体の斑点の数が完全に同じだった",
+   "どの個体も同じ鳴き声しか出せなかった",
+   "全個体の体重が1グラムも違わなかった"
+  ],
+  "correctIndex": 0,
+  "explanation": "チーターは遺伝的な均質さが際立っており、血縁のない個体の間でも皮膚移植が受け入れられた例が知られています。",
+  "claimId": "cheetah.trivia.2",
+  "taxonScope": "チーター(解析された個体)",
+  "evidenceMode": "ゲノム解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-cheetah-gb"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-gray-wolf-01",
+  "animalId": "gray-wolf",
+  "question": "オオカミの群れ(パック)の基本的な成り立ちはどれ？",
+  "choices": [
+   "繁殖するペアとその子どもたちの家族",
+   "血縁のない個体が力だけで支配し合う集団",
+   "毎日メンバーが入れ替わる寄せ集め",
+   "メスだけで作る集団"
+  ],
+  "correctIndex": 0,
+  "explanation": "オオカミの群れは基本的に、繁殖するペア(親)とその子どもたちからなる家族単位です。かつての「アルファ」という言い方は見直されています。",
+  "claimId": "gray-wolf.claims.0",
+  "taxonScope": "タイリクオオカミ(一般的傾向)",
+  "evidenceMode": "行動記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-wolf-iwc",
+   "src-wolf-adw"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-gray-wolf-02",
+  "animalId": "gray-wolf",
+  "question": "古代オオカミ72個体のゲノム解析で、イヌの祖先について分かったことはどれ？",
+  "choices": [
+   "解析された中に、イヌの直接の祖先集団と一致するものはなかった",
+   "今のシベリアのオオカミが直接の祖先だと確定した",
+   "イヌはオオカミと無関係だと判明した",
+   "72個体すべてがイヌの直接の祖先だった"
+  ],
+  "correctIndex": 0,
+  "explanation": "イヌは東ユーラシア系の古代オオカミに近いものの、解析された72個体の中に直接の祖先集団と一致するものは見つかりませんでした。",
+  "claimId": "gray-wolf.claims.3",
+  "taxonScope": "解析済みの古代オオカミ72個体",
+  "evidenceMode": "ゲノム解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-wolf-nature"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-giant-panda-01",
+  "animalId": "giant-panda",
+  "question": "ジャイアントパンダの腸内細菌叢について、研究で確認されたのはどれ？",
+  "choices": [
+   "草食動物型ではなく肉食動物型に近く、典型的なセルロース分解菌群が見つからなかった",
+   "牛とまったく同じ細菌構成で竹を完全に消化できる",
+   "腸内に細菌がまったくいない",
+   "竹だけを分解する専用の細菌が腸内の大半を占めていた"
+  ],
+  "correctIndex": 0,
+  "explanation": "パンダの腸内細菌叢は肉食動物型に近く、他の草食動物に典型的なセルロース分解菌群は検出されませんでした。竹食への適応は消化の面では不完全なままです。",
+  "claimId": "giant-panda.claims.3",
+  "taxonScope": "調査されたジャイアントパンダ",
+  "evidenceMode": "細菌叢解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-panda-microbiome"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-giant-panda-02",
+  "animalId": "giant-panda",
+  "question": "生まれたばかりのパンダの赤ちゃんは、母親と比べてどれくらいの大きさ？",
+  "choices": [
+   "母親のおよそ900分の1",
+   "母親のおよそ半分",
+   "母親とほぼ同じ大きさ",
+   "母親のおよそ10分の1"
+  ],
+  "correctIndex": 0,
+  "explanation": "新生児は約85〜142グラムで、母親の900分の1ほどしかありません。ピンク色で毛がなく、目も見えない状態で生まれます。",
+  "claimId": "giant-panda.trivia.0",
+  "taxonScope": "ジャイアントパンダ(種全体)",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-panda-nzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-red-panda-01",
+  "animalId": "red-panda",
+  "question": "レッサーパンダ系統の『偽の親指』について、化石研究が示した有力な説はどれ？",
+  "choices": [
+   "竹食より前に、樹上移動との関連で生じた可能性が高い",
+   "竹を食べるために突然生まれた",
+   "ジャイアントパンダから受けついだ",
+   "偽親指を持つのは現生のレッサーパンダだけである"
+  ],
+  "correctIndex": 0,
+  "explanation": "中新世の化石食肉類シモキオンも偽親指を持っていました。シモキオンは竹食ではなかったため、この系統の偽親指はまず樹上移動と結びついて生じたという説が有力です。",
+  "claimId": "red-panda.claims.1",
+  "taxonScope": "レッサーパンダ科(Ailuridae)の系統",
+  "evidenceMode": "化石記録",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-redpanda-pnas"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-red-panda-02",
+  "animalId": "red-panda",
+  "question": "レッサーパンダの分類について正しいのはどれ？",
+  "choices": [
+   "独自のアイルルス科に属し、ジャイアントパンダとは近縁ではない",
+   "ジャイアントパンダと同じクマ科である",
+   "ネコ科の一員である",
+   "パンダという名前なので齧歯類である"
+  ],
+  "correctIndex": 0,
+  "explanation": "レッサーパンダは食肉目の中で独自のアイルルス科に属します。名前や見た目の印象と違い、クマ科のジャイアントパンダとは近縁ではありません。",
+  "claimId": "red-panda.claims.0",
+  "taxonScope": "レッサーパンダ(Ailurus属)",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-redpanda-nzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-koala-01",
+  "animalId": "koala",
+  "question": "コアラの子が離乳のときに食べる『パップ』の役割として考えられているのはどれ？",
+  "choices": [
+   "ユーカリの消化に必要な細菌を母親から受け取る",
+   "体を大きくするための肉のかわり",
+   "水分をとるための特別なジュース",
+   "歯をきたえるための固い食べ物"
+  ],
+  "correctIndex": 0,
+  "explanation": "パップは母親の特別な軟便です。子はこれを食べることで、ユーカリの葉の消化に必要な細菌を受け取ると考えられています。",
+  "claimId": "koala.claims.2",
+  "taxonScope": "コアラ(種全体)",
+  "evidenceMode": "資料記録",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-koala-austmus"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-koala-02",
+  "animalId": "koala",
+  "question": "コアラは1日にどれくらい眠る？",
+  "choices": [
+   "18〜22時間",
+   "3〜4時間",
+   "8時間ぴったり",
+   "ほとんど眠らない"
+  ],
+  "correctIndex": 0,
+  "explanation": "コアラは1日18〜22時間眠ります。栄養の少ないユーカリの葉で暮らすための、徹底した省エネ生活です。",
+  "claimId": "koala.trivia.0",
+  "taxonScope": "コアラ(種全体)",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-koala-sdzwa"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-red-kangaroo-01",
+  "animalId": "red-kangaroo",
+  "question": "アカカンガルーが平地でホッピングの速度を上げると、エネルギー消費はどうなる？",
+  "choices": [
+   "酸素消費はほぼ増えない",
+   "速度に比例してどこまでも増え続ける",
+   "速くするほど減っていく",
+   "跳ぶのをやめて歩き出す"
+  ],
+  "correctIndex": 0,
+  "explanation": "トレッドミル実験では、平地で速度を上げても酸素消費はほぼ増えませんでした。長い腱がバネのように弾性エネルギーをたくわえ、回収しているためと考えられています。",
+  "claimId": "red-kangaroo.claims.1",
+  "taxonScope": "計測されたアカカンガルー(トレッドミル実験)",
+  "evidenceMode": "実験計測",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-kangaroo-kram"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-red-kangaroo-02",
+  "animalId": "red-kangaroo",
+  "question": "アカカンガルーのメスが同時に抱えられる『3段階の子』の組み合わせはどれ？",
+  "choices": [
+   "袋の外の子・袋の中の子・着床を待つ胚",
+   "3頭の双子を袋の中で同時に育てる",
+   "オスが袋で子を育てるので3家族分",
+   "卵を3個ずつ産んで温める"
+  ],
+  "correctIndex": 0,
+  "explanation": "メスは胚休眠という仕組みによって、袋の外の子、袋の中の子、着床を待つ胚を同時に抱えることができます。乾燥地の不安定な環境で繁殖の機会を逃しにくい仕組みです。",
+  "claimId": "red-kangaroo.claims.2",
+  "taxonScope": "アカカンガルー(繁殖メス)",
+  "evidenceMode": "繁殖記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-kangaroo-adw",
+   "src-kangaroo-austmus"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-western-gorilla-01",
+  "animalId": "western-gorilla",
+  "question": "ヒト・チンパンジー・ゴリラのゲノムを比べて分かったことは？",
+  "choices": [
+   "ゲノムの30%の領域では、ゴリラがヒトまたはチンパンジーに、ヒトとチンパンジー同士よりも近い",
+   "どの領域でも、必ずヒトとチンパンジーが最も近い",
+   "ゴリラのゲノムはヒトとほとんど共通点がない",
+   "ゴリラはチンパンジーから直接進化した"
+  ],
+  "correctIndex": 0,
+  "explanation": "ゲノムの30%の領域では、ゴリラがヒトまたはチンパンジーに、ヒトとチンパンジー同士よりも近くなっています。祖先集団の遺伝的な違いが枝ごとに別々に受け継がれた結果で、系統の分かれ目が「幅のある帯」だったことを示します。",
+  "claimId": "western-gorilla.claims.0",
+  "taxonScope": "ヒト・チンパンジー・ゴリラのゲノム比較",
+  "evidenceMode": "ゲノム解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-gorilla-genome"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-western-gorilla-02",
+  "animalId": "western-gorilla",
+  "question": "野生のゴリラで2004年に初めて記録されたことは？",
+  "choices": [
+   "メスが枝を水深の確認や体の支え、橋の代わりに使う道具使用",
+   "小枝でシロアリをつり出す道具使用",
+   "石を使ってナッツを割る行動",
+   "木の葉を雨よけの傘として使う行動"
+  ],
+  "correctIndex": 0,
+  "explanation": "2004年、コンゴ共和国Mbeli Baiで、メスのゴリラが枝で水深を確かめながら池を渡ろうとする様子などが記録されました。野生のゴリラの道具使用としては初めての報告です。",
+  "claimId": "western-gorilla.claims.1",
+  "taxonScope": "コンゴ共和国Mbeli Baiのニシゴリラ2個体",
+  "evidenceMode": "野外観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-gorilla-plosbio"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-chimpanzee-01",
+  "animalId": "chimpanzee",
+  "question": "アフリカ7つの長期調査地の記録(合計151年分)を比べた研究で分かったことは？",
+  "choices": [
+   "道具使用や毛づくろいなど39の行動パターンが集団ごとに異なっていた",
+   "すべての群れがまったく同じ行動のセットを持っていた",
+   "行動の違いはすべて遺伝子の違いで説明できた",
+   "文化的な行動を持つのは1つの群れだけだった"
+  ],
+  "correctIndex": 0,
+  "explanation": "7調査地・合計151年分の記録の比較で、道具使用・毛づくろい・求愛など39の行動パターンが集団間で異なりました。ヒト以外で最も豊かな文化的変異の証拠とされています。",
+  "claimId": "chimpanzee.claims.0",
+  "taxonScope": "アフリカ7調査地のチンパンジー集団",
+  "evidenceMode": "長期観察の比較",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-chimp-whiten"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-chimpanzee-02",
+  "animalId": "chimpanzee",
+  "question": "コートジボワールのNoulo遺跡から見つかったものは？",
+  "choices": [
+   "ナッツ割りに使われた4300年前のチンパンジーの石器",
+   "チンパンジーが火を使った4300年前の跡",
+   "約430年前の木製の道具だけ",
+   "ヒトが作った石器で、チンパンジーとは無関係のもの"
+  ],
+  "correctIndex": 0,
+  "explanation": "Noulo遺跡からはナッツ割りに使われた4300年前の石器が発掘され、表面のでんぷんから当時のチンパンジーが地元のナッツを割っていたことが分かりました。",
+  "claimId": "chimpanzee.claims.1",
+  "taxonScope": "西アフリカ(コートジボワール)のチンパンジー",
+  "evidenceMode": "遺跡の発掘・残渣分析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-chimp-mpg"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-bornean-orangutan-01",
+  "animalId": "bornean-orangutan",
+  "question": "ボルネオオランウータンのメスの出産について正しいのは？",
+  "choices": [
+   "出産間隔はおよそ8年で、子は6歳ごろまで母親に依存する",
+   "毎年1頭ずつ出産する",
+   "一度に5頭前後の子を産む",
+   "子は生後半年で完全に独立する"
+  ],
+  "correctIndex": 0,
+  "explanation": "メスの出産間隔はおよそ8年ととても長く、子は6歳ごろの思春期まで母親に頼って育ちます。このゆっくりした繁殖は、個体数の回復の遅さにつながります。",
+  "claimId": "bornean-orangutan.claims.2",
+  "taxonScope": "ボルネオオランウータン(一般的傾向)",
+  "evidenceMode": "野外観察・生活史記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-orangutan-adw",
+   "src-orangutan-nzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-bornean-orangutan-02",
+  "animalId": "bornean-orangutan",
+  "question": "1999年から2015年の間に、ボルネオ島のオランウータンに起きたと推定されることは？",
+  "choices": [
+   "10万頭以上が減少した",
+   "10万頭以上が増加した",
+   "個体数はほぼ横ばいだった",
+   "減少したのは1000頭ほどにとどまった"
+  ],
+  "correctIndex": 0,
+  "explanation": "現地調査の集成から、1999〜2015年にボルネオ島のオランウータンは10万頭以上減ったと推定されました。農地への転換や伐採に加え、直接の殺害も大きな原因とされます。",
+  "claimId": "bornean-orangutan.claims.0",
+  "taxonScope": "ボルネオオランウータン(ボルネオ島全域)",
+  "evidenceMode": "現地調査の集成",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-orangutan-mpg"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-japanese-macaque-01",
+  "animalId": "japanese-macaque",
+  "question": "ニホンザルの分布について正しいのは？",
+  "choices": [
+   "ヒト以外の霊長類の中で最も北に分布する",
+   "霊長類の中で最も南に分布する",
+   "熱帯の島だけに分布する",
+   "アフリカにも野生の群れがいる"
+  ],
+  "correctIndex": 0,
+  "explanation": "ニホンザルは、ヒト以外の霊長類の中で最も北に分布します。冬眠はせず、厚い毛皮と冬の食べ物の切り替えで雪の季節を乗り切ります。",
+  "claimId": "japanese-macaque.claims.0",
+  "taxonScope": "ニホンザル(種全体)",
+  "evidenceMode": "分布記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-macaque-adw"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-japanese-macaque-02",
+  "animalId": "japanese-macaque",
+  "question": "地獄谷のニホンザルの温泉利用について、研究で確かめられたことは？",
+  "choices": [
+   "冬、特に寒い週に入浴が増え、入浴はストレスホルモン指標の低下と関連していた",
+   "夏に入浴がいちばん増えていた",
+   "入浴するとストレスホルモン指標が上がっていた",
+   "温泉に入るのはオスだけだった"
+  ],
+  "correctIndex": 0,
+  "explanation": "成体メス12頭の研究で、春より冬、特に寒い週に入浴が増え、入浴は糞中グルココルチコイド(ストレスホルモン指標)の低下と関連していました。",
+  "claimId": "japanese-macaque.claims.3",
+  "taxonScope": "地獄谷野猿公苑の成体メス12頭",
+  "evidenceMode": "行動観察・ホルモン分析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-macaque-kyoto-onsen"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-polar-bear-01",
+  "animalId": "polar-bear",
+  "question": "ホッキョクグマの系統がヒグマの系統から分かれたのは、いつごろと推定されている？",
+  "choices": [
+   "約34万〜48万年前",
+   "約6500万年前(恐竜絶滅のころ)",
+   "約5000年前(ピラミッドの時代)",
+   "約3億年前(両生類の時代)"
+  ],
+  "correctIndex": 0,
+  "explanation": "ゲノムの比較から約34万〜48万年前と推定されています。クマの仲間の歴史としては驚くほど最近の分岐で、その後の急速な適応が研究されています。",
+  "claimId": "polar-bear.claims.0",
+  "taxonScope": "ホッキョクグマとヒグマの系統",
+  "evidenceMode": "ゲノム解析",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-polarbear-cell"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-polar-bear-02",
+  "animalId": "polar-bear",
+  "question": "ホッキョクグマの代表的な狩りの方法はどれ？",
+  "choices": [
+   "氷にあいたアザラシの呼吸穴のそばで待ち伏せる",
+   "長い距離を走ってトナカイを追いかける",
+   "群れで協力してクジラを浜へ追い込む",
+   "木の上から獲物へ飛びかかる"
+  ],
+  "correctIndex": 0,
+  "explanation": "主な獲物はワモンアザラシです。氷にあいた呼吸穴のそばでじっと待ち、息つぎに上がってきたところを捕らえます。",
+  "claimId": "polar-bear.claims.3",
+  "taxonScope": "ホッキョクグマ(種全体の一般的傾向)",
+  "evidenceMode": "行動観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-polarbear-adfg",
+   "src-polarbear-adw"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-brown-bear-01",
+  "animalId": "brown-bear",
+  "question": "冬ごもり中のヒグマの心拍数はどうなる？",
+  "choices": [
+   "平均毎分26回ほどに下がる(活動期の約3分の1)",
+   "毎分200回まで上がる",
+   "活動期とまったく変わらない",
+   "数日おきに完全に止まる"
+  ],
+  "correctIndex": 0,
+  "explanation": "スカンジナビアの野生ヒグマの計測で、冬ごもり中の心拍数は平均毎分26回でした。活動期は約75回なので、3分の1ほどに下がっています。",
+  "claimId": "brown-bear.claims.0",
+  "taxonScope": "スカンジナビアの野生ヒグマ(計測された個体)",
+  "evidenceMode": "生理計測",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-brownbear-cardiac"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-brown-bear-02",
+  "animalId": "brown-bear",
+  "question": "『グリズリー』とヒグマの関係で正しいのはどれ？",
+  "choices": [
+   "グリズリーはヒグマの一部(内陸にすむヒグマの呼び名)",
+   "グリズリーはヒグマとは別の種",
+   "ヒグマはグリズリーの子どもの呼び名",
+   "グリズリーはクマではなく大型のイヌの仲間"
+  ],
+  "correctIndex": 0,
+  "explanation": "『グリズリーはみなヒグマ。でもヒグマがみなグリズリーではない』とされます。海のサケなどを利用できない内陸のヒグマが、北米でグリズリーと呼ばれます。",
+  "claimId": "brown-bear.trivia.0",
+  "taxonScope": "北アメリカのヒグマ(呼び名の区分)",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-brownbear-nps"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-snow-leopard-01",
+  "animalId": "snow-leopard",
+  "question": "標高6,000m超でも記録されるユキヒョウ。その血液(ヘモグロビン)について、実験で分かったことはどれ？",
+  "choices": [
+   "酸素との結びつきやすさはライオン並みに低く、高地向けの特別な血ではなかった",
+   "ヒトの高地民と同じ変異で、酸素をつかまえやすくなっていた",
+   "血液の量がふつうのネコの10倍あった",
+   "ヘモグロビンをまったく持っていなかった"
+  ],
+  "correctIndex": 0,
+  "explanation": "精製したヘモグロビンの実験で、酸素親和性はライオンと同じく低いままでした。低酸素への対処は血液以外のどこかで補われていると考えられますが、まだ特定されていません。",
+  "claimId": "snow-leopard.claims.1",
+  "taxonScope": "解析されたユキヒョウとネコ科各種",
+  "evidenceMode": "タンパク質実験",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-snowleopard-jeb"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-snow-leopard-02",
+  "animalId": "snow-leopard",
+  "question": "ユキヒョウの長い尾の使い方として、資料に書かれているのはどれ？",
+  "choices": [
+   "急斜面でのバランス取りと、眠るときの防寒の両方",
+   "水中で舵を取る",
+   "尾の先で獲物をつかまえる",
+   "地面に立てて仲間に合図を送る"
+  ],
+  "correctIndex": 0,
+  "explanation": "長い尾は急な岩場でのバランス取りに使われ、眠るときには体に巻きつけて防寒にもなります。",
+  "claimId": "snow-leopard.trivia.0",
+  "taxonScope": "ユキヒョウ(種全体の一般的傾向)",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-snowleopard-panthera"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-leopard-01",
+  "animalId": "leopard",
+  "question": "野生のネコ科でヒョウにとくによく知られている行動はどれ？",
+  "choices": [
+   "獲物を木の上へ運び上げて食べる",
+   "獲物を水にしずめて保存する",
+   "獲物を土に埋めて何週間も熟成させる",
+   "群れ全員で獲物を等分に分け合う"
+  ],
+  "correctIndex": 0,
+  "explanation": "ヒョウは自分より重い獲物もくわえて木に登り、木の上で食べます。野生のネコ科でこの行動が知られているのはヒョウだけとされます。",
+  "claimId": "leopard.claims.3",
+  "taxonScope": "ヒョウ(種全体)",
+  "evidenceMode": "行動観察",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-leopard-panthera"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-leopard-02",
+  "animalId": "leopard",
+  "question": "スリランカの黒いヒョウ(黒豹)について、研究で分かったことはどれ？",
+  "choices": [
+   "ASIP遺伝子の一塩基の変異が原因で、黒化は劣性遺伝とされる",
+   "ジャガーとの交雑によって黒い個体が生まれる",
+   "黒いヒョウはヒョウとは別の種である",
+   "年をとると、どのヒョウも黒くなる"
+  ],
+  "correctIndex": 0,
+  "explanation": "ASIP遺伝子エクソン4の一塩基変異(C353A)が特定されました。ASIPによる黒化は劣性遺伝とされ、黒い個体も同じヒョウという種の仲間です。",
+  "claimId": "leopard.claims.2",
+  "taxonScope": "スリランカのヒョウ亜種(Panthera pardus kotiya)",
+  "evidenceMode": "遺伝子解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-leopard-asip"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-capybara-01",
+  "animalId": "capybara",
+  "question": "カピバラの体の大きさについて正しい説明はどれ？",
+  "choices": [
+   "現生で世界最大の齧歯類で、体重はおよそ35〜66キログラムに達する",
+   "齧歯類としては平均的で、体重は5キログラムほどしかない",
+   "現生で世界最大の哺乳類である",
+   "成長しても体重が1キログラムを超えることはない"
+  ],
+  "correctIndex": 0,
+  "explanation": "カピバラは現生で世界最大の齧歯類です。体重はおよそ35〜66キログラムに達します。なお史上最大の齧歯類は、化石で知られる約1トンのジョセフォアルティガシア・モネシです。",
+  "claimId": "capybara.claims.0",
+  "taxonScope": "カピバラ（種全体）",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-capybara-adw",
+   "src-capybara-sdzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-capybara-02",
+  "animalId": "capybara",
+  "question": "カピバラのゲノム研究で見つかった「がん対策の候補」とされるものは？",
+  "choices": [
+   "T細胞を介した腫瘍抑制に関わるとみられるMAGEB5遺伝子ファミリーの拡大",
+   "がん細胞を焼き切るほど高い体温",
+   "腫瘍のもとを吸着する特別な毛皮の色素",
+   "がんを完全に防ぐことが証明された新しい臓器"
+  ],
+  "correctIndex": 0,
+  "explanation": "ゲノム解析で、MAGEB5遺伝子ファミリーの著しい拡大が見つかり、T細胞を介した腫瘍抑制という新しいがん対策の候補と考えられています。実際の体内での働きはまだ確かめられていません。",
+  "claimId": "capybara.claims.2",
+  "taxonScope": "解析されたカピバラのゲノム",
+  "evidenceMode": "ゲノム解析",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-capybara-mbe"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-common-hippopotamus-01",
+  "animalId": "common-hippopotamus",
+  "question": "カバの水中での移動について正しい説明はどれ？",
+  "choices": [
+   "泳げず浮くこともできず、水底を蹴って進む",
+   "ヒレのような足で時速60キロで泳ぐ",
+   "常に浮かんだまま流れに身をまかせる",
+   "水には入らず、岸から眺めるだけである"
+  ],
+  "correctIndex": 0,
+  "explanation": "カバは泳げず、浮くこともできません。水底を蹴って、スローモーションの駆け足のように進みます。",
+  "claimId": "common-hippopotamus.claims.2",
+  "taxonScope": "カバ（種全体の一般的傾向）",
+  "evidenceMode": "行動記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-hippo-sdzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-common-hippopotamus-02",
+  "animalId": "common-hippopotamus",
+  "question": "DNAの証拠から、カバに最も近い現生の親戚とされるのはどのグループ？",
+  "choices": [
+   "クジラのなかま",
+   "ブタのなかま",
+   "ゾウのなかま",
+   "サイのなかま"
+  ],
+  "correctIndex": 0,
+  "explanation": "ゲノムに刻まれたSINEなどの挿入配列の共有パターンから、カバはクジラ類の最も近い現生の親戚であることが示されました。ブタやペッカリーは、カバを含まない別のまとまりを作ります。",
+  "claimId": "common-hippopotamus.claims.0",
+  "taxonScope": "カバ科とクジラ類の系統関係",
+  "evidenceMode": "ゲノム解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-hippo-sine"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-white-rhinoceros-01",
+  "animalId": "white-rhinoceros",
+  "question": "北シロサイの現在の状況として正しいのはどれ？",
+  "choices": [
+   "残っているのは2頭でどちらもメス。回復は体外受精などの技術に託されている",
+   "オスとメスのペアが数百組、野生に残っている",
+   "保護によって野生で数千頭まで回復した",
+   "北シロサイという集団はもともと存在しない"
+  ],
+  "correctIndex": 0,
+  "explanation": "北シロサイは世界に2頭だけで、どちらもメスです。自然の繁殖はもう望めないため、体外受精で胚を作って凍結保存する国際プロジェクトが進んでいます。",
+  "claimId": "white-rhinoceros.claims.2",
+  "taxonScope": "北シロサイ",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-rhino-biorescue",
+   "src-rhino-str"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-white-rhinoceros-02",
+  "animalId": "white-rhinoceros",
+  "question": "南シロサイの個体数の歩みとして正しいのはどれ？",
+  "choices": [
+   "20世紀初頭の100頭以下から2012年末に2万1千頭超へ回復し、その後の密猟などで24%減少した",
+   "100年間、一度も減らずに増え続けている",
+   "20世紀初頭には100万頭いたが、現在は絶滅した",
+   "個体数は昔から現在までずっと100頭前後のままである"
+  ],
+  "correctIndex": 0,
+  "explanation": "南シロサイは20世紀初頭に100頭以下まで減った後、保護によって2012年末には2万1千頭を超えるまで回復しました。しかしその後の密猟の再燃で、2012〜2021年に24%減少しました。",
+  "claimId": "white-rhinoceros.claims.1",
+  "taxonScope": "南シロサイ個体群",
+  "evidenceMode": "個体数記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-rhino-irf"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-plains-zebra-01",
+  "animalId": "plains-zebra",
+  "question": "ウマ属の種間比較研究で、縞模様の発達と最もよく一致した要因はどれ？",
+  "choices": [
+   "アブなどの吸血バエへの曝露",
+   "森の木かげの濃さ（保護色に最適な環境）",
+   "ライオンなど捕食者の生息密度",
+   "気温の低さ"
+  ],
+  "correctIndex": 0,
+  "explanation": "2014年の比較研究では、縞の発達はアブなどの吸血バエへの曝露と最もよく一致しました。保護色や捕食者回避の仮説は、一貫した支持を得られませんでした。",
+  "claimId": "plains-zebra.claims.0",
+  "taxonScope": "ウマ属（シマウマ類を含む種間比較）",
+  "evidenceMode": "比較研究",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-zebra-stripes"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-plains-zebra-02",
+  "animalId": "plains-zebra",
+  "question": "1984年、絶滅した動物として初めてDNAが解読されたのはどの動物？",
+  "choices": [
+   "クアッガ（サバンナシマウマの絶滅亜種）",
+   "マンモス",
+   "ドードー",
+   "ニホンオオカミ"
+  ],
+  "correctIndex": 0,
+  "explanation": "1883年に絶滅したクアッガの博物館標本から、1984年にミトコンドリアDNA229塩基対が解読され、絶滅した動物からDNAを回収できることが初めて実証されました。古代DNA研究の出発点です。",
+  "claimId": "plains-zebra.claims.3",
+  "taxonScope": "クアッガ（サバンナシマウマの絶滅亜種）",
+  "evidenceMode": "標本DNA分析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-zebra-quagga-dna"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-brown-throated-sloth-01",
+  "animalId": "brown-throated-sloth",
+  "question": "ミツユビナマケモノが木から下りるのは、主に何をするとき？",
+  "choices": [
+   "地面で排泄をするとき（3〜8日に1回ほど）",
+   "毎晩、地上で眠るとき",
+   "地上を走って獲物を追いかけるとき",
+   "冬眠の準備で土に穴をほるとき"
+  ],
+  "correctIndex": 0,
+  "explanation": "ミツユビナマケモノは3〜8日に1回ほど木を下り、地面で排泄します。それ以外の時間のほとんどを木の上で過ごします。",
+  "claimId": "brown-throated-sloth.trivia.1",
+  "taxonScope": "ミツユビナマケモノ（野生での一般的傾向）",
+  "evidenceMode": "行動観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-sloth-adw"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-brown-throated-sloth-02",
+  "animalId": "brown-throated-sloth",
+  "question": "野生のミツユビナマケモノのエネルギー消費を測った研究で分かったことは？",
+  "choices": [
+   "哺乳類で測定された中で最も低い野外代謝率だった",
+   "哺乳類で測定された中で最も高い野外代謝率だった",
+   "同じ大きさの鳥類の平均とまったく同じ値だった",
+   "野生でのエネルギー消費はまだ一度も測定されていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "コスタリカの野生ミツユビナマケモノで測定された野外代謝率は、哺乳類で記録された中で最も低い値でした。樹上で葉を食べる暮らしの強いエネルギー制約を映しています。",
+  "claimId": "brown-throated-sloth.claims.0",
+  "taxonScope": "野生のミツユビナマケモノ（コスタリカの測定個体）",
+  "evidenceMode": "野外測定",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-sloth-fmr"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-common-bottlenose-dolphin-01",
+  "animalId": "common-bottlenose-dolphin",
+  "question": "ハンドウイルカの眠り方として正しいのはどれ？",
+  "choices": [
+   "脳の半球を片方ずつ休ませ、呼吸を続けながら眠る",
+   "陸に上がって体を乾かしながら眠る",
+   "1か月間まったく眠らずに泳ぎ続ける",
+   "海底に沈み、朝まで呼吸を完全に止めて眠る"
+  ],
+  "correctIndex": 0,
+  "explanation": "ハンドウイルカは脳の半球を片方ずつ休ませ、意識を保って呼吸を続けながら眠ります。おぼれずに眠るための仕組みです。",
+  "claimId": "common-bottlenose-dolphin.trivia.0",
+  "taxonScope": "ハンドウイルカ（種の一般的傾向）",
+  "evidenceMode": "行動観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-dolphin-adw"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-common-bottlenose-dolphin-02",
+  "animalId": "common-bottlenose-dolphin",
+  "question": "ブラジルのラグーナで100年以上続いていると報告されているのは？",
+  "choices": [
+   "イルカがボラの群れを岸へ追い込み、漁師が投網を同調させる協働漁",
+   "漁師が船でイルカを追い払いながら行う競争的な漁",
+   "漁師がイルカを飼いならして観光客に見せる事業",
+   "イルカが養殖いけすの魚を食べてしまう被害の記録"
+  ],
+  "correctIndex": 0,
+  "explanation": "ラグーナではイルカがボラの群れを岸へ追い込み、その合図に漁師が投網を合わせる協働漁が100年以上続いています。同調した相互作用が双方の成功を高め、協力するイルカには約13%の生存上の利益が推定されました。",
+  "claimId": "common-bottlenose-dolphin.claims.1",
+  "taxonScope": "ブラジル・ラグーナのハンドウイルカ個体群と漁師",
+  "evidenceMode": "長期観察記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-dolphin-pnas-fishing"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-orca-01",
+  "animalId": "orca",
+  "question": "シャチの分類上の位置づけとして正しいのはどれ？",
+  "choices": [
+   "マイルカ科の最大種、つまり世界最大のイルカの仲間",
+   "サメに最も近い魚類の仲間",
+   "ヒゲクジラ類の中でいちばん小さな種",
+   "アザラシと同じ鰭脚類の仲間"
+  ],
+  "correctIndex": 0,
+  "explanation": "シャチは分類上マイルカ科（イルカの科）の最大種です。『クジラ』の名で呼ばれることも多いですが、系統としてはイルカの仲間です。",
+  "claimId": "orca.trivia.0",
+  "taxonScope": "シャチ（分類上の位置づけ）",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-orca-noaa"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-orca-02",
+  "animalId": "orca",
+  "question": "北太平洋のレジデントとビッグスについて、研究が示していることは？",
+  "choices": [
+   "食性・形態・遺伝・文化が異なり、たがいに交配しないと考えられている",
+   "毎年たがいの群れを行き来して自由に交配している",
+   "見た目がちがうだけで、食べ物はまったく同じである",
+   "ビッグスはレジデントの子どもの時期の呼び名である"
+  ],
+  "correctIndex": 0,
+  "explanation": "レジデント（魚食）とビッグス（哺乳類食）は食性・形態・遺伝・文化が異なり、同じ海域にいても交配しないと考えられています。分岐は30万年以上前と推定され、別種とする提案も出されています。",
+  "claimId": "orca.claims.0",
+  "taxonScope": "北太平洋のレジデント型とビッグス型",
+  "evidenceMode": "遺伝解析・長期観察",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-orca-noaa-two"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-shoebill-01",
+  "animalId": "shoebill",
+  "question": "ハシビロコウが酸素の少ない沼で狩りをする利点は？",
+  "choices": [
+   "魚が息つぎに水面へ上がってくるので、待ち伏せしやすい",
+   "水が冷たくて、獲物の動きが完全に止まるから",
+   "酸素が少ないほど羽の色が美しくなるから",
+   "天敵がまったく近づけない場所だから"
+  ],
+  "correctIndex": 0,
+  "explanation": "酸素の少ない水では、ハイギョなどの魚が空気を吸いに水面へ上がってきます。静止して待つハシビロコウの狩りには好都合な環境です。",
+  "claimId": "shoebill.trivia.2",
+  "taxonScope": "ハシビロコウ（生息環境と狩りの傾向）",
+  "evidenceMode": "行動観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-shoebill-sdz"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-shoebill-02",
+  "animalId": "shoebill",
+  "question": "ハシビロコウの分類について正しいのはどれ？",
+  "choices": [
+   "かつてコウノトリの仲間とされたが、現在は独自の科としてペリカン目に置かれる",
+   "昔も今も、フクロウの仲間として分類されている",
+   "DNA研究により、ダチョウに最も近いと確定した",
+   "ペンギン科の一員として登録されている"
+  ],
+  "correctIndex": 0,
+  "explanation": "姿かたちから長くコウノトリ類とされてきましたが、分子系統研究をふまえた現在の分類では、独自のハシビロコウ科としてペリカン目に置かれています。",
+  "claimId": "shoebill.claims.0",
+  "taxonScope": "ハシビロコウ（分類上の位置づけ）",
+  "evidenceMode": "分子系統解析・資料記録",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-shoebill-sdz",
+   "src-shoebill-tokyozoo",
+   "src-shoebill-pel"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-common-ostrich-01",
+  "animalId": "common-ostrich",
+  "question": "鳥の趾(あしゆび)について、ダチョウだけに当てはまるのはどれ？",
+  "choices": [
+   "現生鳥類の中で唯一、趾が2本しかない",
+   "趾が全部で8本ある",
+   "趾がまったくない",
+   "趾の数が季節によって変わる"
+  ],
+  "correctIndex": 0,
+  "explanation": "現生鳥類の中で趾が2本しかないのはダチョウだけです。他の鳥は3本以上の趾を持ちます。",
+  "claimId": "common-ostrich.claims.1",
+  "taxonScope": "現生鳥類の中のダチョウ",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-common-ostrich-sdzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-common-ostrich-02",
+  "animalId": "common-ostrich",
+  "question": "飛べない古顎類11種のゲノム比較で、飛翔喪失に繰り返し関わっていたと推定されたのはどれ？",
+  "choices": [
+   "発生を制御する調節領域の変化",
+   "翼を作るタンパク質が全種で完全に消えたこと",
+   "飛ぶための遺伝子を別の種から受け取ったこと",
+   "ゲノム全体が10倍に大きくなったこと"
+  ],
+  "correctIndex": 0,
+  "explanation": "ゲノム比較では、タンパク質をコードする遺伝子そのものよりも、発生を制御する調節領域の変化が飛翔喪失に繰り返し関わっていたと推定されました。",
+  "claimId": "common-ostrich.claims.3",
+  "taxonScope": "飛べない古顎類11種のゲノム比較",
+  "evidenceMode": "ゲノム比較",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-common-ostrich-sackton"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-bald-eagle-01",
+  "animalId": "bald-eagle",
+  "question": "米国本土48州のハクトウワシに実際に起きたことはどれ？",
+  "choices": [
+   "1963年に417繁殖ペアまで減り、DDT禁止後に2020年推定約31万6700羽まで回復した",
+   "1963年に100万羽を超えて増えすぎて駆除された",
+   "個体数は建国以来ずっと変わっていない",
+   "DDT禁止の直後に絶滅した"
+  ],
+  "correctIndex": 0,
+  "explanation": "1963年には本土48州で417繁殖ペアまで減少しましたが、DDT使用禁止と保護を経て、2020年には推定約31万6700羽・7万1400繁殖ペア超まで回復しました。",
+  "claimId": "bald-eagle.claims.0",
+  "taxonScope": "米国本土48州のハクトウワシ個体群",
+  "evidenceMode": "個体数記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-bald-eagle-nzoo",
+   "src-bald-eagle-doi"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-bald-eagle-02",
+  "animalId": "bald-eagle",
+  "question": "ハクトウワシの食べ物の集め方として記録されているのはどれ？",
+  "choices": [
+   "ミサゴが捕った魚を追い回して落とさせ、横取りする",
+   "花の蜜だけを吸って暮らす",
+   "木の実を土にうめて冬にほり出す",
+   "泥の中のミミズしか食べない"
+  ],
+  "correctIndex": 0,
+  "explanation": "ハクトウワシは自分で魚を捕るほか、ミサゴを追い回して魚を落とさせ、横取りすることで知られています。",
+  "claimId": "bald-eagle.trivia.0",
+  "taxonScope": "ハクトウワシ(種全体)",
+  "evidenceMode": "行動記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-bald-eagle-nzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-snowy-owl-01",
+  "animalId": "snowy-owl",
+  "question": "シロフクロウの卵の数について、記録に合う説明はどれ？",
+  "choices": [
+   "獲物の量に応じて、通常3〜11個の間で変わる",
+   "毎年必ずちょうど2個だけ産む",
+   "卵を産まずに子を産む",
+   "獲物が少ない年ほど多く産む"
+  ],
+  "correctIndex": 0,
+  "explanation": "一腹卵数は獲物(主にレミング)の量に応じて変わり、通常3〜11個の幅があります。",
+  "claimId": "snowy-owl.claims.0",
+  "taxonScope": "北極圏で繁殖するシロフクロウ",
+  "evidenceMode": "繁殖記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-snowy-owl-audubon",
+   "src-snowy-owl-adw"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-snowy-owl-02",
+  "animalId": "snowy-owl",
+  "question": "1羽のシロフクロウが1年に食べるレミングの数の見積もりは？",
+  "choices": [
+   "1600匹以上",
+   "10匹ほど",
+   "3匹だけ",
+   "レミングは食べない"
+  ],
+  "correctIndex": 0,
+  "explanation": "1羽のシロフクロウが1年に1600匹以上のレミングを食べるという見積もりがあります。",
+  "claimId": "snowy-owl.trivia.2",
+  "taxonScope": "シロフクロウ(種全体)",
+  "evidenceMode": "食性記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-snowy-owl-adw"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-greater-flamingo-01",
+  "animalId": "greater-flamingo",
+  "question": "フラミンゴの桃色のもとになっているのはどれ？",
+  "choices": [
+   "餌の藻類や甲殻類に含まれるカロテノイド色素",
+   "生まれつき羽が桃色に決まっている",
+   "太陽の光で日焼けした色",
+   "桃色の泥が羽についた色"
+  ],
+  "correctIndex": 0,
+  "explanation": "フラミンゴの桃色は、餌の藻類や小さな甲殻類に含まれるカロテノイド色素に由来します。生まれつきの色ではありません。",
+  "claimId": "greater-flamingo.claims.0",
+  "taxonScope": "フラミンゴ科",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-greater-flamingo-sdzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-greater-flamingo-02",
+  "animalId": "greater-flamingo",
+  "question": "DNAと形の研究で、現生フラミンゴ類に最も近いとされた現生グループはどれ？",
+  "choices": [
+   "カイツブリ類",
+   "ダチョウ類",
+   "ペンギン類",
+   "ワシ・タカ類"
+  ],
+  "correctIndex": 0,
+  "explanation": "現生フラミンゴ類に最も近い現生グループはカイツブリ類とされ、両者はMirandornithesというまとまりを作ると考えられています。",
+  "claimId": "greater-flamingo.claims.2",
+  "taxonScope": "フラミンゴ科とカイツブリ科",
+  "evidenceMode": "系統解析",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-greater-flamingo-torres"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-red-crowned-crane-01",
+  "animalId": "red-crowned-crane",
+  "question": "1924年、タンチョウに起きた出来事として正しいのはどれ？",
+  "choices": [
+   "絶滅したと思われていたが、釧路湿原で十数羽の生存が発見された",
+   "北海道で初めて1000羽をこえた",
+   "アメリカから北海道へ持ち込まれた",
+   "最後の1羽が動物園に運ばれた"
+  ],
+  "correctIndex": 0,
+  "explanation": "タンチョウは一時絶滅したと思われていましたが、1924年に釧路湿原で十数羽の生存が発見されました。1000羽をこえたのは2000年代半ばです。",
+  "claimId": "red-crowned-crane.claims.0",
+  "taxonScope": "北海道のタンチョウ個体群",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-red-crowned-crane-kushiro",
+   "src-red-crowned-crane-tsurui"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-red-crowned-crane-02",
+  "animalId": "red-crowned-crane",
+  "question": "母から受けつがれるミトコンドリアDNAの型について、正しいのはどれ？",
+  "choices": [
+   "種全体では18種類が報告されている一方、北海道の集団では2種類しか見つかっていない",
+   "北海道も大陸も同じ18種類が見つかっている",
+   "北海道のほうが型が多く、100種類をこえる",
+   "どちらの集団でも型は1種類しかない"
+  ],
+  "correctIndex": 0,
+  "explanation": "絶滅寸前まで減ったボトルネックの影響で、北海道の集団ではGj1とGj2の2種類しか見つかっていません。大陸集団では18種類が知られています。",
+  "claimId": "red-crowned-crane.claims.2",
+  "taxonScope": "タンチョウの大陸集団と北海道集団",
+  "evidenceMode": "遺伝子解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-red-crowned-crane-mhc"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-indian-peafowl-01",
+  "animalId": "indian-peafowl",
+  "question": "クジャクの目玉模様の飾り羽の正体は？",
+  "choices": [
+   "尾の上側に生える上尾筒がのびたもので、目玉模様は100〜175個",
+   "尾羽そのものが目玉模様に変化したもの",
+   "翼の羽が背中側へ回り込んだもの",
+   "皮膚がうろこ状にのびたもの"
+  ],
+  "correctIndex": 0,
+  "explanation": "飾り羽は尾羽ではなく、尾の付け根の上側に生える上尾筒がのびたものです。オスは100〜175個の目玉模様を持ちます。",
+  "claimId": "indian-peafowl.claims.0",
+  "taxonScope": "インドクジャクのオス",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-indian-peafowl-nzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-indian-peafowl-02",
+  "animalId": "indian-peafowl",
+  "question": "メスのクジャクが相手を選ぶ基準について、研究の現状を正しく説明しているのはどれ？",
+  "choices": [
+   "目玉模様の数が効くという報告と、長さや数の個体差は交尾成功と結びつかないという報告があり、結果が割れている",
+   "飾り羽の長さがすべてを決めると、すべての研究が一致している",
+   "メスは相手をまったく選ばないと確定した",
+   "鳴き声だけで決まり、飾り羽は見ていないと確定した"
+  ],
+  "correctIndex": 0,
+  "explanation": "目玉模様の数と交尾成功の関連を示した報告がある一方、飾り羽の長さや目玉数の自然な個体差は交尾成功と関連しないという報告もあり、メスが何を評価しているかは未解明です。",
+  "claimId": "indian-peafowl.claims.2",
+  "taxonScope": "インドクジャク",
+  "evidenceMode": "行動観察の比較",
+  "confidence": "未解明",
+  "sourceIds": [
+   "src-indian-peafowl-adw",
+   "src-indian-peafowl-plos-rattle"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-north-island-brown-kiwi-01",
+  "animalId": "north-island-brown-kiwi",
+  "question": "鳥類のなかでキーウィだけが持つ特徴はどれ？",
+  "choices": [
+   "鼻の穴がくちばしの先端にあり、においで食べ物を探す",
+   "羽が一枚も生えていない",
+   "歯が生えている",
+   "鼻の穴が足のうらにある"
+  ],
+  "correctIndex": 0,
+  "explanation": "キーウィは鳥類で唯一、くちばしの先端に鼻孔があります。目ではなく、においで地中の食べ物を探し当てます。",
+  "claimId": "north-island-brown-kiwi.claims.2",
+  "taxonScope": "キーウィ属",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-north-island-brown-kiwi-sdzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-north-island-brown-kiwi-02",
+  "animalId": "north-island-brown-kiwi",
+  "question": "古代DNAの解析で分かった、キーウィに最も近縁な鳥はどれ？",
+  "choices": [
+   "マダガスカルの絶滅した巨鳥ゾウドリ",
+   "同じニュージーランドにいた巨鳥モア",
+   "オーストラリアのエミュー",
+   "アフリカのダチョウ"
+  ],
+  "correctIndex": 0,
+  "explanation": "2014年の古代DNA研究で、キーウィに最も近縁なのは同じ島のモアではなく、マダガスカルの絶滅鳥ゾウドリだと示されました。",
+  "claimId": "north-island-brown-kiwi.claims.0",
+  "taxonScope": "キーウィ属とゾウドリ類",
+  "evidenceMode": "古代DNA解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-north-island-brown-kiwi-mitchell"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-komodo-dragon-01",
+  "animalId": "komodo-dragon",
+  "question": "コモドオオトカゲの狩りについて、2009年の研究で分かったことはどれ？",
+  "choices": [
+   "下あごに6区画の毒腺があり、血を固まりにくくする毒を出す。細菌説は否定された",
+   "口の中の細菌だけで獲物を倒すことが確認された",
+   "毒も細菌もなく、噛む力の強さだけで倒すことが確認された",
+   "しっぽの先から毒を出すことが確認された"
+  ],
+  "correctIndex": 0,
+  "explanation": "MRIで下あごに6区画の毒腺が見つかり、毒には血液の凝固を妨げ血圧を下げる働きが確認されました。細菌で弱らせるという通説は否定されました。",
+  "claimId": "komodo-dragon.claims.1",
+  "taxonScope": "コモドオオトカゲ",
+  "evidenceMode": "MRI・成分分析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-komodo-dragon-fry"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-komodo-dragon-02",
+  "animalId": "komodo-dragon",
+  "question": "2021年にIUCNがコモドオオトカゲの区分をVUからENへ引き上げた主な理由は？",
+  "choices": [
+   "温暖化と海面上昇で、45年以内に生息適地が30%以上失われると予測されたため",
+   "毒が人間に危険だと分かったため",
+   "単為生殖で増えすぎたため",
+   "オーストラリアの化石が見つかったため"
+  ],
+  "correctIndex": 0,
+  "explanation": "IUCNは、温暖化と海面上昇により45年以内に生息適地が30%以上減るという予測などを理由に、2021年に絶滅危惧IB類（EN）へ引き上げました。",
+  "claimId": "komodo-dragon.claims.3",
+  "taxonScope": "コモドオオトカゲ（世界評価）",
+  "evidenceMode": "保全評価",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-komodo-dragon-iucn"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-panther-chameleon-01",
+  "animalId": "panther-chameleon",
+  "question": "パンサーカメレオンのオスが体の色を変える仕組みとして、研究で示されたのはどれ？",
+  "choices": [
+   "皮膚の虹色素胞に並ぶナノ結晶の間隔を変えて、反射する光を変える",
+   "皮膚の表面に色素を塗り重ねるように分泌する",
+   "うろこが1枚ずつ裏返って別の色の面を見せる",
+   "体温を上げて皮膚を発光させる"
+  ],
+  "correctIndex": 0,
+  "explanation": "実験されたオスの皮膚では、グアニンのナノ結晶が並ぶ虹色素胞の格子間隔が変わり、反射する光が青側から赤側へ移ることで色が変わりました。",
+  "claimId": "panther-chameleon.claims.0",
+  "taxonScope": "実験されたパンサーカメレオンの成体オス",
+  "evidenceMode": "実験観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-panther-chameleon-ncomms"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-panther-chameleon-02",
+  "animalId": "panther-chameleon",
+  "question": "カメレオンの色変化が起こる主な理由として説明されているのはどれ？",
+  "choices": [
+   "気分や温度、なかまへの信号",
+   "背景とそっくり同じ色になるため",
+   "夜になると自動的に光るため",
+   "水にぬれると色が流れ落ちるため"
+  ],
+  "correctIndex": 0,
+  "explanation": "カメレオンの色変化は主に気分や温度、なかまへの信号で起こり、背景に合わせる変化ではないと説明されています。",
+  "claimId": "panther-chameleon.trivia.0",
+  "taxonScope": "カメレオン類（動物園の解説）",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-panther-chameleon-sdzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-saltwater-crocodile-01",
+  "animalId": "saltwater-crocodile",
+  "question": "イリエワニの咬合力（かむ力）について、実測で確認されたのはどれ？",
+  "choices": [
+   "16,414ニュートンに達し、動物で測定された中で最高値",
+   "ヒトの咬む力とほぼ同じだった",
+   "咬む力はこれまで一度も測定されていない",
+   "体が大きい個体ほど咬む力が弱かった"
+  ],
+  "correctIndex": 0,
+  "explanation": "ワニ類23種を実測した研究で、イリエワニの咬合力は16,414ニュートンに達し、動物で測定された中で最高値でした。咬合力は体の大きさとともに増します。",
+  "claimId": "saltwater-crocodile.claims.1",
+  "taxonScope": "測定されたイリエワニの成体",
+  "evidenceMode": "実測実験",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-saltwater-crocodile-plos"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-saltwater-crocodile-02",
+  "animalId": "saltwater-crocodile",
+  "question": "イリエワニの子の性別は、何で決まる？",
+  "choices": [
+   "卵がかえるまでの巣の温度",
+   "母親の年齢",
+   "卵の大きさ",
+   "生まれてから食べたえさの量"
+  ],
+  "correctIndex": 0,
+  "explanation": "イリエワニの性別は卵の孵卵温度で決まり、およそ31.6度でオスが生じます。",
+  "claimId": "saltwater-crocodile.claims.2",
+  "taxonScope": "イリエワニ（巣の温度研究）",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-saltwater-crocodile-adw"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-king-cobra-01",
+  "animalId": "king-cobra",
+  "question": "キングコブラのメスが卵のためにする、ヘビとしては例外的な行動はどれ？",
+  "choices": [
+   "落ち葉や枝を押し集めて巣を作り、卵を温めながら守る",
+   "卵を海辺の砂浜まで運んで埋める",
+   "卵を口の中に入れて持ち歩く",
+   "卵をほかのヘビの巣にあずける"
+  ],
+  "correctIndex": 0,
+  "explanation": "キングコブラのメスは落ち葉や枝を押し集めて巣を作り、落ち葉の発酵熱で卵を温めながら巣を守ります。ヘビとしては例外的な行動です。",
+  "claimId": "king-cobra.claims.1",
+  "taxonScope": "キングコブラ種複合体(旧Ophiophagus hannah)",
+  "evidenceMode": "行動記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-king-cobra-adw",
+   "src-king-cobra-sdzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-king-cobra-02",
+  "animalId": "king-cobra",
+  "question": "2024年の研究で、キングコブラの分類はどうなった？",
+  "choices": [
+   "4種に整理され、2つの新種が記載された",
+   "1種のままで変わらないことが確認された",
+   "100種以上に細かく分けられた",
+   "コブラ科から外され、別の科へ移された"
+  ],
+  "correctIndex": 0,
+  "explanation": "形態と遺伝子の解析により4種に整理され、西ガーツ山脈のO. kaalingaとルソン島のO. salvatanaが新種として記載されました。",
+  "claimId": "king-cobra.claims.3",
+  "taxonScope": "キングコブラ種複合体（旧Ophiophagus hannah）",
+  "evidenceMode": "標本・遺伝子解析",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-king-cobra-ejt"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-galapagos-giant-tortoise-01",
+  "animalId": "galapagos-giant-tortoise",
+  "question": "ガラパゴスゾウガメ類に現生でいちばん近い種として、遺伝子研究が示したのはどれ？",
+  "choices": [
+   "南米の小型のチャコリクガメ",
+   "アフリカの大型のアルダブラゾウガメ",
+   "北米のカミツキガメ",
+   "現生の近縁種はまったく見つかっていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "現生の最近縁種は南米の大型種ではなく小型のチャコリクガメで、分岐は約600万〜1200万年前、現存する最古の島の形成より前と推定されました。",
+  "claimId": "galapagos-giant-tortoise.claims.0",
+  "taxonScope": "ガラパゴスゾウガメ類全体とチャコリクガメ",
+  "evidenceMode": "遺伝子解析",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-galapagos-tortoise-pnas"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-galapagos-giant-tortoise-02",
+  "animalId": "galapagos-giant-tortoise",
+  "question": "エスパニョラ島のゾウガメに実際に起きたことはどれ？",
+  "choices": [
+   "野生で14個体まで減った後、飼育繁殖で約1,900個体が戻され、2,300個体を超えるまで回復した",
+   "一度も数が減ったことはない",
+   "すべての個体が動物園に移され、野生には1頭も残っていない",
+   "回復せず、現在も14個体のままである"
+  ],
+  "correctIndex": 0,
+  "explanation": "エスパニョラ島の個体群は野生で14個体まで減りましたが、1960年代半ばからの飼育繁殖で約1,900個体が島へ戻され、現在は2,300個体を超えています。",
+  "claimId": "galapagos-giant-tortoise.claims.3",
+  "taxonScope": "エスパニョラ島の個体群",
+  "evidenceMode": "保全記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-galapagos-tortoise-gc",
+   "src-galapagos-tortoise-gc-espanola"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-japanese-giant-salamander-01",
+  "animalId": "japanese-giant-salamander",
+  "question": "オオサンショウウオの呼吸のしかたとして、資料に合う説明はどれ？",
+  "choices": [
+   "機能する肺をほとんど使わず、しわの多い皮膚の表面で酸素を取り込む",
+   "えらだけで呼吸し、水面には一度も上がらない",
+   "大きな肺で空気をため、1年間潜り続ける",
+   "口の中の袋で酸素を作り出している"
+  ],
+  "correctIndex": 0,
+  "explanation": "オオサンショウウオは機能する肺をほとんど使わず、しわの多い皮膚の表面で酸素を取り込みます。しわが表面積を増やし、毛細血管が皮膚のすぐ下を走っています。",
+  "claimId": "japanese-giant-salamander.claims.0",
+  "taxonScope": "オオサンショウウオ(種全体)",
+  "evidenceMode": "解剖・生理の記載",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-jgs-adw",
+   "src-jgs-nzoo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-japanese-giant-salamander-02",
+  "animalId": "japanese-giant-salamander",
+  "question": "京都の鴨川で調べられた交雑個体の割合の変化として、正しいのはどれ？",
+  "choices": [
+   "2008〜2009年の60%から、2010〜2011年には92%へ上がった",
+   "2008年から2011年まで、ずっと0%のままだった",
+   "2010年に一度だけ交雑個体が見つかり、その後は出ていない",
+   "交雑個体の割合は年ごとに下がり続けた"
+  ],
+  "correctIndex": 0,
+  "explanation": "鴨川では交雑個体の割合が2008〜2009年の60%、2009〜2010年の82%を経て、2010〜2011年には92%へ上がりました。対象は京都・鴨川のAndrias属個体群です。",
+  "claimId": "japanese-giant-salamander.claims.1",
+  "taxonScope": "京都・鴨川のAndrias属個体群",
+  "evidenceMode": "遺伝子検査・現地調査",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-jgs-hybrid"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-golden-poison-frog-01",
+  "animalId": "golden-poison-frog",
+  "question": "モウドクフキヤガエルの毒の出どころについて、資料に合う説明はどれ？",
+  "choices": [
+   "カエル自身が合成するのではなく餌から取り込まれたと考えられ、その餌がいない飼育下では毒がほとんど検出されなくなる",
+   "カエルの肝臓が毒を合成し、飼育下でも同じ量が作られる",
+   "毒は卵から受けつがれ、育つ環境とは関係がない",
+   "毒は水中の細菌がカエルの体内で作っていると確定している"
+  ],
+  "correctIndex": 0,
+  "explanation": "バトラコトキシンはカエル自身が作るのではなく、餌から取り込まれたものと考えられています。餌となる野生の節足動物がいない飼育下では、毒はほとんど検出されなくなります。",
+  "claimId": "golden-poison-frog.claims.1",
+  "taxonScope": "Phyllobates属のヤドクガエル",
+  "evidenceMode": "化学分析・飼育比較",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-gpf-beetle",
+   "src-gpf-adw"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-golden-poison-frog-02",
+  "animalId": "golden-poison-frog",
+  "question": "モウドクフキヤガエルが自分の毒で害を受けにくい理由について、2021年の研究が示したのはどれ？",
+  "choices": [
+   "有力とされたナトリウムチャネルの変異では説明できず、毒を吸着するタンパク質という別の仮説が提案されている",
+   "ナトリウムチャネルの変異が野生個体すべてで確認され、しくみが確定した",
+   "皮膚が毒を通さない膜でおおわれていることが確定した",
+   "このカエルは毒に耐えられず、少量でも死ぬことが分かった"
+  ],
+  "correctIndex": 0,
+  "explanation": "2021年の実験では、耐性の理由とされてきたナトリウムチャネルの変異が野生個体に見つからず、導入しても耐性が生じませんでした。かわりに毒を吸着するタンパク質という仮説が提案されていますが、その物質はまだ特定されていません。",
+  "claimId": "golden-poison-frog.claims.3",
+  "taxonScope": "モウドクフキヤガエルとピトフーイ(実験に用いた系統)",
+  "evidenceMode": "電気生理実験",
+  "confidence": "未解明",
+  "sourceIds": [
+   "src-gpf-sponge"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-whale-shark-01",
+  "animalId": "whale-shark",
+  "question": "ジンベエザメの餌のとり方として、資料に合う説明はどれ？",
+  "choices": [
+   "のどの手前の計20枚の濾過パッドで2〜3ミリより大きなものを漉し取り、吸い込む方式で採食する",
+   "大きな歯で獲物をかみ切って食べる",
+   "口を開けたまま泳ぎ続ける方式だけで採食し、吸い込むことはない",
+   "海底の砂を掘り返して貝だけを食べる"
+  ],
+  "correctIndex": 0,
+  "explanation": "ジンベエザメはのどの手前に左右10枚ずつ計20枚の濾過パッドを持ち、2〜3ミリより大きなものを漉し取ります。口を開けて泳ぎ続ける方式ではなく、あごを広げて吸い込む方式が中心です。",
+  "claimId": "whale-shark.claims.0",
+  "taxonScope": "ジンベエザメ(種全体)",
+  "evidenceMode": "形態観察・採食観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-ws-fmnh"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-whale-shark-02",
+  "animalId": "whale-shark",
+  "question": "2020年の研究で分かった、ジンベエザメの目のつくりはどれ？",
+  "choices": [
+   "眼球の表面に約2,900枚の皮歯が並び、眼球を直径のおよそ半分まで引き込める",
+   "眼球がかたい骨の板で完全におおわれていて動かせない",
+   "目は退化してすでに失われている",
+   "まぶたが3枚あり、そのうち1枚は透明である"
+  ],
+  "correctIndex": 0,
+  "explanation": "眼球の表面には約2,900枚の皮歯が並び、体表の皮歯とは形が違います。さらに眼球を直径のおよそ半分まで、1秒もかからずに引き込むことができます。",
+  "claimId": "whale-shark.trivia.1",
+  "taxonScope": "調べられたジンベエザメ個体",
+  "evidenceMode": "標本観察・撮影記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-ws-eye"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-great-white-shark-01",
+  "animalId": "great-white-shark",
+  "question": "現生ホホジロザメの系統について、いま有力とされている考えはどれ？",
+  "choices": [
+   "巨大なメガロドンではなく、広歯型の『マコ』Carcharodon hastalisの系統から派生したと考えられている",
+   "メガロドンがそのまま小型化して現生ホホジロザメになった",
+   "ジンベエザメの系統から分かれたことが確定している",
+   "系統は一度も研究されておらず、化石も見つかっていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "ペルーのピスコ層から記載されたCarcharodon hubbelliは約600万〜800万年前のもので、広歯型の『マコ』C. hastalisと現生ホホジロザメの中間にあたる歯を持ちます。現生ホホジロザメはメガロドンの子孫ではなく、この系統から派生したと考えられています。",
+  "claimId": "great-white-shark.claims.2",
+  "taxonScope": "Carcharodon属の系統",
+  "evidenceMode": "化石記載・年代再較正",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-gws-ehret"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-great-white-shark-02",
+  "animalId": "great-white-shark",
+  "question": "筋肉を温める魚(局所内温性)について、追跡データの比較研究が示したのはどれ？",
+  "choices": [
+   "巡航速度と年間移動範囲はおよそ2〜3倍だが、移動にかかるエネルギーの見積もりも約2倍になる",
+   "速さも移動範囲も変わらず、エネルギーだけが半分ですむ",
+   "速さは2〜3倍で、エネルギーは使わなくなる",
+   "温かい筋肉を持つ魚はほかの魚より遅く、移動範囲も狭い"
+  ],
+  "correctIndex": 0,
+  "explanation": "局所内温性の魚は巡航速度も年間移動範囲もおよそ2〜3倍と見積もられましたが、同じ研究で移動にかかるエネルギーの見積もりは約2倍とされています。これはホホジロザメ単独の測定ではなく、局所内温性をもつ魚類全般の比較です。",
+  "claimId": "great-white-shark.claims.1",
+  "taxonScope": "局所内温性をもつ魚類全般(ホホジロザメ単独の測定ではない)",
+  "evidenceMode": "追跡データの比較解析",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-gws-endothermy"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-reef-manta-ray-01",
+  "animalId": "reef-manta-ray",
+  "question": "ニューカレドニアで衛星標識されたナンヨウマンタの潜水について、記録どおりの説明はどれ？",
+  "choices": [
+   "夜により深く潜り、水深672メートル・水温7.6度の層に達した記録がある",
+   "一年中、水深10メートルより浅い層だけで暮らす",
+   "昼のほうが夜より深く潜り、最大は50メートルだった",
+   "潜水は一度も記録されていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "9個体の衛星標識調査では、昼は表層近く、夜はより深くという違いがあり、最大で水深672メートル、水温7.6度の層まで潜っていました。",
+  "claimId": "reef-manta-ray.claims.1",
+  "taxonScope": "ニューカレドニアで衛星標識されたナンヨウマンタ9個体",
+  "evidenceMode": "標識記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-manta-diving"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-reef-manta-ray-02",
+  "animalId": "reef-manta-ray",
+  "question": "ナンヨウマンタの繁殖について、資料と合う説明はどれ？",
+  "choices": [
+   "妊娠期間はおよそ12〜13か月で、多くは2〜3年に1匹の子を産む",
+   "毎年数百匹の子を産むので数はすぐ回復する",
+   "卵を砂浜に埋めて産む",
+   "妊娠期間は3日ほどしかない"
+  ],
+  "correctIndex": 0,
+  "explanation": "ナンヨウマンタは胎生で、妊娠期間はおよそ12〜13か月、多くの場合2〜3年に1匹しか産みません。そのため減ったときの回復が遅くなります。",
+  "claimId": "reef-manta-ray.claims.2",
+  "taxonScope": "ナンヨウマンタ(種全体の一般的傾向)",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-manta-foa",
+   "src-manta-komodo"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-ocellaris-clownfish-01",
+  "animalId": "ocellaris-clownfish",
+  "question": "カクレクマノミがイソギンチャクに刺されにくい理由として、2025年の研究が示した手がかりはどれ？",
+  "choices": [
+   "粘液のシアル酸が少なく、刺胞の引き金が引かれにくい",
+   "皮ふが厚い甲羅になっていて刺さらない",
+   "毒を分泌してイソギンチャクを眠らせている",
+   "生まれたときから刺胞に免疫を持っている"
+  ],
+  "correctIndex": 0,
+  "explanation": "クマノミ類の粘液は、共生しないスズメダイ類よりシアル酸が少なく、幼生のうちは多くて変態後に下がり、その時期と刺されにくさが対応していました。",
+  "claimId": "ocellaris-clownfish.claims.0",
+  "taxonScope": "カクレクマノミを含むクマノミ類と非共生スズメダイ類の比較",
+  "evidenceMode": "化学分析・発生観察",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-clownfish-sialic",
+   "src-clownfish-oist-sting"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-ocellaris-clownfish-02",
+  "animalId": "ocellaris-clownfish",
+  "question": "カクレクマノミの性のあり方として正しいのはどれ？",
+  "choices": [
+   "すべてまずオスとして育ち、群れで最大の個体がメスになる",
+   "すべてまずメスとして育ち、最小の個体がオスになる",
+   "生まれたときに性が決まり、一生変わらない",
+   "季節ごとにオスとメスが入れかわる"
+  ],
+  "correctIndex": 0,
+  "explanation": "カクレクマノミは雄性先熟で、すべての個体がまずオスとして育ち、群れで最大の個体がメスになります。メスがいなくなると最大のオスがメスへ変わります。",
+  "claimId": "ocellaris-clownfish.claims.1",
+  "taxonScope": "カクレクマノミ(種全体の一般的傾向)",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-clownfish-adw",
+   "src-clownfish-flmnh"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-big-belly-seahorse-01",
+  "animalId": "big-belly-seahorse",
+  "question": "ビッグベリーシーホースのオスの育房について、組織の観察で示されたのはどれ？",
+  "choices": [
+   "血管に富む偽胎盤組織が発達し、ガス交換・老廃物の除去・浸透圧調節に関わる",
+   "袋の中は海水で満たされているだけで、体との物質のやりとりはない",
+   "袋の内側に歯が並び、卵をかみ砕いて栄養にする",
+   "袋は産卵のたびに新しく作られ、使い終わると脱落する"
+  ],
+  "correctIndex": 0,
+  "explanation": "育房の内側には血管の多い偽胎盤と呼ばれる組織が広がり、ガス交換、老廃物の除去、浸透圧の調整に関わっていました。",
+  "claimId": "big-belly-seahorse.claims.1",
+  "taxonScope": "ビッグベリーシーホースの育房の組織学的観察",
+  "evidenceMode": "組織観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-seahorse-pouch"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-big-belly-seahorse-02",
+  "animalId": "big-belly-seahorse",
+  "question": "オスの妊娠と免疫の関係について、ヨウジウオ科12種のゲノム比較が示したのはどれ？",
+  "choices": [
+   "ヨウジウオ属でMHCクラスIIの経路の遺伝子が失われ、タツノオトシゴ属ではCD74が大きく変化した",
+   "12種すべてが免疫の遺伝子をまったく持たなくなった",
+   "免疫の遺伝子は妊娠と無関係で、まったく変化していなかった",
+   "オスだけが哺乳類と同じ胎盤を獲得した"
+  ],
+  "correctIndex": 0,
+  "explanation": "12種のゲノム比較では、ヨウジウオ属でMHCクラスII経路の遺伝子が失われ、タツノオトシゴ属では関連するCD74が大きく変化していました。著者らは免疫寛容と胚の拒絶の間の綱引きを想定しています。",
+  "claimId": "big-belly-seahorse.claims.3",
+  "taxonScope": "ヨウジウオ科12種のゲノム比較",
+  "evidenceMode": "ゲノム比較",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-seahorse-immune"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-electric-eel-01",
+  "animalId": "electric-eel",
+  "question": "デンキウナギの最大放電の記録について、正しく分けた説明はどれ？",
+  "choices": [
+   "860ボルトは新種Electrophorus voltaiの記録で、Electrophorus electricusでは480ボルトが測定された",
+   "860ボルトはElectrophorus electricusで測定された値である",
+   "3種のどれもが常に860ボルトを出し続ける",
+   "電圧は一度も測定されていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "2019年の研究で測られた最大の860ボルトは新種Electrophorus voltaiの記録です。Electrophorus electricusでは480ボルトが測定されました。",
+  "claimId": "electric-eel.claims.1",
+  "taxonScope": "デンキウナギ属3種の測定個体",
+  "evidenceMode": "電圧測定",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-electric-eel-natcomm"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-electric-eel-02",
+  "animalId": "electric-eel",
+  "question": "デンキウナギの強い放電が獲物に働くしくみとして、実験で示されたのはどれ？",
+  "choices": [
+   "獲物の運動神経を直接刺激し、全身の筋肉を収縮させて動けなくする",
+   "水を高温にして獲物をゆでてしまう",
+   "獲物の目をくらませるだけで、体には何も起きない",
+   "獲物の心臓だけを止めて即死させる"
+  ],
+  "correctIndex": 0,
+  "explanation": "強い放電は獲物の運動神経を直接刺激し、全身の筋肉を収縮させます。隠れた獲物には2連発の放電で反射的な動きを引き出し、居場所を突き止めます。",
+  "claimId": "electric-eel.claims.2",
+  "taxonScope": "実験室のデンキウナギ(2019年の分類見直し前に1種として扱われていた個体)",
+  "evidenceMode": "実験観察",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-electric-eel-catania"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-coelacanth-01",
+  "animalId": "coelacanth",
+  "question": "シーラカンスが「生きた化石」と呼ばれることについて、ゲノム研究の結果と合う説明はどれ？",
+  "choices": [
+   "タンパク質をつくる遺伝子の変化が遅い一方、ゲノムのほかの特徴まで止まっているわけではない",
+   "ゲノム全体がまったく変化しておらず、進化は完全に停止している",
+   "化石時代よりも遺伝子の変化が速くなっている",
+   "ゲノムはまだ一度も解読されていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "2013年のゲノム研究が示したのは、タンパク質をつくる遺伝子の変化が四肢動物より遅いということです。ゲノムのほかの特徴まで同じように止まっているわけではなく、進化が停止した証拠ではありません。",
+  "claimId": "coelacanth.trivia.0",
+  "taxonScope": "Latimeria chalumnae（アフリカシーラカンス）",
+  "evidenceMode": "ゲノム比較",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-coelacanth-genome"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-coelacanth-02",
+  "animalId": "coelacanth",
+  "question": "251遺伝子・22種を比べた系統ゲノム解析は、四肢動物にもっとも近い現生の系統をどれだと結論づけた？",
+  "choices": [
+   "肺魚",
+   "シーラカンス",
+   "サメ",
+   "ヤツメウナギ"
+  ],
+  "correctIndex": 0,
+  "explanation": "解析の結論は、四肢動物にもっとも近い現生の系統はシーラカンスではなく肺魚だというものでした。シーラカンスは私たちの祖先そのものではなく、同じ肉鰭類から分かれた別の枝です。",
+  "claimId": "coelacanth.claims.0",
+  "taxonScope": "肉鰭類（シーラカンス・肺魚・四肢動物）の系統関係",
+  "evidenceMode": "系統ゲノム解析",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-coelacanth-genome"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-monarch-butterfly-01",
+  "animalId": "monarch-butterfly",
+  "question": "オオカバマダラの北上と南下について、正しい説明はどれ？",
+  "choices": [
+   "北上は2〜6週間しか生きない世代が入れ替わりながら進み、南下は9か月ほど生きる世代が一代で担う",
+   "同じ1匹が北上も南下も1年かけて往復する",
+   "北上も南下も、それぞれ10世代以上を要する",
+   "南下は幼虫のまま地面を移動して行われる"
+  ],
+  "correctIndex": 0,
+  "explanation": "夏の世代の寿命は2〜6週間で、入れ替わりながら北へ進みます。秋に羽化する世代だけが最長9か月ほど生き、その一代でメキシコの越冬地まで飛びます。",
+  "claimId": "monarch-butterfly.trivia.0",
+  "taxonScope": "北アメリカの渡りをするオオカバマダラ",
+  "evidenceMode": "野外観察記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-monarch-nps"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-monarch-butterfly-02",
+  "animalId": "monarch-butterfly",
+  "question": "オオカバマダラのナトリウムポンプにある3か所のアミノ酸置換を、ゲノム編集でショウジョウバエに導入すると何が起きた？",
+  "choices": [
+   "強心配糖体への感受性が大きく下がり、毒を体にためられるようになった",
+   "翅がオオカバマダラと同じオレンジ色に変わった",
+   "ショウジョウバエが数千キロの渡りを始めた",
+   "何の変化も起きなかった"
+  ],
+  "correctIndex": 0,
+  "explanation": "3か所の置換を順番に導入したハエは毒への感受性が大きく下がり、毒をためて身を守れるようになりました。1か所だけでは効果が小さく、組み合わさると単独の効果の合計を上回りました。",
+  "claimId": "monarch-butterfly.claims.1",
+  "taxonScope": "オオカバマダラ由来の置換を導入したキイロショウジョウバエ",
+  "evidenceMode": "ゲノム編集実験",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-monarch-karageorgi"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-japanese-spider-crab-01",
+  "animalId": "japanese-spider-crab",
+  "question": "タカアシガニの大きさと分布について、正しい説明はどれ？",
+  "choices": [
+   "脚を広げた幅は4メートル近く、甲長はおよそ37センチで、水深50〜600メートルに分布する",
+   "甲長が4メートル近くあり、水面近くで暮らす",
+   "脚も甲羅も40センチほどで、体全体が均等に大きい",
+   "淡水の湖にすみ、脚を広げると1メートルほどになる"
+  ],
+  "correctIndex": 0,
+  "explanation": "4メートル近くになるのは脚を広げた幅で、甲長はおよそ37センチです。日本の太平洋岸を中心に、水深50〜600メートルの海底で暮らします。",
+  "claimId": "japanese-spider-crab.claims.2",
+  "taxonScope": "Macrocheira kaempferi（種全体）",
+  "evidenceMode": "資料記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-jsc-adw"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-japanese-spider-crab-02",
+  "animalId": "japanese-spider-crab",
+  "question": "海洋深層水で飼育された甲幅12.81センチの雌の脱皮を記録した観察で、確かめられたのはどれ？",
+  "choices": [
+   "脱皮は約103分で完了し、脱皮後の甲幅は15.60センチ、増加率は21.8%だった",
+   "脱皮は一瞬で終わり、甲幅は変わらなかった",
+   "脱皮のあいだも活発に歩き回っていた",
+   "脱皮のたびに甲幅が2倍になった"
+  ],
+  "correctIndex": 0,
+  "explanation": "頭胸甲の後端が開いてから脚が抜け出るまで約103分かかりました。脱皮前の甲幅12.81センチが15.60センチになり、増加率は21.8%でした。",
+  "claimId": "japanese-spider-crab.claims.1",
+  "taxonScope": "飼育下の雌1個体（静岡県水産技術研究所）",
+  "evidenceMode": "飼育下の映像記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-jsc-okamoto"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-giant-squid-01",
+  "animalId": "giant-squid",
+  "question": "2004年に小笠原沖で行われた、生きたダイオウイカの初撮影について正しいのはどれ？",
+  "choices": [
+   "水深900メートルで4時間以上撮影され、絡まって切れた触腕は5.5メートルだった",
+   "水族館の水槽で撮影され、個体は無傷で回収された",
+   "水深10メートルの浅場で偶然撮影された",
+   "潜水艇の窓から肉眼で観察され、写真は残っていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "餌を付けた縦延縄に取り付けたカメラが、水深900メートルで4時間以上にわたり撮影しました。残された5.5メートルの触腕から、全長8メートル超と推定されています。",
+  "claimId": "giant-squid.claims.0",
+  "taxonScope": "小笠原沖で撮影された1個体",
+  "evidenceMode": "深海カメラ記録",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-gsquid-kubodera"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-giant-squid-02",
+  "animalId": "giant-squid",
+  "question": "ダイオウイカの巨大な目について、研究の現状を正しく表しているのはどれ？",
+  "choices": [
+   "捕食者の察知と結び付ける説と、相対成長で説明できるとする反論が並立し、決着していない",
+   "捕食者を察知するためだと完全に証明されている",
+   "獲物を遠くから見つけるためだと全研究者が一致している",
+   "目の大きさは一度も測定されたことがない"
+  ],
+  "correctIndex": 0,
+  "explanation": "2012年に捕食者察知と結び付ける説が示され、翌2013年に相対成長で説明できるとする反論が出ました。再反論も発表され、どちらが決め手かはまだ分かっていません。",
+  "claimId": "giant-squid.claims.2",
+  "taxonScope": "ダイオウイカを含むイカ類87種と魚類237種の目の比較",
+  "evidenceMode": "比較解析・光学モデル",
+  "confidence": "未解明",
+  "sourceIds": [
+   "src-gsquid-nilsson",
+   "src-gsquid-schmitz"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-peacock-mantis-shrimp-01",
+  "animalId": "peacock-mantis-shrimp",
+  "question": "高速撮影で測られたモンハナシャコの一撃について、正しい説明はどれ？",
+  "choices": [
+   "打撃部の先端は毎秒14〜23メートルに達し、一撃は平均2.7ミリ秒で終わる",
+   "打撃部の先端は毎秒2メートルほどで、一撃に3秒ほどかかる",
+   "打撃は一定の速さで、獲物の硬さに関係なく毎秒10メートルで固定されている",
+   "速度は一度も測定されておらず、目視での推定しかない"
+  ],
+  "correctIndex": 0,
+  "explanation": "高速撮影の測定では、打撃部の先端は毎秒14〜23メートル、加速度は毎秒毎秒65〜104キロメートルに達し、一撃は平均2.7ミリ秒で終わりました。2004年より前は毎秒10メートル程度が上限と考えられていました。",
+  "claimId": "peacock-mantis-shrimp.claims.0",
+  "taxonScope": "高速撮影で測定されたモンハナシャコ個体",
+  "evidenceMode": "高速撮影による計測",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-peacock-mantis-shrimp-berkeley"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-peacock-mantis-shrimp-02",
+  "animalId": "peacock-mantis-shrimp",
+  "question": "シャコ類の色覚について、行動実験から示された内容はどれ？",
+  "choices": [
+   "12種類の光受容体を持つが、近い波長を見分ける力は高くなく、別のしくみが提案されている",
+   "12種類の光受容体があるため、人の12倍細かく色を見分けられる",
+   "光受容体は1種類しかなく、色はまったく見えない",
+   "色を見分ける力は年齢とともに人と同じ3種類へ減っていく"
+  ],
+  "correctIndex": 0,
+  "explanation": "12種類の光受容体は300〜720ナノメートルをおおいますが、行動実験では近い波長の弁別が高くありませんでした。色を細かく比べるのではなく、時間的な走査で色を見当づけるしくみが提案されています。",
+  "claimId": "peacock-mantis-shrimp.claims.2",
+  "taxonScope": "行動実験に用いられたシャコ類（Haptosquilla trispinosa）を含むシャコ目",
+  "evidenceMode": "行動実験・弁別テスト",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-peacock-mantis-shrimp-bristol",
+   "src-peacock-mantis-shrimp-calacademy"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-moon-jellyfish-01",
+  "animalId": "moon-jellyfish",
+  "question": "ミズクラゲの泳ぎで測られた「受動的なエネルギー回収」の効果はどれ？",
+  "choices": [
+   "1周期あたり約30パーセント長く進み、輸送コストが48パーセント改善すると見積もられた",
+   "拍動のたびに体が後ろへ押し戻され、進む距離が半分になる",
+   "筋肉の量が2倍になることで速度が上がる",
+   "水温が下がるほど拍動が速くなり、距離が10倍に伸びる"
+  ],
+  "correctIndex": 0,
+  "explanation": "かさが元に戻るあいだにかさの下へできる渦の輪が正の圧力を生み、体を前へ押します。この受動的な回収で1周期あたり約30パーセント長く進み、輸送コストは48パーセント改善すると見積もられました。",
+  "claimId": "moon-jellyfish.claims.0",
+  "taxonScope": "遊泳計測に用いられたAurelia aurita",
+  "evidenceMode": "流れの計測と圧力計算",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-moon-jellyfish-pnas"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-moon-jellyfish-02",
+  "animalId": "moon-jellyfish",
+  "question": "京都府舞鶴湾の調査で、冬から春に放出されたミズクラゲのプラヌラに起きていたことはどれ？",
+  "choices": [
+   "約9割がポリプ期を経ずに、直接エフィラへ発生していた",
+   "すべてが海底でポリプになり、そのまま冬を越した",
+   "すべてが親のかさに戻り、成長を止めていた",
+   "水温が高いほど直接発生が増えていた"
+  ],
+  "correctIndex": 0,
+  "explanation": "夏に放出されたプラヌラはすべてポリプになった一方、冬から春のプラヌラの約9割は、ポリプの段階を経ずに直接エフィラへ発生していました。切り替えは水温がおよそ20度を下回る時期に起きています。",
+  "claimId": "moon-jellyfish.claims.1",
+  "taxonScope": "舞鶴湾で採集されたAurelia coerulea",
+  "evidenceMode": "季節ごとの飼育観察と遺伝子同定",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-moon-jellyfish-plos"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-horseshoe-crab-01",
+  "animalId": "horseshoe-crab",
+  "question": "系統ゲノム解析が示したカブトガニ類の位置づけはどれ？",
+  "choices": [
+   "クモガタ類の内側に入り、コヨリムシ目と姉妹群になる",
+   "エビやカニと同じ甲殻類の一員である",
+   "昆虫類の祖先そのものである",
+   "現生の動物のどのグループとも系統的につながっていない"
+  ],
+  "correctIndex": 0,
+  "explanation": "カブトガニ類は甲殻類ではなく鋏角類です。系統ゲノム解析では、クモガタ類の外側ではなく内側に入り、コヨリムシ目と姉妹群になる結果が繰り返し得られました。",
+  "claimId": "horseshoe-crab.claims.0",
+  "taxonScope": "鋏角類全体におけるXiphosuraの系統的位置",
+  "evidenceMode": "系統ゲノム解析",
+  "confidence": "有力説",
+  "sourceIds": [
+   "src-horseshoe-crab-sysbio"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "むずかしい"
+ },
+ {
+  "id": "quiz-horseshoe-crab-02",
+  "animalId": "horseshoe-crab",
+  "question": "カブトガニ類の血液について、正しい説明はどれ？",
+  "choices": [
+   "銅を含むヘモシアニンのため青く、血球の抽出液が細菌の内毒素で固まる",
+   "鉄を含むヘモグロビンのため赤く、内毒素には反応しない",
+   "色素をまったく持たず、酸素は皮膚だけで運ばれる",
+   "青いのは食べた海藻の色が移ったためである"
+  ],
+  "correctIndex": 0,
+  "explanation": "酸素を運ぶ色素が銅を使うヘモシアニンのため、血は青く見えます。血球の抽出液は細菌の内毒素にふれると固まり、この反応が医薬品のエンドトキシン試験に使われています。",
+  "claimId": "horseshoe-crab.claims.2",
+  "taxonScope": "カブトガニ類（試験に用いられてきたのは主にLimulus polyphemus）",
+  "evidenceMode": "資料記録・生化学試験",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-horseshoe-crab-nzoo",
+   "src-horseshoe-crab-lal"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "やさしい"
+ },
+ {
+  "id": "quiz-tardigrade-01",
+  "animalId": "tardigrade",
+  "question": "クマムシ固有のタンパク質Dsupをヒトの培養細胞で働かせたとき、確かめられた結果はどれ？",
+  "choices": [
+   "X線によるDNA損傷がおよそ40パーセント抑えられ、放射線耐性が向上した",
+   "細胞が乾いても水なしで増え続けるようになった",
+   "細胞が真空の宇宙空間でそのまま生存できるようになった",
+   "DNAの損傷は増えたが、細胞の寿命だけが延びた"
+  ],
+  "correctIndex": 0,
+  "explanation": "Dsupを発現させたヒト培養細胞では、X線によるDNA損傷がおよそ40パーセント減り、放射線耐性が高まりました。損傷を後から直すのではなく、損傷そのものを減らす働きだと報告されています。",
+  "claimId": "tardigrade.claims.1",
+  "taxonScope": "ヒト培養細胞に導入したRamazzottius varieornatus由来Dsup",
+  "evidenceMode": "培養細胞での遺伝子導入実験",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-tardigrade-ncomms"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ },
+ {
+  "id": "quiz-tardigrade-02",
+  "animalId": "tardigrade",
+  "question": "宇宙空間にさらされた乾眠状態のクマムシの結果として、正しいのはどれ？",
+  "choices": [
+   "真空だけなら生存できたが、太陽紫外線や電離放射線が加わると生存率が大きく下がった",
+   "紫外線を浴びた個体のほうが生存率が高かった",
+   "宇宙空間では活動状態のまま何年も生き続けられた",
+   "真空にさらされた個体は一匹も生き残らなかった"
+  ],
+  "correctIndex": 0,
+  "explanation": "FOTON-M3の実験では、乾眠状態の個体は宇宙の真空にさらされても生存できました。しかし太陽紫外線や電離放射線、銀河宇宙線が加わると生存率は大きく下がっています。「宇宙で平気」とは言えません。",
+  "claimId": "tardigrade.claims.2",
+  "taxonScope": "FOTON-M3で曝露されたMilnesium tardigradumとRichtersius coronifer",
+  "evidenceMode": "宇宙曝露実験",
+  "confidence": "確定",
+  "sourceIds": [
+   "src-tardigrade-space"
+  ],
+  "checkedAt": "2026-08-11",
+  "nextReviewAt": null,
+  "difficulty": "ふつう"
+ }
+]

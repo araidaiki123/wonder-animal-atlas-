@@ -1,0 +1,4217 @@
+{
+ "schemaVersion": "1.0.0",
+ "tierSystem": {
+  "id": "attention-tier-v1",
+  "label": "図鑑注目ティア",
+  "calculatedAt": "2026-08-11",
+  "tierOrderLowToHigh": [
+   "C",
+   "B",
+   "A",
+   "S"
+  ],
+  "meaning": "公開された人気調査と野生での絶滅リスクから決める、学習導線と編集演出のための指標です。",
+  "notMeaning": [
+   "動物の命の価値",
+   "生態系での重要性",
+   "知能や強さ",
+   "進化の進み具合",
+   "学名や分類上の希少性",
+   "既存カードの光ランク"
+  ],
+  "popularityFormula": {
+   "aggregation": "利用可能な入力だけを使う重み付き平均。未掲載は0点にせず、分子と分母の両方から除外する。",
+   "expression": "sum(normalizedScore * weight) / sum(weight for available inputs)",
+   "inputs": {
+    "jpZooSurvey2024": {
+     "sourceId": "pop-cross-marketing-2024",
+     "weight": 0.5,
+     "normalization": "100 * responsePercent / 55.2",
+     "maximumReference": "同調査1位のライオン55.2%"
+    },
+    "plosCharisma2018": {
+     "sourceId": "pop-plos-charisma-2018",
+     "weight": 0.3,
+     "normalization": "5 * (21 - rank)",
+     "validRankRange": [
+      1,
+      20
+     ]
+    },
+    "youGovUk2015": {
+     "sourceId": "pop-yougov-animals-2015",
+     "weight": 0.2,
+     "normalization": "rating0to10 * 10"
+    }
+   },
+   "thresholds": [
+    {
+     "tier": "S",
+     "minimumInclusive": 80,
+     "maximumExclusive": null
+    },
+    {
+     "tier": "A",
+     "minimumInclusive": 65,
+     "maximumExclusive": 80
+    },
+    {
+     "tier": "B",
+     "minimumInclusive": 45,
+     "maximumExclusive": 65
+    },
+    {
+     "tier": "C",
+     "minimumInclusive": 0,
+     "maximumExclusive": 45
+    }
+   ],
+   "missingPolicy": "利用可能な人気根拠が0件ならscoreとtierをnullにする。未測定を不人気と解釈しない。",
+   "taxonMatchTypes": {
+    "exact-species": "学名で対象種と一致",
+    "exact-common-name": "一般名が対象と一致するが、回答者の分類精度は保証されない",
+    "broader-common-group": "クジラ、ペンギン、ゾウなど、対象種を含む広い一般名"
+   }
+  },
+  "conservationFloor": {
+   "CR": "S",
+   "EN": "A",
+   "VU": "A",
+   "NT": "B",
+   "LC": "C",
+   "DD": null,
+   "NE": null,
+   "REASSESSMENT_PENDING": null
+  },
+  "conservationRules": [
+   "IUCN区分は個体数の少なさそのものではなく、指定された分類単位・地域・評価時点の野生絶滅リスクとして保存する。",
+   "DD、NE、再評価待ちは低リスクを意味しないため最低ティアを与えない。",
+   "地域個体群や野生個体群だけの区分を、世界全体、飼育個体、管理群へ拡張しない。",
+   "分類体系が評価時点と非互換なら旧区分を最終計算へ使わない。"
+  ],
+  "finalTierRule": "人気ティアと保全最低ティアのうち高い方をdisplayTierにする。両方nullならUNRANKEDとする。",
+  "requiredUiDisclaimer": "図鑑注目ティアは人気調査と野生での絶滅リスクによる学習・演出用の指標です。強さ、知能、進化の進み具合、生態系での重要性、命の価値を順位付けするものではありません。"
+ },
+ "sources": [
+  {
+   "id": "pop-cross-marketing-2024",
+   "title": "動物園に関する調査（2024年）",
+   "org": "株式会社クロス・マーケティング",
+   "year": 2024,
+   "url": "https://www.cross-m.co.jp/hubfs/news_release_20240605.pdf",
+   "scope": "日本全国の20～69歳1,100人。『動物園にいてほしいと思う動物』の複数回答。水族館動物や選択肢外の動物全般の人気調査ではない。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "pop-plos-charisma-2018",
+   "title": "The twenty most charismatic species",
+   "org": "PLOS ONE",
+   "year": 2018,
+   "url": "https://doi.org/10.1371/journal.pone.0199149",
+   "scope": "主に西洋の回答者による2調査と、動物園サイト・映画ポスターを統合した上位20。著者は一般名を厳密な種と同一視できないと注意している。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "pop-yougov-animals-2015",
+   "title": "The YouGov animal archive",
+   "org": "YouGov UK",
+   "year": 2015,
+   "url": "https://yougov.com/en-gb/articles/11632-animals",
+   "scope": "英国の動物人気を0～10で示す補助資料。古い調査で、一般名には複数種を含み得るため重みを0.2に限定する。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-iucn-categories",
+   "title": "The IUCN Red List of Threatened Species",
+   "org": "International Union for Conservation of Nature",
+   "year": 2026,
+   "url": "https://nrl.iucnredlist.org/",
+   "scope": "IUCNの9区分と定義。DDとNEは低リスク区分ではない。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-blue-whale-mdd",
+   "title": "Balaenoptera musculus — Blue Whale",
+   "org": "American Society of Mammalogists, Mammal Diversity Database",
+   "year": 2026,
+   "url": "https://www.mammaldiversity.org/taxon/1006401/",
+   "scope": "シロナガスクジラ種のIUCN世界評価ENを表示。亜種・地域個体群の評価とは分ける。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-giraffe-taxonomy-iucn-2025",
+   "title": "Four giraffe species officially recognised in major conservation reclassification",
+   "org": "IUCN",
+   "year": 2025,
+   "url": "https://iucn.org/press-release/202508/four-giraffe-species-officially-recognised-major-conservation-reclassification",
+   "scope": "キリンを4種に再分類。旧単一種評価をGiraffa spp.全体へ付けず、種別IUCN評価を待つ必要がある。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-platypus-australian-museum",
+   "title": "Platypus",
+   "org": "Australian Museum",
+   "year": 2026,
+   "url": "https://australian.museum/platypus",
+   "scope": "カモノハシ種のIUCN区分NT。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-emperor-penguin-iucn-2026",
+   "title": "Emperor penguin and Antarctic fur seal now Endangered due to climate change",
+   "org": "IUCN",
+   "year": 2026,
+   "url": "https://iucn.org/press-release/202604/emperor-penguin-and-antarctic-fur-seal-now-endangered-due-climate-change-iucn",
+   "scope": "コウテイペンギンの世界評価が2026年4月にNTからENへ変更。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-axolotl-usgs-2026",
+   "title": "Ambystoma mexicanum — Species Profile",
+   "org": "U.S. Geological Survey",
+   "year": 2026,
+   "url": "https://nas.er.usgs.gov/queries/FactSheet.aspx?speciesID=3973",
+   "scope": "原産域の野生メキシコサンショウウオをIUCN CRとして扱う。飼育個体の多さは世界評価を下げる根拠にならない。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-gpo-iucn-2018",
+   "title": "Enteroctopus dofleini — The IUCN Red List of Threatened Species 2018",
+   "org": "IUCN",
+   "year": 2018,
+   "url": "https://doi.org/10.2305/IUCN.UK.2018-2.RLTS.T162958A958049.en",
+   "scope": "ミズダコ種の世界評価LC。評価が古いため、現在確認日とは別に古さの警告を保持する。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-elephant-iucn-2021",
+   "title": "African elephant species now Endangered and Critically Endangered",
+   "org": "IUCN",
+   "year": 2021,
+   "url": "https://iucn.org/news/species/202103/african-elephant-species-now-endangered-and-critically-endangered-iucn-red-list",
+   "scope": "アフリカサバンナゾウLoxodonta africanaはEN。アフリカマルミミゾウL. cyclotisのCRを混ぜない。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-sea-otter-mdd",
+   "title": "Enhydra lutris — Sea Otter",
+   "org": "American Society of Mammalogists, Mammal Diversity Database",
+   "year": 2026,
+   "url": "https://www.mammaldiversity.org/taxon/1005842/",
+   "scope": "ラッコ種のIUCN世界評価EN。国別・亜種別法定区分とは分ける。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-peregrine-cms",
+   "title": "Falco peregrinus — Peregrine Falcon",
+   "org": "Convention on the Conservation of Migratory Species of Wild Animals",
+   "year": 2026,
+   "url": "https://www.cms.int/species/falco-peregrinus",
+   "scope": "ハヤブサ種のIUCN世界区分LC。地域集団の歴史的減少とは分ける。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-green-turtle-iucn-2025",
+   "title": "Green sea turtle rebounds thanks to global conservation action",
+   "org": "IUCN",
+   "year": 2025,
+   "url": "https://iucn.org/press-release/202510/arctic-seals-threatened-climate-change-birds-decline-globally-iucn-red-list",
+   "scope": "アオウミガメ種の世界評価が2025年にENからLCへ改善。ENやVUの地域個体群が残るため世界区分を各地域へ一律適用しない。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-nmr-mdd",
+   "title": "Heterocephalus glaber — Naked Mole-rat",
+   "org": "American Society of Mammalogists, Mammal Diversity Database",
+   "year": 2026,
+   "url": "https://www.mammaldiversity.org/taxon/1001280/",
+   "scope": "ハダカデバネズミ種のIUCN世界評価LC。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-honey-bee-europe-2026",
+   "title": "European Red List of Bees",
+   "org": "European Commission / IUCN",
+   "year": 2026,
+   "url": "https://repository.naturalis.nl/pub/801876/Michez-2026-European-red-list-of-bees.pdf",
+   "scope": "セイヨウミツバチは世界評価なし。汎欧州の野生群はDD、EU27の自立した野生群はEN。管理養蜂群を評価対象に含めない。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-lion-mdd",
+   "title": "Panthera leo — Lion",
+   "org": "American Society of Mammalogists, Mammal Diversity Database",
+   "year": 2026,
+   "url": "https://www.mammaldiversity.org/taxon/1006020/",
+   "scope": "ライオン種のIUCN世界評価VU。より高い危険度の亜種・地域個体群を種全体へ拡張しない。",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-lion-panthera",
+   "title": "Lion",
+   "org": "Panthera",
+   "url": "https://panthera.org/cat/lion",
+   "scope": "ライオンのIUCN区分Vulnerableの記載、個体数約2.4万頭、分布95%縮小",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-tiger-panthera",
+   "title": "Tiger",
+   "org": "Panthera",
+   "url": "https://panthera.org/cat/tiger",
+   "scope": "トラのIUCN区分Endangeredの記載、個体数約4,500頭、分布93%喪失",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-cheetah-panthera",
+   "title": "Cheetah",
+   "org": "Panthera",
+   "url": "https://panthera.org/cat/cheetah",
+   "scope": "チーターのIUCN区分Vulnerableの記載、個体数約7,100頭、歴史的分布の8%",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-cheetah-ccf",
+   "title": "About Cheetahs",
+   "org": "Cheetah Conservation Fund",
+   "url": "https://cheetah.org/learn/about-cheetahs/",
+   "scope": "チーターのIUCN区分Vulnerableの記載、米国絶滅危惧種法ではEndangered",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-wolf-adw",
+   "title": "Canis lupus (gray wolf)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Canis_lupus/",
+   "scope": "タイリクオオカミのIUCN区分Least Concernの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-panda-nzoo",
+   "title": "Giant panda",
+   "org": "Smithsonian's National Zoo and Conservation Biology Institute",
+   "url": "https://nationalzoo.si.edu/animals/giant-panda",
+   "scope": "ジャイアントパンダのIUCN区分Vulnerableの表示、野生個体数1,864頭",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-panda-sdzwa",
+   "title": "Endangered No More: Giant Pandas Are Now \"Vulnerable\"",
+   "org": "San Diego Zoo Wildlife Alliance",
+   "url": "https://sandiegozoowildlifealliance.org/story-hub/2016/09/05/endangered-no-more-giant-pandas-are-now-vulnerable",
+   "scope": "2016年9月のIUCN区分変更(Endangered→Vulnerable)の経緯と理由",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-redpanda-nzoo",
+   "title": "Red panda",
+   "org": "Smithsonian's National Zoo and Conservation Biology Institute",
+   "url": "https://nationalzoo.si.edu/animals/red-panda",
+   "scope": "レッサーパンダのIUCN区分Endangeredの記載、過去20年で40%減の推定",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-koala-genome",
+   "title": "Adaptation and conservation insights from the koala genome",
+   "org": "Nature Genetics / PMC",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6197426/",
+   "scope": "コアラが『vulnerable』に区分されているという記載(生息地喪失と病気の広がりが理由)",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-koala-austmus",
+   "title": "Koala",
+   "org": "Australian Museum",
+   "url": "https://australian.museum/learn/animals/mammals/koala/",
+   "scope": "NSW・QLD・ACT個体群の連邦EPBC法Endangered指定(地域個体群への国内法指定であり、IUCN世界区分ではない)",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-kangaroo-adw",
+   "title": "Macropus rufus (red kangaroo)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Macropus_rufus/",
+   "scope": "アカカンガルーのIUCN区分Least Concernの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-greatapes-iucn2016",
+   "title": "Four out of six great apes one step away from extinction – IUCN Red List",
+   "org": "IUCN(国際自然保護連合)",
+   "url": "https://iucn.org/news/species/201609/four-out-six-great-apes-one-step-away-extinction-%E2%80%93-iucn-red-list",
+   "scope": "ニシゴリラ・ヒガシゴリラ・ボルネオオランウータン・スマトラオランウータンのCritically Endangered評価、チンパンジー・ボノボのEndangered評価",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-gorilla-adw",
+   "title": "Gorilla gorilla (western gorilla)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Gorilla_gorilla/",
+   "scope": "ニシゴリラのIUCN区分Critically Endangeredの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-chimp-adw",
+   "title": "Pan troglodytes (chimpanzee)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Pan_troglodytes/",
+   "scope": "チンパンジーのIUCN区分Endangeredの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-macaque-adw",
+   "title": "Macaca fuscata (Japanese macaque)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Macaca_fuscata/",
+   "scope": "ニホンザルのIUCN区分Least Concernの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-polarbear-adw",
+   "title": "Ursus maritimus (polar bear)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Ursus_maritimus/",
+   "scope": "ホッキョクグマのIUCN区分Vulnerableの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-brownbear-adw",
+   "title": "Ursus arctos (brown bear)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Ursus_arctos/",
+   "scope": "ヒグマのIUCN区分Least Concernの記載(地域個体群の危機への言及を含む)",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-snowleopard-panthera",
+   "title": "Snow Leopard",
+   "org": "Panthera",
+   "url": "https://panthera.org/cat/snow-leopard",
+   "scope": "ユキヒョウのIUCN区分Vulnerableの記載、個体数4,500〜7,000頭",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-snowleopard-blog",
+   "title": "The Snow Leopard's Shift from \"Endangered\" to \"Vulnerable\": Explained",
+   "org": "Panthera",
+   "url": "https://panthera.org/blog-post/snow-leopards-shift-endangered-vulnerable-explained",
+   "scope": "2017年9月14日のEN→VU変更の経緯、評価に使われた推定値、調査済み生息地約2%、研究者の懸念",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-leopard-panthera",
+   "title": "Leopard",
+   "org": "Panthera",
+   "url": "https://panthera.org/cat/leopard",
+   "scope": "ヒョウのIUCN区分Vulnerableの記載、分布喪失(アフリカ2/3・ユーラシア84%)、13か国での絶滅",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-capybara-adw",
+   "title": "Hydrochoerus hydrochaeris (capybara)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Hydrochoerus_hydrochaeris/",
+   "scope": "カピバラのIUCN区分Least Concernの記載、局所的な狩猟圧",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-hippo-adw",
+   "title": "Hippopotamus amphibius (hippopotamus)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Hippopotamus_amphibius/",
+   "scope": "カバのIUCN区分Vulnerableの記載、過去10年で7〜20%の減少",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-rhino-irf",
+   "title": "White Rhino",
+   "org": "International Rhino Foundation",
+   "url": "https://rhinos.org/about-rhinos/rhino-species/white-rhino/",
+   "scope": "シロサイのIUCN区分Near Threatenedの記載、個体数約15,752頭、2012〜2021年の24%減",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-zebra-wlt",
+   "title": "Plains Zebra",
+   "org": "World Land Trust",
+   "url": "https://www.worldlandtrust.org/species/plains-zebra/",
+   "scope": "サバンナシマウマのIUCN区分Near Threatenedの記載、個体数50万頭超で減少傾向",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-sloth-adw",
+   "title": "Bradypus variegatus (brown-throated three-toed sloth)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Bradypus_variegatus/",
+   "scope": "ミツユビナマケモノのIUCN区分Least Concernの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-dolphin-adw",
+   "title": "Tursiops truncatus (bottlenosed dolphin)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Tursiops_truncatus/",
+   "scope": "ハンドウイルカのIUCN区分Least Concernの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-orca-adw",
+   "title": "Orcinus orca (killer whale)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Orcinus_orca/",
+   "scope": "シャチのIUCN区分Data Deficient(個体群評価に足るデータ不足)の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-shoebill-sdz",
+   "title": "Shoebill",
+   "org": "San Diego Zoo Wildlife Alliance",
+   "url": "https://animals.sandiegozoo.org/animals/shoebill",
+   "scope": "ハシビロコウのIUCN区分Vulnerableと成熟個体3,300〜5,300羽の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-shoebill-tokyozoo",
+   "title": "どうぶつ図鑑『ハシビロコウ』",
+   "org": "東京ズーネット(公益財団法人東京動物園協会)",
+   "url": "https://www.tokyo-zoo.net/encyclopedia/species?code=456",
+   "scope": "ハシビロコウのIUCN指定VU(危急)の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-common-ostrich-adw",
+   "title": "Struthio camelus (ostrich)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Struthio_camelus/",
+   "scope": "ダチョウのIUCN区分Least Concernの記載、羽毛需要低下後の個体群の安定",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-bald-eagle-adw",
+   "title": "Haliaeetus leucocephalus (bald eagle)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Haliaeetus_leucocephalus/",
+   "scope": "ハクトウワシのIUCN区分Least Concernの記載(個体数増加・広い分布)",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-bald-eagle-nzoo",
+   "title": "Bald eagle",
+   "org": "Smithsonian's National Zoo and Conservation Biology Institute",
+   "url": "https://nationalzoo.si.edu/animals/bald-eagle",
+   "scope": "ハクトウワシの保全状況Least Concernの記載、回復と2007年指定解除",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-snowy-owl-audubon",
+   "title": "Snowy Owl",
+   "org": "National Audubon Society(全米オーデュボン協会)",
+   "url": "https://www.audubon.org/field-guide/bird/snowy-owl",
+   "scope": "シロフクロウのVulnerable評価と推定個体数約2万9000羽の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-snowy-owl-tpf",
+   "title": "Snowy Owl",
+   "org": "The Peregrine Fund",
+   "url": "https://peregrinefund.org/explore-raptors-species/owls/snowy-owl",
+   "scope": "シロフクロウのVulnerable評価と気候変動の脅威の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-greater-flamingo-adw",
+   "title": "Phoenicopterus roseus (greater flamingo)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Phoenicopterus_roseus/",
+   "scope": "オオフラミンゴのIUCN区分Least Concernの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-red-crowned-crane-icf",
+   "title": "Red-crowned Crane",
+   "org": "International Crane Foundation（国際ツル財団）",
+   "url": "https://savingcranes.org/species/red-crowned-crane/",
+   "scope": "タンチョウのIUCN区分Vulnerableの記載、個体数約4500羽・増加傾向",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-indian-peafowl-adw",
+   "title": "Pavo cristatus (Indian peafowl)",
+   "org": "Animal Diversity Web（ミシガン大学）",
+   "url": "https://animaldiversity.org/accounts/Pavo_cristatus/",
+   "scope": "インドクジャクのIUCN区分Least Concernの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-north-island-brown-kiwi-akzoo",
+   "title": "Brown Kiwi",
+   "org": "Auckland Zoo",
+   "url": "https://www.aucklandzoo.co.nz/animals/kiwi",
+   "scope": "ブラウンキーウィのIUCN区分Vulnerableの記載、NZ国内脅威分類の改善の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-komodo-dragon-iucn",
+   "title": "IUCN Red List update, September 2021",
+   "org": "IUCN（国際自然保護連合）",
+   "url": "https://iucn.org/news/species/202109/tuna-species-recovering-despite-growing-pressures-marine-life-iucn-red-list",
+   "scope": "コモドオオトカゲのVulnerableからEndangeredへの引き上げ、温暖化・海面上昇による生息適地30%以上減の予測",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-panther-chameleon-pdm",
+   "title": "Panther Chameleon (Furcifer pardalis)",
+   "org": "Poema del Mar(Loro Parque財団)",
+   "url": "https://poema-del-mar.com/panther-chameleon/",
+   "scope": "パンサーカメレオンのIUCN区分Least ConcernとCITES付属書IIの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-saltwater-crocodile-ausmus",
+   "title": "Estuarine Crocodile",
+   "org": "Australian Museum",
+   "url": "https://australian.museum/learn/animals/reptiles/estuarine-crocodile/",
+   "scope": "イリエワニのIUCN区分Least Concernの記載、州レベルの保護区分(クイーンズランドVulnerable等)",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-saltwater-crocodile-adw",
+   "title": "Crocodylus porosus (saltwater crocodile)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Crocodylus_porosus/",
+   "scope": "イリエワニのIUCN区分(Lower Risk - Least Concern)の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-king-cobra-adw",
+   "title": "Ophiophagus hannah (king cobra)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Ophiophagus_hannah/",
+   "scope": "キングコブラのIUCN区分Vulnerableの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-king-cobra-ecolevol",
+   "title": "Understanding Suitable Habitats and Anthropogenic Mortality Risks for King Cobras in Nepal",
+   "org": "Ecology and Evolution / PMC",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12410978/",
+   "scope": "キングコブラがIUCNレッドリストでVulnerable、CITES付属書IIである旨の記載(2025年論文)",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-galapagos-tortoise-gc",
+   "title": "Giant Tortoise Restoration in the Galápagos Islands",
+   "org": "Galápagos Conservancy",
+   "url": "https://www.galapagos.org/conservation/giant-tortoise-restoration/",
+   "scope": "ガラパゴスゾウガメ15種の保全区分の内訳(CR6・EN3・VU3・EX2)の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-jgs-frontiers",
+   "title": "Protecting Japanese giant salamanders (Andrias japonicus) in the Nawa River Basin, Japan: policy recommendations addressing water pollution and waterway disruption",
+   "org": "Frontiers in Amphibian and Reptile Science",
+   "url": "https://www.frontiersin.org/journals/amphibian-and-reptile-science/articles/10.3389/famrs.2024.1348251/full",
+   "scope": "オオサンショウウオのIUCN区分Vulnerable(IUCN SSC Amphibian Specialist Group 2022)の記載と主要な脅威",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-gpf-wlt",
+   "title": "Golden Poison Frog",
+   "org": "World Land Trust",
+   "url": "https://www.worldlandtrust.org/species/amphibians/golden-poison-frog/",
+   "scope": "モウドクフキヤガエルのIUCN区分Endangeredの記載、コロンビア・カウカ県の狭い分布、伐採・金採掘・農薬などの脅威",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-gpf-adw",
+   "title": "Phyllobates terribilis (golden poison frog)",
+   "org": "Animal Diversity Web(ミシガン大学)",
+   "url": "https://animaldiversity.org/accounts/Phyllobates_terribilis/",
+   "scope": "モウドクフキヤガエルのIUCN区分Endangeredの記載と、森林伐採による生息地減少",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-ws-iucn2016",
+   "title": "Whale sharks, winghead sharks and Bornean orangutans slide towards extinction",
+   "org": "IUCN(国際自然保護連合)",
+   "url": "https://iucn.org/news/secretariat/201607/whale-sharks-winghead-sharks-and-bornean-orangutans-slide-towards-extinction",
+   "scope": "2016年のジンベエザメのEndangeredへの引き上げ、過去75年で半分以下という減少、漁業・混獲・船との衝突",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-ws-ong2020",
+   "title": "Annual Bands in Vertebrae Validated by Bomb Radiocarbon Assays Provide Estimates of Age and Growth of Whale Sharks",
+   "org": "Frontiers in Marine Science",
+   "url": "https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.00188/full",
+   "scope": "ジンベエザメが近年Endangeredに分類されたという査読論文中の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-gws-fmnh",
+   "title": "White Shark",
+   "org": "Florida Museum of Natural History(フロリダ大学)",
+   "url": "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/carcharodon-carcharias/",
+   "scope": "ホホジロザメのIUCN区分Vulnerableの記載と、遅い繁殖・漁業への脆弱性",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-gws-cms",
+   "title": "Carcharodon carcharias",
+   "org": "Convention on the Conservation of Migratory Species of Wild Animals (CMS)",
+   "url": "https://www.cms.int/species/carcharodon-carcharias",
+   "scope": "ホホジロザメのIUCN区分Vulnerableの記載、2002年の附属書I・II掲載、分布範囲",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-reef-manta-foa",
+   "title": "Reef Manta Ray, Mobula alfredi (Krefft 1868)",
+   "org": "Fishes of Australia (Museums Victoria ほか)",
+   "url": "https://fishesofaustralia.net.au/home/species/2738",
+   "scope": "ナンヨウマンタのIUCN区分Vulnerableとワシントン条約掲載の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-clownfish-oca",
+   "title": "Ocellaris Clownfish",
+   "org": "Oregon Coast Aquarium",
+   "url": "https://aquarium.org/animals/ocellaris-clownfish/",
+   "scope": "カクレクマノミのIUCN区分Least Concern(2022年評価)の記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-seahorse-foa",
+   "title": "Bigbelly Seahorse, Hippocampus abdominalis Lesson 1827",
+   "org": "Fishes of Australia (Museums Victoria ほか)",
+   "url": "https://fishesofaustralia.net.au/home/species/3332",
+   "scope": "2017年評価によるIUCN区分Least Concern、2008年評価がData Deficientだった経緯、ワシントン条約附属書II",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-seahorse-adw",
+   "title": "Hippocampus abdominalis (pot-bellied seahorse)",
+   "org": "Animal Diversity Web (University of Michigan)",
+   "url": "https://animaldiversity.org/accounts/Hippocampus_abdominalis/",
+   "scope": "IUCN区分Least ConcernとCITES附属書IIの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-electric-eel-adw",
+   "title": "Electrophorus electricus (electric eel)",
+   "org": "Animal Diversity Web (University of Michigan)",
+   "url": "https://animaldiversity.org/accounts/Electrophorus_electricus/",
+   "scope": "デンキウナギのIUCN区分Least Concernの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-coelacanth-adw",
+   "title": "Latimeria chalumnae (Coelacanth)",
+   "org": "Animal Diversity Web（ミシガン大学）",
+   "url": "https://animaldiversity.org/accounts/Latimeria_chalumnae/",
+   "scope": "シーラカンスのIUCN区分Critically Endangeredの記載、CITES附属書I、個体数は数百とされること",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-coelacanth-noaa",
+   "title": "African Coelacanth",
+   "org": "NOAA Fisheries（米国海洋大気庁漁業局）",
+   "url": "https://www.fisheries.noaa.gov/species/african-coelacanth",
+   "scope": "CITES附属書I（全分布域）、タンザニア個体群の2016年ESA threatened指定、混獲と深海港建設の脅威",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-monarch-iucn2022",
+   "title": "Migratory monarch butterfly now Endangered - IUCN Red List（Press release）",
+   "org": "IUCN（国際自然保護連合）",
+   "url": "https://iucn.org/press-release/202207/migratory-monarch-butterfly-now-endangered-iucn-red-list",
+   "scope": "評価対象がDanaus plexippus plexippus（渡り亜種）であること、2022年7月の絶滅危惧（EN）掲載、東部・西部個体群の減少率",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-monarch-mw",
+   "title": "Monarch Listing Decision",
+   "org": "Monarch Watch（カンザス大学）",
+   "url": "https://monarchwatch.org/listing/",
+   "scope": "IUCN区分が2023年に危急（VU）へ変更されたこと、2024年12月の米国ESA threatened指定提案、個体群減少率と将来の絶滅確率の推定",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-jsc-adw",
+   "title": "Macrocheira kaempferi",
+   "org": "Animal Diversity Web（ミシガン大学）",
+   "url": "https://animaldiversity.org/accounts/Macrocheira_kaempferi/",
+   "scope": "タカアシガニのIUCN区分が未評価（Not Evaluated）であること、漁獲量の長期的な減少、産卵期の捕獲禁止",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-gsquid-adw",
+   "title": "Architeuthis dux",
+   "org": "Animal Diversity Web（ミシガン大学）",
+   "url": "https://animaldiversity.org/accounts/Architeuthis_dux/",
+   "scope": "IUCN欄が『No special status』で区分の記載がないことの確認（区分そのものの根拠には使用していない）",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-peacock-mantis-shrimp-adw",
+   "title": "Odontodactylus scyllarus",
+   "org": "Animal Diversity Web（ミシガン大学）",
+   "url": "https://animaldiversity.org/accounts/Odontodactylus_scyllarus/",
+   "scope": "モンハナシャコがIUCNレッドリスト未評価(Not Evaluated)であり、CITESや米国連邦リストにも掲載がないことの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-moon-jellyfish-adw",
+   "title": "Aurelia aurita (Moon jellyfish)",
+   "org": "Animal Diversity Web（ミシガン大学）",
+   "url": "https://animaldiversity.org/accounts/Aurelia_aurita/",
+   "scope": "ミズクラゲがIUCNレッドリスト未評価であり、国際・米国連邦のリストに掲載がないことの記載",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-horseshoe-crab-iucn-hcsg",
+   "title": "IUCN SSC Horseshoe Crab Specialist Group",
+   "org": "International Union for Conservation of Nature",
+   "url": "https://iucn.org/our-union/commissions/group/iucn-ssc-horseshoe-crab-specialist-group",
+   "scope": "現生カブトガニ4種のレッドリスト区分一覧。Tachypleus tridentatusはEndangered、Limulus polyphemusはVulnerable、残り2種はData Deficient",
+   "checkedAt": "2026-08-11"
+  },
+  {
+   "id": "cons-tardigrade-adw",
+   "title": "Tardigrada (water bears)",
+   "org": "Animal Diversity Web（ミシガン大学）",
+   "url": "https://animaldiversity.org/accounts/Tardigrada/",
+   "scope": "特定のクマムシ種を対象とした保全の取り組みが存在しないことの記載",
+   "checkedAt": "2026-08-11"
+  }
+ ],
+ "animals": [
+  {
+   "animalId": "blue-whale",
+   "scientificName": "Balaenoptera musculus",
+   "popularity": {
+    "score": 27.0,
+    "tier": "C",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 20,
+      "rawUnit": "rank",
+      "normalizedScore": 5,
+      "weight": 0.3,
+      "taxonLabel": "blue whale",
+      "matchType": "exact-common-name"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 6,
+      "rawUnit": "rating0to10",
+      "normalizedScore": 60,
+      "weight": 0.2,
+      "taxonLabel": "Whales",
+      "matchType": "broader-common-group"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Balaenoptera musculus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-blue-whale-mdd"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "CONSERVATION_PRIORITY"
+   ],
+   "tierReasonText": "人気点はCですが、種の世界評価ENによりAを最低ティアとします。",
+   "limitations": [
+    "YouGovの『Whales』はシロナガスクジラだけの人気ではありません。"
+   ]
+  },
+  {
+   "animalId": "giraffe",
+   "scientificName": "Giraffa spp.",
+   "popularity": {
+    "score": 83.8,
+    "tier": "S",
+    "confidence": "高",
+    "usableEvidenceCount": 3,
+    "evidence": [
+     {
+      "sourceId": "pop-cross-marketing-2024",
+      "rawValue": 51.1,
+      "rawUnit": "percent",
+      "normalizedScore": 92.6,
+      "weight": 0.5,
+      "taxonLabel": "キリン",
+      "matchType": "broader-common-group"
+     },
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 4,
+      "rawUnit": "rank",
+      "normalizedScore": 85,
+      "weight": 0.3,
+      "taxonLabel": "giraffe",
+      "matchType": "broader-common-group"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 6,
+      "rawUnit": "rating0to10",
+      "normalizedScore": 60,
+      "weight": 0.2,
+      "taxonLabel": "Giraffes",
+      "matchType": "broader-common-group"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": null,
+    "assessmentState": "reassessment-pending",
+    "assessmentScope": "Giraffa spp. group",
+    "taxonScope": "Giraffa spp.",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": false,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": false,
+    "sourceIds": [
+     "cons-giraffe-taxonomy-iucn-2025"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2026-11-11",
+    "notes": "2025年に4種が正式承認されたため、旧単一種VUをGiraffa spp.へ付けず、4種それぞれの新評価を待ちます。"
+   },
+   "conservationFloor": null,
+   "displayTier": "S",
+   "tierReasonCodes": [
+    "POPULARITY"
+   ],
+   "tierReasonText": "日本調査、査読研究、英国補助調査の人気根拠からSです。保全区分は再評価待ちで計算に使いません。",
+   "limitations": [
+    "人気調査の『キリン』は現在認められる4種を区別していません。"
+   ]
+  },
+  {
+   "animalId": "platypus",
+   "scientificName": "Ornithorhynchus anatinus",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "NT",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Ornithorhynchus anatinus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": true,
+    "sourceIds": [
+     "cons-platypus-australian-museum"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "B",
+   "displayTier": "B",
+   "tierReasonCodes": [
+    "CONSERVATION_PRIORITY",
+    "POPULARITY_UNMEASURED"
+   ],
+   "tierReasonText": "直接利用できる人気根拠は未測定で、世界評価NTによるBです。",
+   "limitations": [
+    "公開人気表への未掲載を不人気とは解釈しません。",
+    "保全評価が古いため再評価を定期確認します。"
+   ]
+  },
+  {
+   "animalId": "emperor-penguin",
+   "scientificName": "Aptenodytes forsteri",
+   "popularity": {
+    "score": 76.0,
+    "tier": "A",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-cross-marketing-2024",
+      "rawValue": 43.3,
+      "rawUnit": "percent",
+      "normalizedScore": 78.4,
+      "weight": 0.5,
+      "taxonLabel": "ペンギン",
+      "matchType": "broader-common-group"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 7,
+      "rawUnit": "rating0to10",
+      "normalizedScore": 70,
+      "weight": 0.2,
+      "taxonLabel": "Penguins",
+      "matchType": "broader-common-group"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Aptenodytes forsteri",
+    "assessmentYear": 2026,
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": false,
+    "sourceIds": [
+     "cons-emperor-penguin-iucn-2026"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-08-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY",
+    "CONSERVATION_PRIORITY"
+   ],
+   "tierReasonText": "ペンギン一般の人気根拠でA、2026年に更新された種の世界評価ENでもAです。",
+   "limitations": [
+    "人気調査はコウテイペンギン単独ではなくペンギン一般です。"
+   ]
+  },
+  {
+   "animalId": "axolotl",
+   "scientificName": "Ambystoma mexicanum",
+   "popularity": {
+    "score": 20.0,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 2,
+      "rawUnit": "rating0to10",
+      "normalizedScore": 20,
+      "weight": 0.2,
+      "taxonLabel": "Axolotls",
+      "matchType": "exact-common-name"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "CR",
+    "assessmentState": "assessed",
+    "assessmentScope": "global native wild range",
+    "taxonScope": "Ambystoma mexicanum",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": true,
+    "sourceIds": [
+     "cons-axolotl-usgs-2026"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "S",
+   "displayTier": "S",
+   "tierReasonCodes": [
+    "CONSERVATION_PRIORITY"
+   ],
+   "tierReasonText": "人気点はCですが、原産域の野生個体群を対象とする世界評価CRによりSです。",
+   "limitations": [
+    "飼育・研究個体の多さを野生絶滅リスクの低さへ読み替えません。",
+    "IUCN評価自体の更新時期が古いため定期確認します。"
+   ]
+  },
+  {
+   "animalId": "giant-pacific-octopus",
+   "scientificName": "Enteroctopus dofleini",
+   "popularity": {
+    "score": 20.0,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 2,
+      "rawUnit": "rating0to10",
+      "normalizedScore": 20,
+      "weight": 0.2,
+      "taxonLabel": "Octopuses",
+      "matchType": "broader-common-group"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Enteroctopus dofleini",
+    "assessmentYear": 2018,
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": true,
+    "sourceIds": [
+     "cons-gpo-iucn-2018"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2026-11-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "タコ一般の補助人気点と種の世界評価LCはいずれもCです。",
+   "limitations": [
+    "人気点はミズダコ単独ではなくタコ一般です。",
+    "IUCN評価が古く、LCは地域的な減少がないことを意味しません。"
+   ]
+  },
+  {
+   "animalId": "african-savanna-elephant",
+   "scientificName": "Loxodonta africana",
+   "popularity": {
+    "score": 88.3,
+    "tier": "S",
+    "confidence": "高",
+    "usableEvidenceCount": 3,
+    "evidence": [
+     {
+      "sourceId": "pop-cross-marketing-2024",
+      "rawValue": 50.0,
+      "rawUnit": "percent",
+      "normalizedScore": 90.6,
+      "weight": 0.5,
+      "taxonLabel": "ゾウ",
+      "matchType": "broader-common-group"
+     },
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 3,
+      "rawUnit": "rank",
+      "normalizedScore": 90,
+      "weight": 0.3,
+      "taxonLabel": "elephant",
+      "matchType": "broader-common-group"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 8,
+      "rawUnit": "rating0to10",
+      "normalizedScore": 80,
+      "weight": 0.2,
+      "taxonLabel": "Elephants",
+      "matchType": "broader-common-group"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Loxodonta africana",
+    "assessmentYear": 2021,
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": false,
+    "sourceIds": [
+     "cons-elephant-iucn-2021"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "S",
+   "tierReasonCodes": [
+    "POPULARITY",
+    "CONSERVATION_PRIORITY"
+   ],
+   "tierReasonText": "ゾウ一般の複数の人気根拠からSで、種の世界評価ENも保全上の高い注目理由です。",
+   "limitations": [
+    "人気調査の『ゾウ』にはアフリカサバンナゾウ以外も含まれます。",
+    "アフリカマルミミゾウのCRをこの種へ移しません。"
+   ]
+  },
+  {
+   "animalId": "sea-otter",
+   "scientificName": "Enhydra lutris",
+   "popularity": {
+    "score": 50.0,
+    "tier": "B",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 5,
+      "rawUnit": "rating0to10",
+      "normalizedScore": 50,
+      "weight": 0.2,
+      "taxonLabel": "Sea otter",
+      "matchType": "exact-common-name"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Enhydra lutris",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-sea-otter-mdd"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "CONSERVATION_PRIORITY"
+   ],
+   "tierReasonText": "人気点はBですが、種の世界評価ENによりAです。",
+   "limitations": [
+    "国別・亜種別の法定区分は世界評価とは別です。"
+   ]
+  },
+  {
+   "animalId": "peregrine-falcon",
+   "scientificName": "Falco peregrinus",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Falco peregrinus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-peregrine-cms"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "CONSERVATION_STATUS",
+    "POPULARITY_UNMEASURED"
+   ],
+   "tierReasonText": "直接利用できる種単位の人気根拠は未測定で、世界評価LCによる中立的なCです。",
+   "limitations": [
+    "YouGovのHawksやKestrelsはハヤブサ種の人気点へ流用しません。",
+    "LCでも地域ごとの脅威や保全史は残ります。"
+   ]
+  },
+  {
+   "animalId": "green-sea-turtle",
+   "scientificName": "Chelonia mydas",
+   "popularity": {
+    "score": 40.0,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 4,
+      "rawUnit": "rating0to10",
+      "normalizedScore": 40,
+      "weight": 0.2,
+      "taxonLabel": "Turtles",
+      "matchType": "broader-common-group"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Chelonia mydas",
+    "assessmentYear": 2025,
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": false,
+    "sourceIds": [
+     "cons-green-turtle-iucn-2025"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-08-11",
+    "notes": "世界評価はLCへ改善した一方、中央南太平洋などにはEN、東太平洋などにはVUの地域個体群評価があります。"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "カメ一般の補助人気点と2025年の種の世界評価LCはいずれもCです。",
+   "limitations": [
+    "人気点はアオウミガメ単独ではありません。",
+    "世界LCを、より危険度の高い地域個体群へ適用しません。"
+   ]
+  },
+  {
+   "animalId": "naked-mole-rat",
+   "scientificName": "Heterocephalus glaber",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Heterocephalus glaber",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": true,
+    "sourceIds": [
+     "cons-nmr-mdd"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "CONSERVATION_STATUS",
+    "POPULARITY_UNMEASURED"
+   ],
+   "tierReasonText": "直接利用できる人気根拠は未測定で、世界評価LCによる中立的なCです。",
+   "limitations": [
+    "未測定を不人気とは解釈しません。",
+    "保全評価が古いため再評価を定期確認します。"
+   ]
+  },
+  {
+   "animalId": "western-honey-bee",
+   "scientificName": "Apis mellifera",
+   "popularity": {
+    "score": 60.0,
+    "tier": "B",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 6,
+      "rawUnit": "rating0to10",
+      "normalizedScore": 60,
+      "weight": 0.2,
+      "taxonLabel": "Honey Bees",
+      "matchType": "exact-common-name"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List / European Red List",
+    "category": "NE",
+    "assessmentState": "not-evaluated-global",
+    "assessmentScope": "global",
+    "taxonScope": "Apis mellifera",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": false,
+    "regionalAssessments": [
+     {
+      "category": "DD",
+      "assessmentScope": "pan-Europe",
+      "taxonScope": "free-living wild Apis mellifera",
+      "isRegional": true,
+      "isWildOnly": true
+     },
+     {
+      "category": "EN",
+      "assessmentScope": "EU27",
+      "taxonScope": "self-sustaining free-living wild Apis mellifera",
+      "isRegional": true,
+      "isWildOnly": true,
+      "assessmentYear": 2025
+     }
+    ],
+    "sourceIds": [
+     "cons-honey-bee-europe-2026"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11",
+    "notes": "EU27野生群ENは、世界全体、汎欧州全体、飼育・管理養蜂群の区分ではありません。"
+   },
+   "conservationFloor": null,
+   "displayTier": "B",
+   "tierReasonCodes": [
+    "POPULARITY"
+   ],
+   "tierReasonText": "英国のセイヨウミツバチ一般の人気根拠でBです。EU27野生群ENは対象範囲が異なるため世界ティアのfloorに使いません。",
+   "limitations": [
+    "人気調査は野生群と管理養蜂群を区別していません。",
+    "地域評価を種の世界評価へ拡張しません。"
+   ]
+  },
+  {
+   "animalId": "lion",
+   "scientificName": "Panthera leo",
+   "popularity": {
+    "score": 92.5,
+    "tier": "S",
+    "confidence": "高",
+    "usableEvidenceCount": 3,
+    "evidence": [
+     {
+      "sourceId": "pop-cross-marketing-2024",
+      "rawValue": 55.2,
+      "normalizedScore": 100,
+      "weight": 0.5,
+      "note": "『動物園にいてほしいと思う動物』TOP10で1位。正規化=100*55.2/55.2=100",
+      "matchType": "exact-common-name",
+      "taxonLabel": "回答率55.2%(全体1位)",
+      "rawUnit": "percent"
+     },
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 2.0,
+      "normalizedScore": 95,
+      "weight": 0.3,
+      "note": "正規化=5*(21-2)=95",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング2位",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 7.0,
+      "normalizedScore": 70,
+      "weight": 0.2,
+      "note": "正規化=7*10=70",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Lions 評価7/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Panthera leo",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-lion-panthera"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "S",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "3調査すべてに実値があり、人気点は100*0.5+95*0.3+70*0.2=92.5でS(80以上)。保全は世界評価VUでfloor A。高い方のSを表示ティアとします。",
+   "limitations": [
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分VulnerableはPanthera(国際ネコ科保全機関)の記載で確認しました。",
+    "3調査とも一般名『ライオン/Lion』への回答で、回答者が亜種や個体群を区別している保証はありません。",
+    "地域個体群では世界評価と区分が異なる場合があります。"
+   ]
+  },
+  {
+   "animalId": "tiger",
+   "scientificName": "Panthera tigris",
+   "popularity": {
+    "score": 90.12,
+    "tier": "S",
+    "confidence": "高",
+    "usableEvidenceCount": 3,
+    "evidence": [
+     {
+      "sourceId": "pop-cross-marketing-2024",
+      "rawValue": 46.5,
+      "normalizedScore": 84.24,
+      "weight": 0.5,
+      "note": "『動物園にいてほしいと思う動物』TOP10で5位。正規化=100*46.5/55.2=84.24(小数第3位四捨五入)",
+      "matchType": "exact-common-name",
+      "taxonLabel": "回答率46.5%(全体5位)",
+      "rawUnit": "percent"
+     },
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 1.0,
+      "normalizedScore": 100,
+      "weight": 0.3,
+      "note": "正規化=5*(21-1)=100",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング1位",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 9.0,
+      "normalizedScore": 90,
+      "weight": 0.2,
+      "note": "正規化=9*10=90",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Tigers 評価9/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Panthera tigris",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-tiger-panthera"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "S",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "3調査すべてに実値があり、人気点は84.24*0.5+100*0.3+90*0.2=90.12でS(80以上)。保全は世界評価ENでfloor A。高い方のSを表示ティアとします。",
+   "limitations": [
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分EndangeredはPantheraの記載で確認しました。",
+    "3調査とも一般名『トラ/Tiger』への回答で、亜種の区別は反映されません。",
+    "スマトラトラなど一部亜種はより高い危機区分で評価されていますが、ここでは種全体の世界評価を用いています。"
+   ]
+  },
+  {
+   "animalId": "cheetah",
+   "scientificName": "Acinonyx jubatus",
+   "popularity": {
+    "score": 66,
+    "tier": "A",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 7.0,
+      "normalizedScore": 70,
+      "weight": 0.3,
+      "note": "正規化=5*(21-7)=70",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング7位",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 6.0,
+      "normalizedScore": 60,
+      "weight": 0.2,
+      "note": "正規化=6*10=60",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Cheetahs 評価6/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Acinonyx jubatus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-cheetah-panthera",
+     "cons-cheetah-ccf"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(70*0.3+60*0.2)/(0.3+0.2)=66でA(65以上80未満)。保全は世界評価VUでfloor A。両者が一致し、表示ティアはAです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、チーターは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分VulnerableはPantheraとチーター保護基金の記載で確認しました。",
+    "アジアの個体群はより高い危機とされますが、ここでは種全体の世界評価を用いています。"
+   ]
+  },
+  {
+   "animalId": "gray-wolf",
+   "scientificName": "Canis lupus",
+   "popularity": {
+    "score": 56,
+    "tier": "B",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 9.0,
+      "normalizedScore": 60,
+      "weight": 0.3,
+      "note": "正規化=5*(21-9)=60",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング9位(wolf)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 5.0,
+      "normalizedScore": 50,
+      "weight": 0.2,
+      "note": "正規化=5*10=50。『Wolves』はタイリクオオカミ以外の種も含み得る一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Wolves 評価5/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Canis lupus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-wolf-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "B",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(60*0.3+50*0.2)/(0.3+0.2)=56でB(45以上65未満)。保全は世界評価LCでfloor C。高い方のBを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、オオカミは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Least ConcernはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "LCでも地域によっては絶滅・激減した個体群があり、米国などでは法的位置づけが州・地域で異なります。"
+   ]
+  },
+  {
+   "animalId": "giant-panda",
+   "scientificName": "Ailuropoda melanoleuca",
+   "popularity": {
+    "score": 80.97,
+    "tier": "S",
+    "confidence": "高",
+    "usableEvidenceCount": 3,
+    "evidence": [
+     {
+      "sourceId": "pop-cross-marketing-2024",
+      "rawValue": 51.3,
+      "normalizedScore": 92.93,
+      "weight": 0.5,
+      "note": "『動物園にいてほしいと思う動物』TOP10で2位。正規化=100*51.3/55.2=92.93(小数第3位四捨五入)。同調査ではレッサーパンダが別項目のため『パンダ』はジャイアントパンダと解釈",
+      "matchType": "exact-common-name",
+      "taxonLabel": "回答率51.3%(全体2位)",
+      "rawUnit": "percent"
+     },
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 6.0,
+      "normalizedScore": 75,
+      "weight": 0.3,
+      "note": "正規化=5*(21-6)=75",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング6位(Panda)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 6.0,
+      "normalizedScore": 60,
+      "weight": 0.2,
+      "note": "正規化=6*10=60。同アーカイブではRed Pandasが別項目のためPandasはジャイアントパンダと解釈",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Pandas 評価6/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Ailuropoda melanoleuca",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-panda-nzoo",
+     "cons-panda-sdzwa"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "S",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "3調査すべてに実値があり、人気点は92.93*0.5+75*0.3+60*0.2=80.97でS(80以上)。保全は世界評価VUでfloor A。高い方のSを表示ティアとします。",
+   "limitations": [
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分VulnerableはSmithsonian国立動物園の表示とSan Diego Zoo Wildlife Allianceの2016年区分変更記事で確認しました。",
+    "動物園調査2024とYouGovの『パンダ』は一般名への回答で、回答者が種を厳密に区別している保証はありません(レッサーパンダは両調査とも別項目)。",
+    "人気点80.97は閾値80をわずかに超える境界値です。正規化の丸め方によらずS帯ですが、再計算時は注意してください。"
+   ]
+  },
+  {
+   "animalId": "red-panda",
+   "scientificName": "Ailurus fulgens",
+   "popularity": {
+    "score": 63.07,
+    "tier": "B",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-cross-marketing-2024",
+      "rawValue": 37.7,
+      "normalizedScore": 68.3,
+      "weight": 0.5,
+      "note": "『動物園にいてほしいと思う動物』TOP10で8位。正規化=100*37.7/55.2=68.30(小数第3位四捨五入)",
+      "matchType": "exact-common-name",
+      "taxonLabel": "回答率37.7%(全体8位)",
+      "rawUnit": "percent"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 5.0,
+      "normalizedScore": 50,
+      "weight": 0.2,
+      "note": "正規化=5*10=50",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Red Pandas 評価5/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Ailurus fulgens",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-redpanda-nzoo"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(68.3*0.5+50*0.2)/(0.5+0.2)=63.07でB(45以上65未満)。保全は世界評価ENでfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "PLOS2018の上位20にレッサーパンダは載っていないため、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分EndangeredはSmithsonian国立動物園の記載で確認しました。Animal Diversity WebにはVulnerableとありますが、旧情報と判断し採用していません。",
+    "ゲノム研究がヒマラヤとシセンの2種に分ける見解を示しており、将来2種として別々に評価されると保全区分の扱いが変わる可能性があります。"
+   ]
+  },
+  {
+   "animalId": "koala",
+   "scientificName": "Phascolarctos cinereus",
+   "popularity": {
+    "score": 56.76,
+    "tier": "B",
+    "confidence": "高",
+    "usableEvidenceCount": 3,
+    "evidence": [
+     {
+      "sourceId": "pop-cross-marketing-2024",
+      "rawValue": 46.1,
+      "normalizedScore": 83.51,
+      "weight": 0.5,
+      "note": "『動物園にいてほしいと思う動物』TOP10で6位。正規化=100*46.1/55.2=83.51(小数第3位四捨五入)",
+      "matchType": "exact-common-name",
+      "taxonLabel": "回答率46.1%(全体6位)",
+      "rawUnit": "percent"
+     },
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 19.0,
+      "normalizedScore": 10,
+      "weight": 0.3,
+      "note": "正規化=5*(21-19)=10",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング19位(Koala)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 6.0,
+      "normalizedScore": 60,
+      "weight": 0.2,
+      "note": "正規化=6*10=60",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Koalas 評価6/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Phascolarctos cinereus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": "世界区分Vulnerableは2018年の査読論文の記載で確認したもので、2019-20年の大規模森林火災後の再評価状況は未確認です。",
+    "sourceIds": [
+     "cons-koala-genome",
+     "cons-koala-austmus"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "3調査すべてに実値があり、人気点は83.51*0.5+10*0.3+60*0.2=56.76でB(45以上65未満)。保全は世界評価VUでfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、世界区分VulnerableはNature Genetics 2018(コアラゲノム論文)の記載で確認しました。",
+    "オーストラリア連邦EPBC法ではNSW・QLD・ACT個体群がEndangeredに指定されていますが、これは地域個体群への国内法指定であり、規則に従いIUCN世界区分とは別物として扱い、conservationFloorには使っていません。",
+    "PLOS2018では19位(正規化10点)で、人気点を大きく押し下げています。日本の動物園調査(6位)との乖離が大きい点に注意してください。"
+   ]
+  },
+  {
+   "animalId": "red-kangaroo",
+   "scientificName": "Osphranter rufus",
+   "popularity": {
+    "score": 64.49,
+    "tier": "B",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-cross-marketing-2024",
+      "rawValue": 35.6,
+      "normalizedScore": 64.49,
+      "weight": 0.5,
+      "note": "『動物園にいてほしいと思う動物』TOP10で10位。正規化=100*35.6/55.2=64.49(小数第3位四捨五入)。『カンガルー』はアカカンガルー以外の種も含む広い一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "回答率35.6%(全体10位・カンガルー)",
+      "rawUnit": "percent"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Osphranter rufus (旧名Macropus rufus)",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-kangaroo-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "B",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査から人気点は64.49*0.5/0.5=64.49でB(45以上65未満)。保全は世界評価LCでfloor C。高い方のBを表示ティアとします。",
+   "limitations": [
+    "PLOS2018の上位20とYouGovアーカイブにカンガルーは載っていないため、両調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "動物園調査2024の『カンガルー』は複数種を含む広い一般名(broader-common-group)への回答で、アカカンガルー単独の人気とは限りません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Least ConcernはAnimal Diversity Web(ミシガン大学)の記載で確認しました。同ページは旧属名Macropus rufusを使用しています(現行はOsphranter rufus)。",
+    "人気根拠が1件のみのため、人気ティアの信頼度は低めです。"
+   ]
+  },
+  {
+   "animalId": "western-gorilla",
+   "scientificName": "Gorilla gorilla",
+   "popularity": {
+    "score": 63.56,
+    "tier": "B",
+    "confidence": "高",
+    "usableEvidenceCount": 3,
+    "evidence": [
+     {
+      "sourceId": "pop-cross-marketing-2024",
+      "rawValue": 36.5,
+      "normalizedScore": 66.12,
+      "weight": 0.5,
+      "note": "『動物園にいてほしいと思う動物』TOP10で9位。正規化=100*36.5/55.2=66.12(小数第3位四捨五入)。『ゴリラ』はGorilla属2種を含む一般名だが、日本の動物園のゴリラは事実上ニシローランドゴリラ",
+      "matchType": "broader-common-group",
+      "taxonLabel": "回答率36.5%(全体9位)",
+      "rawUnit": "percent"
+     },
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 10.0,
+      "normalizedScore": 55,
+      "weight": 0.3,
+      "note": "正規化=5*(21-10)=55。『gorilla』はGorilla属2種を含む一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "カリスマ種ランキング10位(gorilla)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 7.0,
+      "normalizedScore": 70,
+      "weight": 0.2,
+      "note": "正規化=7*10=70。『Gorillas』はGorilla属2種を含む一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Gorillas 評価7/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "CR",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Gorilla gorilla",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-greatapes-iucn2016",
+     "cons-gorilla-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "S",
+   "displayTier": "S",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "3調査すべてに実値があり、人気点は66.12*0.5+55*0.3+70*0.2=63.56でB(45以上65未満)。保全は世界評価CR(近絶滅種)でfloor S。高い方のSを表示ティアとします。",
+   "limitations": [
+    "IUCNレッドリスト公式ページはHTTP 403で開けないため、区分Critically EndangeredはIUCN公式の2016年報道発表とAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "3調査とも『ゴリラ/Gorilla』という属レベルの一般名への回答で、ニシゴリラとヒガシゴリラを区別していません(broader-common-group)。",
+    "CRは種全体の世界評価で、亜種(ニシローランドゴリラ・クロスリバーゴリラ)ごとの状況の差は反映していません。"
+   ]
+  },
+  {
+   "animalId": "chimpanzee",
+   "scientificName": "Pan troglodytes",
+   "popularity": {
+    "score": 50,
+    "tier": "B",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 11.0,
+      "normalizedScore": 50,
+      "weight": 0.3,
+      "note": "正規化=5*(21-11)=50。単一入力のため加重平均は50*0.3/0.3=50",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング11位(chimpanzee)",
+      "rawUnit": "rank"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Pan troglodytes",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-greatapes-iucn2016",
+     "cons-chimp-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査(PLOS2018の11位)から人気点は50でB(45以上65未満)。保全は世界評価EN(絶滅危惧種)でfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、チンパンジーは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "YouGov2015のアーカイブにChimpanzeesの項目はなく、この調査も除外しました。属レベルの『Monkeys』(4/10)は類人猿のチンパンジーには流用しません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けないため、区分EndangeredはIUCN公式の2016年報道発表とAnimal Diversity Webの記載で確認しました。",
+    "人気点が1入力のみのため、点数の信頼幅は広めです。"
+   ]
+  },
+  {
+   "animalId": "bornean-orangutan",
+   "scientificName": "Pongo pygmaeus",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "CR",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Pongo pygmaeus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-greatapes-iucn2016"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "S",
+   "displayTier": "S",
+   "tierReasonCodes": [
+    "CONSERVATION_STATUS",
+    "POPULARITY_UNMEASURED"
+   ],
+   "tierReasonText": "動物園調査2024はTOP10圏外、PLOS2018は上位20圏外、YouGov2015に項目なしで、人気は未測定(nullとし、0点にはしません)。保全は世界評価CR(近絶滅種)でfloor S。表示ティアはSです。",
+   "limitations": [
+    "3調査のいずれにもボルネオオランウータン(またはオランウータン)の実値がなく、人気点は算定していません。未測定は不人気を意味しません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けないため、区分Critically EndangeredはIUCN公式の2016年報道発表(4種の大型類人猿をCRとした発表)で確認しました。",
+    "Animal Diversity WebのPongo pygmaeusページの区分表記は2016年改訂前の旧情報(Endangered)のため、保全根拠には使っていません。"
+   ]
+  },
+  {
+   "animalId": "japanese-macaque",
+   "scientificName": "Macaca fuscata",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Macaca fuscata",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-macaque-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "CONSERVATION_STATUS",
+    "POPULARITY_UNMEASURED"
+   ],
+   "tierReasonText": "動物園調査2024はTOP10圏外、PLOS2018は上位20圏外、YouGov2015に種の項目なしで、人気は未測定(null)。保全は世界評価LCでfloor C。表示ティアは中立的なCです。",
+   "limitations": [
+    "YouGov2015の『Monkeys』(4/10)は数百種を含む広い一般名のため、ニホンザル種の人気点には流用しません(見本ティアのHawks/Kestrels不使用方針と同じ)。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けないため、区分Least ConcernはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "LCでも地域集団ごとの状況は異なり、日本国内では農作物被害に伴う駆除など人との軋轢が続いています。"
+   ]
+  },
+  {
+   "animalId": "polar-bear",
+   "scientificName": "Ursus maritimus",
+   "popularity": {
+    "score": 63,
+    "tier": "B",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 8.0,
+      "normalizedScore": 65,
+      "weight": 0.3,
+      "note": "正規化=5*(21-8)=65",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング8位(Polar bear)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 6.0,
+      "normalizedScore": 60,
+      "weight": 0.2,
+      "note": "正規化=6*10=60。同ページの広義の『Bears』(4)はホッキョクグマの人気点には使わない",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Polar Bears 評価6/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Ursus maritimus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-polarbear-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(65*0.3+60*0.2)/(0.3+0.2)=63でB(45以上65未満)。保全は世界評価VUでfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、ホッキョクグマは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分VulnerableはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "YouGovの広義の『Bears』(評価4)はホッキョクグマの人気点へ流用せず、専用項目『Polar Bears』のみを使いました。",
+    "世界の個体数推定は資料により約2万3千頭(米国海産哺乳類委員会)〜約2万6千頭(Polar Bears International)と幅があります。"
+   ]
+  },
+  {
+   "animalId": "brown-bear",
+   "scientificName": "Ursus arctos",
+   "popularity": {
+    "score": 25,
+    "tier": "C",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 18.0,
+      "normalizedScore": 15,
+      "weight": 0.3,
+      "note": "正規化=5*(21-18)=15",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング18位(Brown bear)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 4.0,
+      "normalizedScore": 40,
+      "weight": 0.2,
+      "note": "正規化=4*10=40。『Bears』はクマ科全般の一般名で、ヒグマ以外の種も含み得る",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Bears 評価4/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Ursus arctos",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-brownbear-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(15*0.3+40*0.2)/(0.3+0.2)=25でC(45未満)。保全は世界評価LCでfloor C。両者が一致し、表示ティアはCです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、ヒグマ(クマ類)は圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Least ConcernはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "YouGovの『Bears』は種を特定しない広い一般名のため、broader-common-groupとして扱いました。回答者がヒグマを想定した保証はありません。",
+    "LCでも地域によっては絶滅の危機にある個体群があるとADWに明記されています(例: 一部の孤立個体群)。"
+   ]
+  },
+  {
+   "animalId": "snow-leopard",
+   "scientificName": "Panthera uncia",
+   "popularity": {
+    "score": 50,
+    "tier": "B",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 5.0,
+      "normalizedScore": 50,
+      "weight": 0.2,
+      "note": "正規化=5*10=50",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Snow leopards 評価5/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Panthera uncia",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-snowleopard-panthera",
+     "cons-snowleopard-blog"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査から人気点は50*0.2/0.2=50でB(45以上65未満)。保全は世界評価VU(2017年にENから変更)でfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、ユキヒョウは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018のカリスマ種TOP20にユキヒョウは掲載されておらず、この調査も分子分母から除外しました。",
+    "人気点は1調査(YouGov・重み0.2)のみに依存しており、信頼度は低めです。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分VulnerableはPantheraの種ページと同解説記事(2017年9月の変更経緯)で確認しました。",
+    "2017年のEN→VU変更には研究者の異論があり、十分に調査された生息地は全体の約2%にとどまります。"
+   ]
+  },
+  {
+   "animalId": "leopard",
+   "scientificName": "Panthera pardus",
+   "popularity": {
+    "score": 76,
+    "tier": "A",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 5.0,
+      "normalizedScore": 80,
+      "weight": 0.3,
+      "note": "正規化=5*(21-5)=80",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング5位(Leopard)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 7.0,
+      "normalizedScore": 70,
+      "weight": 0.2,
+      "note": "正規化=7*10=70",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Leopards 評価7/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Panthera pardus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-leopard-panthera"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(80*0.3+70*0.2)/(0.3+0.2)=76でA(65以上80未満)。保全は世界評価VUでfloor A。両者が一致し、表示ティアはAです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、ヒョウは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分VulnerableはPanthera(国際ネコ科保全機関)の記載で確認しました。",
+    "2調査とも一般名『Leopard』への回答で、回答者がユキヒョウなど類似名の種と区別している保証はありません。",
+    "アムールヒョウなど一部の亜種は種全体より深刻な状態ですが、ここでは種全体の世界評価を用いています。"
+   ]
+  },
+  {
+   "animalId": "capybara",
+   "scientificName": "Hydrochoerus hydrochaeris",
+   "popularity": {
+    "score": 20,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 2.0,
+      "normalizedScore": 20,
+      "weight": 0.2,
+      "note": "正規化=2*10=20。人気点=(20*0.2)/0.2=20。カピバラ属には近縁のコビトカピバラも存在するが、一般名Capybaraは通常本種を指す",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Capybaras 評価2/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Hydrochoerus hydrochaeris",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-capybara-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査(YouGov2015)から人気点は(20*0.2)/0.2=20でC(45未満)。保全は世界評価LCでfloor C。両者が一致し、表示ティアはCです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、カピバラは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。PDFをローカル解析してTOP10不在を実値で確認済みです。",
+    "PLOS2018のカリスマ種TOP20にカピバラは含まれず、この調査も分子分母から除外しました。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けないため、区分Least ConcernはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "YouGov2015は英国の調査で、日本の動物園での高い人気(露天風呂の風物詩化など)は人気点に反映されていません。"
+   ]
+  },
+  {
+   "animalId": "common-hippopotamus",
+   "scientificName": "Hippopotamus amphibius",
+   "popularity": {
+    "score": 36,
+    "tier": "C",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 13.0,
+      "normalizedScore": 40,
+      "weight": 0.3,
+      "note": "正規化=5*(21-13)=40。一般名Hippopotamusは通常本種を指すが、コビトカバとの区別は保証されない",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング13位(Hippopotamus)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 3.0,
+      "normalizedScore": 30,
+      "weight": 0.2,
+      "note": "正規化=3*10=30",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Hippopotamuses 評価3/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Hippopotamus amphibius",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-hippo-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(40*0.3+30*0.2)/(0.3+0.2)=36でC(45未満)。保全は世界評価VUでfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、カバは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けないため、区分VulnerableはAnimal Diversity Web(ミシガン大学)の記載(過去10年で7〜20%減)で確認しました。",
+    "2調査の一般名『カバ/Hippopotamus』は、別属のコビトカバを厳密に区別していない可能性があります。"
+   ]
+  },
+  {
+   "animalId": "white-rhinoceros",
+   "scientificName": "Ceratotherium simum",
+   "popularity": {
+    "score": 24,
+    "tier": "C",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 17.0,
+      "normalizedScore": 20,
+      "weight": 0.3,
+      "note": "正規化=5*(21-17)=20。『Rhinoceros』はシロサイを含むサイ5種の広い一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "カリスマ種ランキング17位(Rhinoceros)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 3.0,
+      "normalizedScore": 30,
+      "weight": 0.2,
+      "note": "正規化=3*10=30。『Rhinos』はサイ類全般の一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Rhinos 評価3/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "NT",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Ceratotherium simum",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-rhino-irf"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "B",
+   "displayTier": "B",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(20*0.3+30*0.2)/(0.3+0.2)=24でC(45未満)。保全は世界評価NT(種全体)でfloor B。高い方のBを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、サイは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "2調査とも『サイ』というサイ5種を含む広い一般名への回答で、シロサイ単独の人気ではありません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けないため、区分Near ThreatenedはInternational Rhino Foundationの記載で確認しました。",
+    "亜種の北シロサイはCritically Endangered(残り2頭)ですが、ここでは種全体の世界評価NTを用いています。亜種区分を種へ拡張していません。"
+   ]
+  },
+  {
+   "animalId": "plains-zebra",
+   "scientificName": "Equus quagga",
+   "popularity": {
+    "score": 47,
+    "tier": "B",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 12.0,
+      "normalizedScore": 45,
+      "weight": 0.3,
+      "note": "正規化=5*(21-12)=45。『Zebra』はサバンナシマウマを含むシマウマ3種の広い一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "カリスマ種ランキング12位(Zebra)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 5.0,
+      "normalizedScore": 50,
+      "weight": 0.2,
+      "note": "正規化=5*10=50。『Zebras』はシマウマ類全般の一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Zebras 評価5/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "NT",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Equus quagga",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-zebra-wlt"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "B",
+   "displayTier": "B",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(45*0.3+50*0.2)/(0.3+0.2)=47でB(45以上65未満)。保全は世界評価NTでfloor B。両者が一致し、表示ティアはBです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、シマウマは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "2調査とも『シマウマ/Zebra』というグレビーシマウマ・ヤマシマウマを含む広い一般名への回答で、サバンナシマウマ単独の人気ではありません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けないため、区分Near ThreatenedはWorld Land Trust(英国の国際保全団体)の記載で確認しました。IUCN SSCウマ科専門家グループのサイト(equids.org)はSSL証明書エラーで開けませんでした。"
+   ]
+  },
+  {
+   "animalId": "brown-throated-sloth",
+   "scientificName": "Bradypus variegatus",
+   "popularity": {
+    "score": 30,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 3.0,
+      "normalizedScore": 30,
+      "weight": 0.2,
+      "note": "正規化=3*10=30。『Sloths』はナマケモノ類の一般名で、ミツユビナマケモノ単独の値ではない",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Sloths 評価3/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Bradypus variegatus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-sloth-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査から人気点は(30*0.2)/0.2=30でC(45未満)。保全は世界評価LCでfloor C。両者が一致し、表示ティアはCです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でナマケモノは圏外のため、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018のカリスマ種上位20にナマケモノは含まれず、この調査も除外しました。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Least ConcernはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "YouGovの『Sloths』はナマケモノ類一般への評価で、ミツユビナマケモノ単独の人気ではありません。"
+   ]
+  },
+  {
+   "animalId": "common-bottlenose-dolphin",
+   "scientificName": "Tursiops truncatus",
+   "popularity": {
+    "score": 43,
+    "tier": "C",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 16.0,
+      "normalizedScore": 25,
+      "weight": 0.3,
+      "note": "正規化=5*(21-16)=25。『Dolphin』は多数種を含むイルカ類の一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "カリスマ種ランキング16位(dolphin)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 7.0,
+      "normalizedScore": 70,
+      "weight": 0.2,
+      "note": "正規化=7*10=70。『Dolphins』はイルカ類の一般名で、ハンドウイルカ単独の値ではない",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Dolphins 評価7/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Tursiops truncatus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-dolphin-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(25*0.3+70*0.2)/(0.3+0.2)=43でC(45未満)。保全は世界評価LCでfloor C。両者が一致し、表示ティアはCです。",
+   "limitations": [
+    "動物園調査2024は動物園対象の調査でTOP10のみ公表。イルカは圏外のため除外しました(水族館の人気は調査対象外である点に注意)。",
+    "PLOSの『dolphin』とYouGovの『Dolphins』は種を特定しない一般名で、ハンドウイルカ単独の人気ではありません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Least ConcernはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "米国東海岸の沿岸型が別種タマネンドハンドウイルカとして認められるなど、種の範囲は分類研究で動いています。"
+   ]
+  },
+  {
+   "animalId": "orca",
+   "scientificName": "Orcinus orca",
+   "popularity": {
+    "score": 60,
+    "tier": "B",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 6.0,
+      "normalizedScore": 60,
+      "weight": 0.2,
+      "note": "正規化=6*10=60。『Whales』はクジラ類の広い一般名で、英名killer whaleのシャチを含むと解釈。シャチ単独の値ではない",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Whales 評価6/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "DD",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Orcinus orca",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-orca-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": null,
+   "displayTier": "B",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_DD_NO_FLOOR"
+   ],
+   "tierReasonText": "利用可能な1調査から人気点は(60*0.2)/0.2=60でB(45以上65未満)。保全は世界評価DD(データ不足)のため最低ティアを与えず、人気ティアBを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10圏外、PLOS2018の上位20にも掲載がなく、両調査は除外しました。",
+    "YouGovの『Whales』はクジラ類一般への評価で、シャチ単独の人気ではありません。シャチは『Dolphins』(7/10)にも含まれ得ますが、二重利用を避け、英名killer whaleが一般にクジラとして扱われることから『Whales』のみを採用しました。",
+    "IUCNのDDは低リスクを意味しません。DDの主因は生態型・系統の分類が未確定なことです。IUCN公式ページはHTTP 403で開けず、区分DDはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "南部レジデント個体群(2025年時点74頭)など、個体群単位では深刻な状況のものがあります。世界評価は個体群の危機を覆い隠しません。"
+   ]
+  },
+  {
+   "animalId": "shoebill",
+   "scientificName": "Balaeniceps rex",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Balaeniceps rex",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-shoebill-sdz",
+     "cons-shoebill-tokyozoo"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "CONSERVATION_PRIORITY",
+    "POPULARITY_UNMEASURED"
+   ],
+   "tierReasonText": "登録3調査のいずれにもハシビロコウの実値がなく、人気は未測定です。世界評価VU(危急)により最低ティアAを適用し、表示ティアはAです。",
+   "limitations": [
+    "動物園調査2024はTOP10圏外、PLOS2018とYouGov2015にも掲載がなく、人気点は算定できませんでした。日本の動物園で人気が高いとされますが、登録3調査に実値がないため人気点にはしていません(未測定は不人気を意味しません)。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Vulnerableと成熟個体3,300〜5,300羽はSan Diego Zoo Wildlife Allianceと東京ズーネットの記載で確認しました。",
+    "個体数の推定は調査により幅があります(Animal Diversity Webには11,000〜15,000羽という古い推定の記載があります)。"
+   ]
+  },
+  {
+   "animalId": "common-ostrich",
+   "scientificName": "Struthio camelus",
+   "popularity": {
+    "score": 20,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 2.0,
+      "normalizedScore": 20,
+      "weight": 0.2,
+      "note": "正規化=2*10=20。『Ostriches』はダチョウ属2種(ダチョウ・ソマリダチョウ)を含み得る一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Ostriches 評価2/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Struthio camelus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-common-ostrich-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査(YouGov2015)から人気点は(20*0.2)/0.2=20でC(45未満)。保全は世界評価LCでfloor C。両者が一致し、表示ティアはCです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でダチョウは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018のTOP20に鳥類は1種も入っておらず、この調査も除外しました。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Least ConcernはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "YouGovの『Ostriches』はソマリダチョウ(別種として分離)を区別しない一般名です。",
+    "LCでも、かつての西南アジア・アラビア半島の個体群は狩猟で失われています。"
+   ]
+  },
+  {
+   "animalId": "bald-eagle",
+   "scientificName": "Haliaeetus leucocephalus",
+   "popularity": {
+    "score": 50,
+    "tier": "B",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 5.0,
+      "normalizedScore": 50,
+      "weight": 0.2,
+      "note": "正規化=5*10=50。『Eagles』はワシ類全般を指す一般名で、ハクトウワシ以外の多くの種を含み得る",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Eagles 評価5/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Haliaeetus leucocephalus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-bald-eagle-adw",
+     "cons-bald-eagle-nzoo"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "B",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査(YouGov2015)から人気点は(50*0.2)/0.2=50でB(45以上65未満)。保全は世界評価LCでfloor C。高い方のBを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でワシ類は圏外のため除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018のTOP20に鳥類は1種も入っておらず、この調査も除外しました。",
+    "YouGovの『Eagles』は一般名で、回答者がハクトウワシを想定した保証はありません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Least ConcernはAnimal Diversity Webとスミソニアン国立動物園の記載で確認しました。",
+    "LCは現在の世界評価であり、20世紀の激減の歴史(1963年417ペア)を打ち消すものではありません。"
+   ]
+  },
+  {
+   "animalId": "snowy-owl",
+   "scientificName": "Bubo scandiacus",
+   "popularity": {
+    "score": 70,
+    "tier": "A",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 7.0,
+      "normalizedScore": 70,
+      "weight": 0.2,
+      "note": "正規化=7*10=70。『Owls』はフクロウ類全般を指す一般名で、シロフクロウ以外の多くの種を含み得る",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Owls 評価7/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Bubo scandiacus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-snowy-owl-audubon",
+     "cons-snowy-owl-tpf"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査(YouGov2015)から人気点は(70*0.2)/0.2=70でA(65以上80未満)。保全は世界評価VUでfloor A。両者が一致し、表示ティアはAです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でフクロウ類は圏外のため除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018のTOP20に鳥類は1種も入っておらず、この調査も除外しました。",
+    "YouGovの『Owls』はフクロウ類全般への評価で、シロフクロウ単独の人気とは限りません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分VulnerableはAudubonとThe Peregrine Fundの2出典で確認しました。",
+    "Animal Diversity Webの当該ページ(旧属名Nyctea)はLC・約29万羽という古い情報のため、保全区分の根拠には使用していません。"
+   ]
+  },
+  {
+   "animalId": "greater-flamingo",
+   "scientificName": "Phoenicopterus roseus",
+   "popularity": {
+    "score": 30,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 3.0,
+      "normalizedScore": 30,
+      "weight": 0.2,
+      "note": "正規化=3*10=30。『Flamingos』はフラミンゴ科6種を含み得る一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Flamingos 評価3/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Phoenicopterus roseus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-greater-flamingo-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査(YouGov2015)から人気点は(30*0.2)/0.2=30でC(45未満)。保全は世界評価LCでfloor C。両者が一致し、表示ティアはCです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でフラミンゴは圏外のため除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018のTOP20に鳥類は1種も入っておらず、この調査も除外しました。",
+    "YouGovの『Flamingos』はフラミンゴ科全般への評価で、オオフラミンゴ単独の値ではありません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Least ConcernはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "LCでも鉛中毒や水質汚染など地域的な脅威は残ります。"
+   ]
+  },
+  {
+   "animalId": "red-crowned-crane",
+   "scientificName": "Grus japonensis",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Grus japonensis",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-red-crowned-crane-icf"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "CONSERVATION_STATUS",
+    "POPULARITY_UNMEASURED"
+   ],
+   "tierReasonText": "動物園調査2024はTOP10圏外、PLOS2018は圏外、YouGov2015に『Cranes』の項目がなく、人気は未測定です。世界評価VUの保全floorにより表示ティアはAです。",
+   "limitations": [
+    "IUCNレッドリスト公式ページはHTTP 403の実績があり直接参照せず、区分VulnerableはInternational Crane Foundation（国際ツル財団）の種ページの記載で確認しました。",
+    "環境省の国内レッドリスト（第5次）ではタンチョウは準絶滅危惧（NT）ですが、本ティアは仕様に従い世界評価（IUCN VU）を用いています。",
+    "3調査に掲載がないことは不人気を意味しません（未測定を0点にしていません）。",
+    "北海道の集団と大陸の集団で状況は大きく異なり、世界評価は両方をまとめた評価です。"
+   ]
+  },
+  {
+   "animalId": "indian-peafowl",
+   "scientificName": "Pavo cristatus",
+   "popularity": {
+    "score": 40,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 4.0,
+      "normalizedScore": 40,
+      "weight": 0.2,
+      "note": "正規化=4*10=40。『Peacock』はクジャク類の一般名で、インドクジャク以外の種（マクジャクなど）も含み得る",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Peacock 評価4/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Pavo cristatus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-indian-peafowl-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査（YouGov）から人気点は40*0.2/0.2=40でC（45未満）。保全は世界評価LCでfloor C。両者が一致し、表示ティアはCです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でクジャクは圏外、PLOS2018のTOP20にも掲載がなく、両調査は分子分母から除外しました（0点扱いにはしていません）。",
+    "YouGovの『Peacock』はクジャク類への一般名評価で、回答者が種を区別している保証はありません。",
+    "IUCNレッドリスト公式ページは直接参照せず、区分Least ConcernはAnimal Diversity Web（ミシガン大学）の記載で確認しました（スミソニアン国立動物園のページにも同旨の記載）。"
+   ]
+  },
+  {
+   "animalId": "north-island-brown-kiwi",
+   "scientificName": "Apteryx mantelli",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Apteryx mantelli",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-north-island-brown-kiwi-akzoo"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "CONSERVATION_STATUS",
+    "POPULARITY_UNMEASURED"
+   ],
+   "tierReasonText": "動物園調査2024はTOP10圏外、PLOS2018は圏外、YouGov2015に『Kiwis』の項目がなく、人気は未測定です。世界評価VUの保全floorにより表示ティアはAです。",
+   "limitations": [
+    "IUCNレッドリスト公式ページとBirdLife DataZone（JS描画）は参照できず、区分VulnerableはAuckland Zoo（ブラウンキーウィのページ）の記載で確認しました。",
+    "Auckland Zooはニュージーランド国内の脅威分類が保全の成果で『Not Threatened』へ移行したと記載していますが、本ティアはIUCN世界評価VUを用いています。",
+    "3調査に掲載がないことは不人気を意味しません（未測定を0点にしていません）。"
+   ]
+  },
+  {
+   "animalId": "komodo-dragon",
+   "scientificName": "Varanus komodoensis",
+   "popularity": {
+    "score": 20,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 2.0,
+      "normalizedScore": 20,
+      "weight": 0.2,
+      "note": "正規化=2*10=20。『Komodo Dragon』は単一種を指す一般名",
+      "matchType": "exact-common-name",
+      "taxonLabel": "Komodo Dragons 評価2/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Varanus komodoensis",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-komodo-dragon-iucn"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査（YouGov）から人気点は20*0.2/0.2=20でC。保全は2021年の世界評価ENでfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でコモドオオトカゲは圏外、PLOS2018のTOP20にも掲載がなく、両調査は分子分母から除外しました（0点扱いにはしていません）。",
+    "区分EndangeredはIUCN公式サイト（iucn.org）の2021年9月レッドリスト更新の発表で確認しました（レッドリスト種ページ自体はHTTP 403の実績があり未参照）。",
+    "コモド国立公園内の個体群は安定と評価されており、ENは種全体（フローレス島の非保護個体群を含む）の評価です。"
+   ]
+  },
+  {
+   "animalId": "panther-chameleon",
+   "scientificName": "Furcifer pardalis",
+   "popularity": {
+    "score": 20,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 2.0,
+      "normalizedScore": 20,
+      "weight": 0.2,
+      "note": "正規化=2*10=20。『Lizards』はカメレオンを含むトカゲ類全般への評価で、パンサーカメレオン単独の値ではない",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Lizards 評価2/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Furcifer pardalis",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": true,
+    "sourceIds": [
+     "cons-panther-chameleon-pdm"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な人気根拠はYouGovの『Lizards』評価2のみで、人気点は20(重み0.2のみで算出)のC。保全は世界評価LCでfloor C。両者が一致し、表示ティアはCです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でカメレオンは圏外のため取得不可、PLOS2018のTOP20にも爬虫類はワニのみで、いずれも分子分母から除外しました(未掲載を0点にはしていません)。",
+    "YouGovに『Chameleons』の項目はなく、カメレオンを含む広いグループ『Lizards』の値を補助的に使いました。",
+    "IUCNレッドリスト公式ページとIUCN APIはHTTP 403で開けず、区分Least ConcernはLoro Parque財団の水族館Poema del Marの種解説ページで確認しました(2011年評価で古い点に注意)。",
+    "種内に別種級の系統が複数示唆されており(Grbic et al. 2015)、将来の分類変更で評価単位が変わる可能性があります。"
+   ]
+  },
+  {
+   "animalId": "saltwater-crocodile",
+   "scientificName": "Crocodylus porosus",
+   "popularity": {
+    "score": 22,
+    "tier": "C",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 15.0,
+      "normalizedScore": 30,
+      "weight": 0.3,
+      "note": "正規化=5*(21-15)=30。『crocodile』はイリエワニを含むワニ類全般の一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "カリスマ種ランキング15位(crocodile)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 1.0,
+      "normalizedScore": 10,
+      "weight": 0.2,
+      "note": "正規化=1*10=10。『Crocodiles』はワニ類全般への評価",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Crocodiles 評価1/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Crocodylus porosus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-saltwater-crocodile-ausmus",
+     "cons-saltwater-crocodile-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(30*0.3+10*0.2)/(0.3+0.2)=22でC(45未満)。保全は世界評価LCでfloor C。両者が一致し、表示ティアはCです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でワニは圏外のため、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018の『crocodile』とYouGovの『Crocodiles』はいずれもワニ類全般への回答で、イリエワニ単独の人気ではありません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Least Concernはオーストラリア博物館とAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "世界評価はLCでも、クイーンズランド州ではVulnerable指定など、地域の法的位置づけは異なります。"
+   ]
+  },
+  {
+   "animalId": "king-cobra",
+   "scientificName": "Ophiophagus hannah",
+   "popularity": {
+    "score": 20,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 2.0,
+      "normalizedScore": 20,
+      "weight": 0.2,
+      "note": "正規化=2*10=20。『Snakes』はキングコブラを含むヘビ類全般への評価",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Snakes 評価2/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Ophiophagus hannah(2024年の4種分割前の広義)",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": true,
+    "sourceIds": [
+     "cons-king-cobra-adw",
+     "cons-king-cobra-ecolevol"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "CONSERVATION_STATUS",
+    "POPULARITY_MEASURED"
+   ],
+   "tierReasonText": "人気点はYouGov『Snakes』評価2のみから20でCですが、保全は世界評価Vulnerableでfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でヘビは圏外、PLOS2018のTOP20にヘビ類はなく、いずれも分子分母から除外しました。",
+    "YouGovに『Cobras』の項目はなく、キングコブラを含む広いグループ『Snakes』の値を補助的に使いました。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分VulnerableはAnimal Diversity Web(ミシガン大学)と査読論文(Ecology and Evolution 2025)の2出典で確認しました。",
+    "スミソニアン国立動物園ページの保全表示は『Least Concern』とIUCNのVulnerableと食い違うため、保全区分の根拠には使用していません(b01のライオン事例と同型)。",
+    "現行のVU評価は2024年に4種へ分割される前の広義キングコブラに対するものです。分割後の種ごとの再評価が公表されたら見直しが必要です。"
+   ]
+  },
+  {
+   "animalId": "galapagos-giant-tortoise",
+   "scientificName": "Chelonoidis niger",
+   "popularity": {
+    "score": 40,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 4.0,
+      "normalizedScore": 40,
+      "weight": 0.2,
+      "note": "正規化=4*10=40。『Tortoises』はガラパゴスゾウガメを含むリクガメ類全般への評価",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Tortoises 評価4/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": null,
+    "assessmentState": "reassessment-pending",
+    "assessmentScope": "Chelonoidis niger species complex",
+    "taxonScope": "Chelonoidis niger(広義・ガラパゴスゾウガメ種複合体)",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": false,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-galapagos-tortoise-gc"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2026-11-11",
+    "notes": "IUCNは島ごとの系統を別種として個別評価しており(ガラパゴス保全機関の集計で15種中6がCR、3がEN、3がVU、2がEX)、本図鑑の分類単位である広義Chelonoidis niger(種複合体)への現行の単一世界評価は存在しません。ジラフ(4種分割)と同じ扱いで、旧複合体評価を最終計算に使いません。"
+   },
+   "conservationFloor": null,
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_TAXONOMY_MISMATCH"
+   ],
+   "tierReasonText": "人気点はYouGov『Tortoises』評価4のみから40でC。保全は評価単位の分類非互換のためfloorを適用せず、表示ティアは人気由来のCです。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表でカメは圏外、PLOS2018のTOP20にカメ類はなく、いずれも分子分母から除外しました。",
+    "『Tortoises』はリクガメ類全般への評価で、ガラパゴスゾウガメ単独の人気ではありません。",
+    "島ごとの各種はCR〜VUの高い危機区分で評価されていますが、規則(地域・下位単位の区分を全体へ拡張しない)に従い、複合体全体のfloorには適用していません。個々の種の危機度はこのCという表示より高いことに注意してください。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、種ごとの区分の内訳はガラパゴス保全機関(Galápagos Conservancy)の集計ページで確認しました。"
+   ]
+  },
+  {
+   "animalId": "japanese-giant-salamander",
+   "scientificName": "Andrias japonicus",
+   "popularity": {
+    "score": 20,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 2.0,
+      "normalizedScore": 20,
+      "weight": 0.2,
+      "note": "正規化=2*10=20。『Salamanders』はオオサンショウウオ以外の多数の種を含む広い一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Salamanders 評価2/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Andrias japonicus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-jgs-frontiers"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査から人気点は(20*0.2)/0.2=20でC(45未満)。保全は世界評価VU(2022年評価)でfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、オオサンショウウオは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018のTOP20に両生類は含まれないため除外しました。",
+    "YouGovの『Salamanders』はオオサンショウウオを含む広い一般名で、回答者が本種を想定した保証はありません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分VulnerableはFrontiers掲載の査読論文(2024年)が引用するIUCN SSC Amphibian Specialist Group 2022の評価で確認しました。",
+    "Animal Diversity Webとスミソニアン国立動物園のページは旧区分Near Threatenedのままで、現行評価と食い違います。保全区分にはこれらを使っていません。",
+    "地域個体群の状況は世界評価とは別で、交雑が進んだ流域では在来個体がほぼ確認されなくなっています。"
+   ]
+  },
+  {
+   "animalId": "golden-poison-frog",
+   "scientificName": "Phyllobates terribilis",
+   "popularity": {
+    "score": 30,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 3.0,
+      "normalizedScore": 30,
+      "weight": 0.2,
+      "note": "正規化=3*10=30。『Frogs』はカエル全般を指す広い一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Frogs 評価3/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Phyllobates terribilis",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-gpf-wlt",
+     "cons-gpf-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査から人気点は(30*0.2)/0.2=30でC(45未満)。保全は世界評価ENでfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、カエル類は圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018のTOP20に両生類は含まれないため除外しました。",
+    "YouGovの『Frogs』はカエル全般の一般名で、モウドクフキヤガエルへの評価ではありません。",
+    "IUCNレッドリスト公式ページと種別PDFはいずれもHTTP 403で開けず、区分EndangeredはWorld Land TrustとAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "検索結果に現れた生息域面積1,473平方キロメートルという数値は、出典ページを開いて確認できなかったため採用していません。"
+   ]
+  },
+  {
+   "animalId": "whale-shark",
+   "scientificName": "Rhincodon typus",
+   "popularity": {
+    "score": 30,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 3.0,
+      "normalizedScore": 30,
+      "weight": 0.2,
+      "note": "正規化=3*10=30。『Sharks』はサメ類全般を指す広い一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Sharks 評価3/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Rhincodon typus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-ws-iucn2016",
+     "cons-ws-ong2020"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な1調査から人気点は(30*0.2)/0.2=30でC(45未満)。保全は世界評価EN(2016年引き上げ)でfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、水族館の動物であるジンベエザメは選択肢としても現れず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018のTOP20に含まれるサメは『Great white shark』(14位)だけで、ジンベエザメへは流用しませんでした。",
+    "YouGovの『Sharks』はサメ類全般の一般名で、ジンベエザメへの評価ではありません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分EndangeredはIUCN公式の2016年報道発表と、Frontiers掲載の査読論文(Ong et al. 2020)の記載で確認しました。",
+    "フロリダ自然史博物館のページは旧区分Vulnerableのままで現行評価と食い違うため、保全区分の根拠には使っていません。",
+    "CMSの種ページはEndangeredとVulnerableの記述が併存していたため、区分の根拠には使わず、附属書掲載と分布の確認だけに用いました。",
+    "インド太平洋の亜個体群はより大きな減少が報告されていますが、ここでは世界評価を用いています。"
+   ]
+  },
+  {
+   "animalId": "great-white-shark",
+   "scientificName": "Carcharodon carcharias",
+   "popularity": {
+    "score": 33,
+    "tier": "C",
+    "confidence": "中",
+    "usableEvidenceCount": 2,
+    "evidence": [
+     {
+      "sourceId": "pop-plos-charisma-2018",
+      "rawValue": 14.0,
+      "normalizedScore": 35,
+      "weight": 0.3,
+      "note": "正規化=5*(21-14)=35",
+      "matchType": "exact-common-name",
+      "taxonLabel": "カリスマ種ランキング14位(great white shark)",
+      "rawUnit": "rank"
+     },
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 3.0,
+      "normalizedScore": 30,
+      "weight": 0.2,
+      "note": "正規化=3*10=30。『Sharks』はサメ類全般を指す広い一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Sharks 評価3/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Carcharodon carcharias",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-gws-fmnh",
+     "cons-gws-cms"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用可能な2調査から人気点は(35*0.3+30*0.2)/(0.3+0.2)=33でC(45未満)。保全は世界評価VUでfloor A。高い方のAを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で、ホホジロザメは圏外のため実値が取得できず、この調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "PLOS2018の14位『Great white shark』は本種と対応する一般名ですが、回答者の分類精度は保証されません。",
+    "YouGovの『Sharks』はサメ類全般の一般名のため、taxonMatchをbroader-common-groupとしました。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Vulnerableはフロリダ自然史博物館とCMSの記載で確認しました。",
+    "米国の絶滅危惧種法では2012年の見直しで掲載不要と判断されており、地域ごとの法的位置づけは世界評価と一致しません。",
+    "北西大西洋・北東太平洋では増加傾向が報告されており、世界評価VUは全個体群が同じ状況であることを意味しません。"
+   ]
+  },
+  {
+   "animalId": "reef-manta-ray",
+   "scientificName": "Mobula alfredi",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "VU",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Mobula alfredi",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-reef-manta-foa"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_UNMEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "登録済み3調査のいずれにもマンタ類の項目がなく、人気点は未測定です。保全は世界評価VUでfloor Aとなり、これを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみの公表(ライオン55.2%〜カンガルー35.6%)で、水族館の動物は選択肢に現れず、実値が存在しないため分子分母から除外しました(0点扱いにはしていません)。",
+    "PLOS2018の上位20種にマンタ類は含まれません。",
+    "YouGov2015には『Sharks 3』はありますがマンタはサメではなくエイのため流用せず、『Fish 3』も複数の系統をまたぐ広すぎるくくりのため採用しませんでした。",
+    "IUCNレッドリスト公式ページ(iucnredlist.org)はHTTP 403で開けず、区分VulnerableはFishes of Australia(ヴィクトリア博物館などが運営する種解説)の記載で確認しました。",
+    "ワシントン条約附属書IIとCMS附属書I・IIに掲載されていますが、これらは取引・移動性の管理枠組みであり、ティア算定には用いていません。"
+   ]
+  },
+  {
+   "animalId": "ocellaris-clownfish",
+   "scientificName": "Amphiprion ocellaris",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Amphiprion ocellaris",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-clownfish-oca"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_UNMEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "3調査のいずれにもカクレクマノミ(またはクマノミ類)の項目がなく、人気点は未測定です。世界評価LCによる中立的なCを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみの公表で海水魚は圏外のため、実値が存在せず除外しました。",
+    "PLOS2018の上位20種にクマノミ類は含まれません。",
+    "YouGov2015に『Clownfish』の項目はありません。『Fish 3』は魚類全般への評価で本種単独の人気ではないため採用しませんでした。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、2022年評価のLeast Concernはオレゴン海岸水族館の種解説で確認しました。",
+    "Animal Diversity Webの同種ページはIUCN区分を『Not Evaluated』と記載しており、2022年評価より古い記述と判断して採用していません。"
+   ]
+  },
+  {
+   "animalId": "big-belly-seahorse",
+   "scientificName": "Hippocampus abdominalis",
+   "popularity": {
+    "score": 50,
+    "tier": "B",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 5.0,
+      "normalizedScore": 50,
+      "weight": 0.2,
+      "note": "正規化=5*10=50。『Seahorses』はタツノオトシゴ属全体への評価で、ビッグベリーシーホース単独の値ではない",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Seahorses 評価5/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Hippocampus abdominalis",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": true,
+    "sourceIds": [
+     "cons-seahorse-foa",
+     "cons-seahorse-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "B",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "利用できる人気根拠はYouGov2015の『Seahorses』評価5のみで、人気点は(50*0.2)/0.2=50となりB(45以上65未満)です。保全は世界評価LCでfloor C。高い方のBを表示ティアとします。",
+   "limitations": [
+    "『Seahorses』はタツノオトシゴ属全体を指す一般名で、本種単独の人気を測った値ではありません。",
+    "動物園調査2024はTOP10のみの公表で該当なし、PLOS2018の上位20種にも含まれないため、両調査は分子分母から除外しました。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、2017年評価のLeast ConcernはFishes of AustraliaとAnimal Diversity Webの2件で確認しました。",
+    "同じFishes of Australiaのページに2008年評価では『Data Deficient』だったと記載があり、区分は評価時点によって変わっています。最新の記載である2017年評価を採用しました。",
+    "ワシントン条約附属書IIに掲載されていますが、これは取引管理の枠組みでありティア算定には用いていません。"
+   ]
+  },
+  {
+   "animalId": "electric-eel",
+   "scientificName": "Electrophorus electricus",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "LC",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Electrophorus electricus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": true,
+    "sourceIds": [
+     "cons-electric-eel-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "C",
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_UNMEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "3調査のいずれにもデンキウナギの項目がなく、人気点は未測定です。世界評価LCによる中立的なCを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみの公表で該当なし、PLOS2018の上位20種にも含まれないため除外しました。",
+    "YouGov2015の『Eels 0』は真のウナギ(ウナギ目)への評価です。デンキウナギはデンキウナギ目でウナギ目ではないため、この値を人気点に流用していません(0点として採用することも誤りになります)。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、区分Least ConcernはAnimal Diversity Webの記載で確認しました。",
+    "同ページの分布記述(オリノコ川や中下流アマゾンを含む)は2019年の3種分割前の広い意味でのElectrophorus electricusを指している可能性が高く、区分が分割後の狭義の種に対する評価かどうかは確認できていません。"
+   ]
+  },
+  {
+   "animalId": "coelacanth",
+   "scientificName": "Latimeria chalumnae",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "CR",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Latimeria chalumnae",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": "評価年を開ける一次情報で確認できませんでした（検索結果では2000年評価・要更新とされます）。",
+    "sourceIds": [
+     "cons-coelacanth-adw",
+     "cons-coelacanth-noaa"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "S",
+   "displayTier": "S",
+   "tierReasonCodes": [
+    "CONSERVATION_STATUS",
+    "POPULARITY_UNMEASURED"
+   ],
+   "tierReasonText": "登録済み3調査のいずれにも該当項目がなく、人気点は未測定（null）です。保全は世界評価CR（近絶滅種）でfloorはS。人気ティアがnullのため、保全由来のSを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表（ライオン55.2%〜カンガルー35.6%）でシーラカンスは圏外、PLOS2018のTOP20も哺乳類・ワニ・ホホジロザメのみで魚類の該当なし。いずれも分子分母から除外しました（未掲載を0点にはしていません）。",
+    "YouGov2015には『Fish』（評価3）という項目がありますが、これは魚類全般を指す極端に広いくくりで、深海の肉鰭類であるシーラカンスの人気とは対応しません。同調査にはSharksやGoldfishなど個別項目も併存しており、回答者が身近な魚を想定していると考えられるため採用しませんでした。",
+    "IUCNレッドリスト公式ページ、PDF配信URL（iucnredlist.org/species/pdf/…）、DOIリダイレクト先はいずれもHTTP 403で開けず、区分Critically EndangeredはAnimal Diversity Web（ミシガン大学）で確認しました。CITES附属書IはNOAA Fisheriesでも重ねて確認しています。",
+    "米国では2016年にタンザニアの個体群（DPS）が絶滅危惧種法でthreatenedに指定されていますが、これは地域個体群への指定であり、世界評価CRとは別の枠組みです。"
+   ]
+  },
+  {
+   "animalId": "monarch-butterfly",
+   "scientificName": "Danaus plexippus",
+   "popularity": {
+    "score": 50,
+    "tier": "B",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 5.0,
+      "normalizedScore": 50,
+      "weight": 0.2,
+      "note": "正規化=5*10=50。利用可能な入力が1件のため score=(50*0.2)/0.2=50。『Butterflies』はチョウ類全般への評価",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Butterflies 評価5/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": null,
+    "assessmentState": "subspecies-assessed-only",
+    "assessmentScope": "Danaus plexippus plexippus（渡り亜種）のみ",
+    "taxonScope": "Danaus plexippus（本図鑑の分類単位である種全体）",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": false,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-monarch-iucn2022",
+     "cons-monarch-mw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11",
+    "notes": "IUCNが評価しているのは渡りをする亜種Danaus plexippus plexippusで、2022年7月にEN、2023年にVUへ変更されました。本図鑑の分類単位は種全体（Danaus plexippus）であり、世界90以上の国・島嶼に渡りをしない集団が広がっています。規則『地域個体群や下位単位だけの区分を全体へ拡張しない』に従い、この区分を種全体のfloorに使いません（ガラパゴスゾウガメと同型の扱い）。"
+   },
+   "conservationFloor": null,
+   "displayTier": "B",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_TAXON_MISMATCH"
+   ],
+   "tierReasonText": "利用可能な人気根拠はYouGovの『Butterflies』評価5のみで、人気点は(50*0.2)/0.2=50となりB（45以上65未満）です。保全は評価単位が渡り亜種に限られ、種全体への世界評価がないためfloorを適用せず、表示ティアは人気由来のBとしました。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で昆虫は圏外、PLOS2018のTOP20にも無脊椎動物は含まれず、いずれも分子分母から除外しました（未掲載を0点にはしていません）。",
+    "『Butterflies』はチョウ類全般への評価で、オオカバマダラ単独の人気ではありません。",
+    "渡り亜種Danaus plexippus plexippusは2022年7月にEN、2023年にVUとされています。表示ティアBは種全体に対する指標であり、北米の渡り集団の危機度はこれより高く評価されている点に注意してください。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、2022年のENはIUCN公式報道発表で、2023年のVUへの変更はモナークウォッチ（カンザス大学）の解説で確認しました。なお報道発表は2022年7月の掲載、モナークウォッチは2021年の追加と記しており、評価実施年と公表年の差と考えられます。",
+    "米国では2024年12月にESAのthreatened指定が提案されましたが、提案段階であり確定した法的区分ではありません（federalregister.govはボット判定リダイレクトで開けず、モナークウォッチの解説で確認）。"
+   ]
+  },
+  {
+   "animalId": "japanese-spider-crab",
+   "scientificName": "Macrocheira kaempferi",
+   "popularity": {
+    "score": 10,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 1.0,
+      "normalizedScore": 10,
+      "weight": 0.2,
+      "note": "正規化=1*10=10。利用可能な入力が1件のため score=(10*0.2)/0.2=10。『Crabs』はカニ類全般への評価",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Crabs 評価1/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "NE",
+    "assessmentState": "not-evaluated",
+    "assessmentScope": "global",
+    "taxonScope": "Macrocheira kaempferi",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-jsc-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": null,
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_NOT_EVALUATED"
+   ],
+   "tierReasonText": "利用可能な人気根拠はYouGovの『Crabs』評価1のみで、人気点は(10*0.2)/0.2=10となりC（45未満）です。IUCNでは未評価（NE）のため規則どおりfloorを与えず、表示ティアは人気由来のCとしました。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で甲殻類は圏外、PLOS2018のTOP20にも該当なし。いずれも分子分母から除外しました（未掲載を0点にはしていません）。",
+    "『Crabs』はカニ類全般への評価で、タカアシガニ単独の人気ではありません。",
+    "IUCNでは未評価（Not Evaluated）です。未評価は低リスクを意味しないため最低ティアを与えていません。",
+    "静岡県の漁獲量は平成28年度18,239kgから令和6年度10,983kgへ減っており、世界評価がないことと資源が安定していることは別問題です。"
+   ]
+  },
+  {
+   "animalId": "giant-squid",
+   "scientificName": "Architeuthis dux",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": null,
+    "assessmentState": "unverified",
+    "assessmentScope": "global",
+    "taxonScope": "Architeuthis dux",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-gsquid-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2026-11-11",
+    "notes": "開ける一次情報でIUCN区分を確認できなかったため、区分を登録していません。確認できる出典が見つかり次第、再算定が必要です。"
+   },
+   "conservationFloor": null,
+   "displayTier": "UNRANKED",
+   "tierReasonCodes": [
+    "POPULARITY_UNMEASURED",
+    "CONSERVATION_UNVERIFIED"
+   ],
+   "tierReasonText": "登録済み3調査のいずれにも該当項目がなく人気点は未測定（null）です。保全区分も開ける一次情報で確認できずnullのため、規則どおりUNRANKED（未算定）とします。無理に格付けはしていません。",
+   "limitations": [
+    "動物園調査2024・PLOS2018に該当なし。YouGov2015には『Squid』の項目がなく、『Octopuses』（評価2）はタコ目でダイオウイカを含まないため使えません。『Molluscs』（評価1）は軟体動物門全体という極端に広いくくりのため採用しませんでした。",
+    "IUCNレッドリストの種ページとPDF配信URLはHTTP 403、SeaLifeBase（sealifebase.ca）とAquarium of the Pacificも403で開けませんでした。検索結果ではAllcock & Barratt (2014)による低危険種（LC）とされますが、開ける一次情報で確認できていないため保全区分として登録していません。",
+    "Animal Diversity WebのIUCN欄は『No special status』で区分の記載がありませんでした。同ページは2004年の生体撮影以前の記述（生きた個体は自然状態で観察されていない）を含み、内容が古い可能性があります。",
+    "UNRANKEDは『危機がない』という意味ではなく、算定に必要な根拠がそろっていないという意味です。"
+   ]
+  },
+  {
+   "animalId": "peacock-mantis-shrimp",
+   "scientificName": "Odontodactylus scyllarus",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "NE",
+    "assessmentState": "not-evaluated",
+    "assessmentScope": "global",
+    "taxonScope": "Odontodactylus scyllarus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-peacock-mantis-shrimp-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": null,
+   "displayTier": "UNRANKED",
+   "tierReasonCodes": [
+    "POPULARITY_UNMEASURED",
+    "CONSERVATION_NOT_EVALUATED"
+   ],
+   "tierReasonText": "動物園調査2024はTOP10のみ公表で圏外、PLOS2018の上位20にも該当がなく、YouGov2015の『Shrimps』はシャコ目とは別の分類群のため流用しませんでした。人気根拠は0件です。IUCNレッドリストでは未評価(NE)のため保全floorも適用できず、無理に格付けせずUNRANKEDとします。",
+   "limitations": [
+    "YouGov2015には『Shrimps』評価1がありますが、シャコ目(Stomatopoda)は回答者の想定するエビ類(十脚目)とは別の分類群のため、人気点へ流用していません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、未評価(Not Evaluated)であることはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "未評価は低リスクを意味しません。サンゴ礁の劣化など生息環境の変化は評価とは別に存在します。"
+   ]
+  },
+  {
+   "animalId": "moon-jellyfish",
+   "scientificName": "Aurelia aurita",
+   "popularity": {
+    "score": 10,
+    "tier": "C",
+    "confidence": "低",
+    "usableEvidenceCount": 1,
+    "evidence": [
+     {
+      "sourceId": "pop-yougov-animals-2015",
+      "rawValue": 1.0,
+      "normalizedScore": 10,
+      "weight": 0.2,
+      "note": "正規化=1*10=10。『Jellyfish』はミズクラゲ以外のクラゲ類も含む広い一般名",
+      "matchType": "broader-common-group",
+      "taxonLabel": "Jellyfish 評価1/10",
+      "rawUnit": "rating0to10"
+     }
+    ]
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "NE",
+    "assessmentState": "not-evaluated",
+    "assessmentScope": "global",
+    "taxonScope": "Aurelia aurita",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": false,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-moon-jellyfish-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": null,
+   "displayTier": "C",
+   "tierReasonCodes": [
+    "POPULARITY_MEASURED",
+    "CONSERVATION_NOT_EVALUATED"
+   ],
+   "tierReasonText": "利用可能な人気根拠はYouGov2015の『Jellyfish』評価1のみで、人気点は(10*0.2)/0.2=10でC(45未満)です。IUCNレッドリストは未評価(NE)で保全floorが無いため、人気由来のCを表示ティアとします。",
+   "limitations": [
+    "動物園調査2024はTOP10のみ公表で圏外、PLOS2018の上位20にも該当がなく、この2調査は分子分母から除外しました(未掲載を0点にはしていません)。",
+    "YouGovの『Jellyfish』はクラゲ類全般を指す一般名で、ミズクラゲに限定した評価ではありません。",
+    "IUCNレッドリスト公式ページはHTTP 403で開けず、未評価であることはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "日本沿岸で優占するミズクラゲは遺伝解析ではAurelia coeruleaとされ、Aurelia auritaという名前で評価単位を固定できません(taxonomyCompatibleをfalseとしました)。"
+   ]
+  },
+  {
+   "animalId": "horseshoe-crab",
+   "scientificName": "Tachypleus tridentatus",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "EN",
+    "assessmentState": "assessed",
+    "assessmentScope": "global",
+    "taxonScope": "Tachypleus tridentatus",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": true,
+    "subpopulationWarning": true,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-horseshoe-crab-iucn-hcsg"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": "A",
+   "displayTier": "A",
+   "tierReasonCodes": [
+    "POPULARITY_UNMEASURED",
+    "CONSERVATION_STATUS"
+   ],
+   "tierReasonText": "3調査のいずれにもカブトガニの実値がなく、人気は未測定です。YouGov2015の『Crabs』はカニ類(十脚目)への回答で、鋏角類であるカブトガニには流用しませんでした。世界評価Endangeredによる保全floor Aを表示ティアとします。",
+   "limitations": [
+    "YouGov2015には『Crabs』評価1がありますが、カブトガニは甲殻類ではなく鋏角類のため、人気点へ流用していません。",
+    "IUCNレッドリスト公式ページとDOIリンク先はHTTP 403で開けず、区分EndangeredはIUCN種の保存委員会カブトガニ専門家グループ(iucn.org)の記載で確認しました。",
+    "日本国内でも絶滅危惧種として扱われますが、国内区分は世界評価とは別の枠組みです。",
+    "同じカブトガニ科でもLimulus polyphemusはVulnerable、他2種はData Deficientであり、本区分はTachypleus tridentatusに限られます。"
+   ]
+  },
+  {
+   "animalId": "tardigrade",
+   "scientificName": "Tardigrada（緩歩動物門）",
+   "popularity": {
+    "score": null,
+    "tier": null,
+    "confidence": "未測定",
+    "usableEvidenceCount": 0,
+    "evidence": []
+   },
+   "conservation": {
+    "system": "IUCN Red List",
+    "category": "NE",
+    "assessmentState": "not-evaluated",
+    "assessmentScope": "global",
+    "taxonScope": "緩歩動物門(Tardigrada)全体。種単位の評価は存在しない",
+    "isRegional": false,
+    "isWildOnly": true,
+    "taxonomyCompatible": false,
+    "subpopulationWarning": false,
+    "assessmentAgeWarning": null,
+    "sourceIds": [
+     "cons-tardigrade-adw"
+    ],
+    "checkedAt": "2026-08-11",
+    "nextReviewAt": "2027-02-11"
+   },
+   "conservationFloor": null,
+   "displayTier": "UNRANKED",
+   "tierReasonCodes": [
+    "POPULARITY_UNMEASURED",
+    "CONSERVATION_NOT_EVALUATED"
+   ],
+   "tierReasonText": "3調査のいずれにもクマムシの項目がなく、人気は未測定です。またこの記事は門全体の紹介で、IUCNレッドリストに対応する評価単位がなく未評価(NE)扱いのため保全floorも適用できません。両方nullのためUNRANKEDとします。",
+   "limitations": [
+    "動物園調査2024・PLOS2018・YouGov2015のいずれにもクマムシに相当する項目がなく、人気根拠は0件です(未掲載を0点にはしていません)。",
+    "クマムシは種ではなく門(緩歩動物門)であり、IUCNの評価単位と対応しません。特定種を対象とした保全措置がないことはAnimal Diversity Web(ミシガン大学)の記載で確認しました。",
+    "未評価は低リスクを意味しません。個々の種の分布や個体数はほとんど調べられていません。"
+   ]
+  }
+ ],
+ "benchmarks": []
+}

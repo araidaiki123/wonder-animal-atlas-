@@ -1,0 +1,2950 @@
+[
+ {
+  "id": "baleen",
+  "term": "ひげ板",
+  "reading": "ひげいた",
+  "category": "身体",
+  "kidsDefinition": "クジラの口にあり、海水から小さな食べ物をこし取る板です。",
+  "adultDefinition": "上あごから並んで垂れ、毛や爪と同じケラチンを主成分とする器官です。",
+  "aliases": [
+   "クジラひげ"
+  ],
+  "example": "シロナガスクジラは、ひげ板でオキアミなどをこし取ります。"
+ },
+ {
+  "id": "phylogeny",
+  "term": "系統",
+  "reading": "けいとう",
+  "category": "進化",
+  "kidsDefinition": "共通の祖先から枝分かれした、生き物どうしのつながりです。",
+  "adultDefinition": "祖先と子孫の関係を、枝分かれとして表したものです。",
+  "aliases": [
+   "進化系統"
+  ],
+  "example": "クジラとカバは近い系統に属します。"
+ },
+ {
+  "id": "vestige",
+  "term": "痕跡",
+  "reading": "こんせき",
+  "category": "進化",
+  "kidsDefinition": "祖先にあった特徴の一部が、形を変えて残ったものです。",
+  "adultDefinition": "昔と同じ働きを失ったり変えたりしながら残る体の特徴を指します。",
+  "aliases": [
+   "痕跡器官"
+  ],
+  "example": "クジラの体内には、後ろ足の祖先を知る手がかりとなる骨の痕跡があります。"
+ },
+ {
+  "id": "cervical-vertebra",
+  "term": "頸椎",
+  "reading": "けいつい",
+  "category": "身体",
+  "kidsDefinition": "首をつくっている背骨です。",
+  "adultDefinition": "頭と胸の間に並ぶ脊椎の一部で、哺乳類では多くの種が7個を持ちます。",
+  "aliases": [
+   "首の骨"
+  ],
+  "example": "キリンの長い首も、頸椎の数は多くの哺乳類と同じです。"
+ },
+ {
+  "id": "natural-selection",
+  "term": "自然選択",
+  "reading": "しぜんせんたく",
+  "category": "進化",
+  "kidsDefinition": "その環境で子孫を残しやすい特徴が、世代を重ねて増えやすくなることです。",
+  "adultDefinition": "生存や繁殖の差によって、受け継がれる特徴の割合が集団内で変わる過程です。",
+  "aliases": [
+   "自然淘汰"
+  ],
+  "example": "キリンの首の進化には、食べ物や繁殖に関わる自然選択が考えられています。"
+ },
+ {
+  "id": "sexual-selection",
+  "term": "性選択",
+  "reading": "せいせんたく",
+  "category": "進化",
+  "kidsDefinition": "繁殖相手を得やすい特徴が、世代を重ねて増えやすくなることです。",
+  "adultDefinition": "繁殖相手の選択や競争による繁殖成功の差が、特徴の広がりへ影響する過程です。",
+  "aliases": [],
+  "example": "キリンの雄どうしの競争と長い首の関係が研究されています。"
+ },
+ {
+  "id": "monotreme",
+  "term": "単孔類",
+  "reading": "たんこうるい",
+  "category": "分類",
+  "kidsDefinition": "卵を産む哺乳類の仲間です。",
+  "adultDefinition": "現在はカモノハシとハリモグラの仲間を含む哺乳類の一群です。",
+  "aliases": [
+   "単孔目"
+  ],
+  "example": "カモノハシは単孔類です。"
+ },
+ {
+  "id": "electroreception",
+  "term": "電気受容",
+  "reading": "でんきじゅよう",
+  "category": "身体",
+  "kidsDefinition": "生き物が出す弱い電気を感じ取る力です。",
+  "adultDefinition": "水中などの電気の変化を感覚器で受け取り、獲物の発見などに使う能力です。",
+  "aliases": [
+   "電気感覚"
+  ],
+  "example": "カモノハシは、くちばしで獲物の弱い電気を感じます。"
+ },
+ {
+  "id": "keratin",
+  "term": "ケラチン",
+  "reading": "けらちん",
+  "category": "身体",
+  "kidsDefinition": "毛や爪などをつくる、丈夫なたんぱく質です。",
+  "adultDefinition": "脊椎動物の皮膚、毛、爪などに含まれる構造たんぱく質です。",
+  "aliases": [
+   "角質たんぱく質"
+  ],
+  "example": "クジラのひげ板にもケラチンが含まれます。"
+ },
+ {
+  "id": "flipper",
+  "term": "フリッパー",
+  "reading": "ふりっぱー",
+  "category": "身体",
+  "kidsDefinition": "水をかいて進むための、平たいひれのような体の部分です。",
+  "adultDefinition": "翼や手足が、水中で進むことに合った形へ変化した器官です。",
+  "aliases": [
+   "ひれ状の翼"
+  ],
+  "example": "ペンギンはフリッパーで水中を進みます。"
+ },
+ {
+  "id": "fast-ice",
+  "term": "定着氷",
+  "reading": "ていちゃくひょう",
+  "category": "生態",
+  "kidsDefinition": "海岸などにつながり、その場所から流れにくい海の氷です。",
+  "adultDefinition": "海岸や海底に固定され、漂流せずにとどまる海氷です。",
+  "aliases": [
+   "沿岸定着氷"
+  ],
+  "example": "コウテイペンギンは定着氷の上で繁殖します。"
+ },
+ {
+  "id": "aquatic-adaptation",
+  "term": "水生化",
+  "reading": "すいせいか",
+  "category": "進化",
+  "kidsDefinition": "陸や空で暮らした祖先の仲間に、水中生活に合う特徴が重なったことです。",
+  "adultDefinition": "陸上性などの系統で、水中生活に関わる形や働きが世代を通して変化することです。",
+  "aliases": [
+   "水生適応"
+  ],
+  "example": "ペンギンの翼は、水生化の中で泳ぎに合う形へ変化しました。"
+ },
+ {
+  "id": "neoteny",
+  "term": "幼形成熟",
+  "reading": "ようけいせいじゅく",
+  "category": "進化",
+  "kidsDefinition": "子どものころの体の特徴を残したまま、繁殖できる大人になることです。",
+  "adultDefinition": "成長のしかたが変わり、幼生の特徴を保ったまま性成熟する現象です。",
+  "aliases": [
+   "ネオテニー"
+  ],
+  "example": "ウーパールーパーは、えらを残した姿で繁殖できます。"
+ },
+ {
+  "id": "metamorphosis",
+  "term": "変態",
+  "reading": "へんたい",
+  "category": "身体",
+  "kidsDefinition": "成長の途中で、体の形や暮らし方が大きく変わることです。",
+  "adultDefinition": "幼生から成体になる過程で、体のつくりや生理が大きく組み替わる現象です。",
+  "aliases": [],
+  "example": "多くの両生類は、変態して水中の幼生から成体になります。"
+ },
+ {
+  "id": "genome",
+  "term": "ゲノム",
+  "reading": "げのむ",
+  "category": "研究",
+  "kidsDefinition": "一つの生き物が持つ遺伝情報の全体です。",
+  "adultDefinition": "その生物を形づくり働かせるためのDNA情報一式を指します。",
+  "aliases": [
+   "全遺伝情報"
+  ],
+  "example": "ウーパールーパーのゲノムは、体の再生研究でも調べられています。"
+ },
+ {
+  "id": "base-pair",
+  "term": "塩基対",
+  "reading": "えんきつい",
+  "category": "研究",
+  "kidsDefinition": "DNAをつくる文字が二つ組み合わさったものです。",
+  "adultDefinition": "DNAの二本の鎖で向かい合う塩基の組で、長さを表す単位にも使います。",
+  "aliases": [
+   "bp"
+  ],
+  "example": "ゲノムの大きさは塩基対の数で表せます。"
+ },
+ {
+  "id": "cephalopod",
+  "term": "頭足類",
+  "reading": "とうそくるい",
+  "category": "分類",
+  "kidsDefinition": "タコ、イカ、コウイカ、オウムガイなどの仲間です。",
+  "adultDefinition": "腕や触手が頭部の近くに並ぶ、軟体動物の一群です。",
+  "aliases": [
+   "頭足綱"
+  ],
+  "example": "タコは頭足類です。"
+ },
+ {
+  "id": "hemocyanin",
+  "term": "ヘモシアニン",
+  "reading": "へもしあにん",
+  "category": "身体",
+  "kidsDefinition": "銅を使って、体の中で酸素を運ぶたんぱく質です。",
+  "adultDefinition": "一部の無脊椎動物の体液にあり、酸素と結びついて運ぶ色素たんぱく質です。",
+  "aliases": [
+   "血青素"
+  ],
+  "example": "タコはヘモシアニンで酸素を運びます。"
+ },
+ {
+  "id": "independent-evolution",
+  "term": "独立進化",
+  "reading": "どくりつしんか",
+  "category": "進化",
+  "kidsDefinition": "遠い仲間に、似た特徴が別々の道すじで生まれることです。",
+  "adultDefinition": "異なる系統で、似た形や働きがそれぞれ変化して生じることです。",
+  "aliases": [],
+  "example": "タコと脊椎動物の目は、別々の系統で変化してきました。"
+ },
+ {
+  "id": "proboscidea",
+  "term": "長鼻目",
+  "reading": "ちょうびもく",
+  "category": "分類",
+  "kidsDefinition": "今のゾウと、すでに絶滅した近い仲間を含む分類です。",
+  "adultDefinition": "現生のゾウ科と、多数の絶滅系統を含む哺乳類の分類群です。",
+  "aliases": [
+   "ゾウ目"
+  ],
+  "example": "アフリカゾウは長鼻目に属します。"
+ },
+ {
+  "id": "muscular-hydrostat",
+  "term": "筋肉性ハイドロスタット",
+  "reading": "きんにくせいはいどろすたっと",
+  "category": "身体",
+  "kidsDefinition": "骨を使わず、筋肉で支えながら曲げたり伸ばしたりする体の部分です。",
+  "adultDefinition": "筋肉の体積がほぼ変わらない性質を使い、さまざまな方向へ動く器官です。",
+  "aliases": [
+   "筋肉水力学系"
+  ],
+  "example": "ゾウの鼻は筋肉性ハイドロスタットです。"
+ },
+ {
+  "id": "selection-pressure",
+  "term": "選択圧",
+  "reading": "せんたくあつ",
+  "category": "進化",
+  "kidsDefinition": "ある特徴を持つ個体の生き残りやすさや、子孫の残しやすさに差を生む環境の働きです。",
+  "adultDefinition": "特徴ごとの生存や繁殖の差を生じさせ、集団の変化に影響する環境要因です。",
+  "aliases": [],
+  "example": "食べ物や気候は、選択圧になりえます。"
+ },
+ {
+  "id": "kelp-forest",
+  "term": "海藻林",
+  "reading": "かいそうりん",
+  "category": "生態",
+  "kidsDefinition": "大きな海藻が林のようにしげり、多くの生き物が暮らす場所です。",
+  "adultDefinition": "大型の海藻が立体的に広がる沿岸の生態系です。",
+  "aliases": [
+   "藻場"
+  ],
+  "example": "ラッコが暮らす沿岸には海藻林があります。"
+ },
+ {
+  "id": "trophic-cascade",
+  "term": "栄養カスケード",
+  "reading": "えいようかすけーど",
+  "category": "生態",
+  "kidsDefinition": "食べる動物の増減が、食べられる生き物を通して別の生き物へ次々に影響することです。",
+  "adultDefinition": "食物網の上位にいる捕食者の変化が、複数の段階を通して生態系へ波及する現象です。",
+  "aliases": [
+   "トロフィックカスケード"
+  ],
+  "example": "ラッコ、ウニ、海藻林の関係は栄養カスケードの例として研究されています。"
+ },
+ {
+  "id": "population-bottleneck",
+  "term": "ボトルネック",
+  "reading": "ぼとるねっく",
+  "category": "進化",
+  "kidsDefinition": "生き物の数が急に減り、受け継がれる特徴の種類も少なくなることです。",
+  "adultDefinition": "集団の急減によって遺伝的多様性の一部が失われる現象です。",
+  "aliases": [
+   "集団ボトルネック"
+  ],
+  "example": "ラッコの集団史を調べるとき、ボトルネックも考えます。"
+ },
+ {
+  "id": "anvil",
+  "term": "金床",
+  "reading": "かなとこ",
+  "category": "研究",
+  "kidsDefinition": "かたい物を打ちつけるための土台です。",
+  "adultDefinition": "動物行動の研究では、殻を割るために使う岩なども金床と呼びます。",
+  "aliases": [
+   "アンビル"
+  ],
+  "example": "ラッコは胸の上の石を金床のように使うことがあります。"
+ },
+ {
+  "id": "stoop",
+  "term": "ストゥープ",
+  "reading": "すとぅーぷ",
+  "category": "生態",
+  "kidsDefinition": "猛禽類が翼をすぼめ、高い所から獲物へ急降下することです。",
+  "adultDefinition": "高所から速度を上げて獲物へ接近する、猛禽類の狩りの行動です。",
+  "aliases": [
+   "急降下"
+  ],
+  "example": "ハヤブサはストゥープで獲物へ近づきます。"
+ },
+ {
+  "id": "dde",
+  "term": "DDE",
+  "reading": "でぃーでぃーいー",
+  "category": "研究",
+  "kidsDefinition": "DDTという物質が変化してでき、鳥の卵の殻に影響した物質です。",
+  "adultDefinition": "DDTの分解で生じ、猛禽類の卵殻が薄くなる問題と関連づけられた化学物質です。",
+  "aliases": [],
+  "example": "ハヤブサの減少を調べる研究でDDEが測られました。"
+ },
+ {
+  "id": "biomagnification",
+  "term": "生物濃縮",
+  "reading": "せいぶつのうしゅく",
+  "category": "生態",
+  "kidsDefinition": "分かれにくい物質が、食べる・食べられるつながりの上ほど多くたまることです。",
+  "adultDefinition": "食物網の上位へ移るにつれ、体内の物質濃度が高くなる現象です。",
+  "aliases": [
+   "生体濃縮"
+  ],
+  "example": "猛禽類では、獲物を通した物質の生物濃縮が問題になりました。"
+ },
+ {
+  "id": "subspecies",
+  "term": "亜種",
+  "reading": "あしゅ",
+  "category": "分類",
+  "kidsDefinition": "同じ種の中で、暮らす地域や体の特徴にまとまりがある集団です。",
+  "adultDefinition": "種の中の地理的・形態的なまとまりを示す区分で、研究によって境界が変わる場合があります。",
+  "aliases": [],
+  "example": "ハヤブサには、地域ごとに区別された亜種があります。"
+ },
+ {
+  "id": "maternal-dna",
+  "term": "母系DNA",
+  "reading": "ぼけいでぃーえぬえー",
+  "category": "研究",
+  "kidsDefinition": "おもに母親から子へ受け継がれ、母方のつながりを調べられるDNAです。",
+  "adultDefinition": "一般にミトコンドリアDNAを指し、母方の集団史を推定する手がかりになります。",
+  "aliases": [
+   "ミトコンドリアDNA",
+   "mtDNA"
+  ],
+  "example": "ウミガメの母系DNAから、集団のつながりを調べます。"
+ },
+ {
+  "id": "natal-homing",
+  "term": "出生地域回帰",
+  "reading": "しゅっしょうちいきかいき",
+  "category": "生態",
+  "kidsDefinition": "大きくなった動物が、繁殖のため生まれた地域の近くへ戻ることです。",
+  "adultDefinition": "出生地またはその周辺へ繁殖のために戻る傾向を指します。",
+  "aliases": [
+   "母浜回帰"
+  ],
+  "example": "ウミガメの雌は、生まれた地域に近い浜へ戻る傾向があります。"
+ },
+ {
+  "id": "temperature-dependent-sex-determination",
+  "term": "温度依存性決定",
+  "reading": "おんどいぞんせいけってい",
+  "category": "身体",
+  "kidsDefinition": "卵が育つ温度によって、生まれる雄と雌の割合が変わる仕組みです。",
+  "adultDefinition": "胚が発生する時期の温度が、性の決定へ影響する仕組みです。",
+  "aliases": [
+   "温度依存性決定機構",
+   "TSD"
+  ],
+  "example": "ウミガメでは、卵が育つ温度が子の性に影響します。"
+ },
+ {
+  "id": "migration",
+  "term": "回遊",
+  "reading": "かいゆう",
+  "category": "生態",
+  "kidsDefinition": "餌場や繁殖場所の間を、長い距離移動することです。",
+  "adultDefinition": "生活史の中で、決まった場所や時期を結んで繰り返す移動です。",
+  "aliases": [
+   "長距離移動"
+  ],
+  "example": "ウミガメは餌場と繁殖場所の間を回遊します。"
+ },
+ {
+  "id": "eusociality",
+  "term": "真社会性",
+  "reading": "しんしゃかいせい",
+  "category": "生態",
+  "kidsDefinition": "繁殖する個体が限られ、ほかの仲間が協力して子育てする社会です。",
+  "adultDefinition": "繁殖の分担、共同育児、複数世代の同居を特徴とする社会の形です。",
+  "aliases": [
+   "ユースーシャリティ"
+  ],
+  "example": "ハダカデバネズミは真社会性を持つ哺乳類です。"
+ },
+ {
+  "id": "anoxia",
+  "term": "無酸素",
+  "reading": "むさんそ",
+  "category": "身体",
+  "kidsDefinition": "体が使える酸素がない状態です。",
+  "adultDefinition": "利用可能な酸素がない状態で、酸素が少ない低酸素とは区別します。",
+  "aliases": [
+   "無酸素状態"
+  ],
+  "example": "ハダカデバネズミの無酸素への反応が実験で調べられています。"
+ },
+ {
+  "id": "glycolysis",
+  "term": "解糖系",
+  "reading": "かいとうけい",
+  "category": "身体",
+  "kidsDefinition": "細胞が糖を分けて、使えるエネルギーを取り出す仕組みです。",
+  "adultDefinition": "細胞質で糖を段階的に分解し、エネルギーを得る代謝経路です。",
+  "aliases": [
+   "解糖"
+  ],
+  "example": "低い酸素の環境での解糖系の働きが研究されています。"
+ },
+ {
+  "id": "hyaluronic-acid",
+  "term": "ヒアルロン酸",
+  "reading": "ひあるろんさん",
+  "category": "身体",
+  "kidsDefinition": "細胞の外側にあり、水分を保つことなどに関わる成分です。",
+  "adultDefinition": "細胞の周囲を満たす成分の一つで、大きさや量によって働きが変わります。",
+  "aliases": [],
+  "example": "ハダカデバネズミの大きなヒアルロン酸が研究されています。"
+ },
+ {
+  "id": "caste",
+  "term": "カースト",
+  "reading": "かーすと",
+  "category": "生態",
+  "kidsDefinition": "同じ種の群れにいる、女王や働き蜂などの役割のちがう仲間です。",
+  "adultDefinition": "社会性動物の群れで、体や行動、繁殖の役割が異なる個体群です。",
+  "aliases": [
+   "階級"
+  ],
+  "example": "ミツバチの群れには女王蜂や働き蜂などのカーストがあります。"
+ },
+ {
+  "id": "developmental-plasticity",
+  "term": "発生の可塑性",
+  "reading": "はっせいのかそせい",
+  "category": "身体",
+  "kidsDefinition": "同じ遺伝情報でも、食べ物や環境によって育つ体が変わる力です。",
+  "adultDefinition": "発生中の環境に応じて、形や働きが異なる姿へ育つ性質です。",
+  "aliases": [
+   "発生可塑性"
+  ],
+  "example": "ミツバチの女王蜂と働き蜂の違いには発生の可塑性が関わります。"
+ },
+ {
+  "id": "haploid",
+  "term": "半数体",
+  "reading": "はんすうたい",
+  "category": "身体",
+  "kidsDefinition": "染色体を一組だけ持つ細胞や個体です。",
+  "adultDefinition": "通常の二組ではなく、一組分の染色体を持つ状態です。",
+  "aliases": [
+   "一倍体"
+  ],
+  "example": "雄のミツバチは通常、半数体です。"
+ },
+ {
+  "id": "dna-methylation",
+  "term": "DNAメチル化",
+  "reading": "でぃーえぬえーめちるか",
+  "category": "研究",
+  "kidsDefinition": "DNAの文字を変えずに、遺伝子の使われ方に関わる印がつくことです。",
+  "adultDefinition": "DNAへ小さな化学基が付加され、遺伝子の働き方に関係する変化です。",
+  "aliases": [
+   "DNAのメチル化"
+  ],
+  "example": "ミツバチの育ち方とDNAメチル化の関係が調べられています。"
+ },
+ {
+  "id": "waggle-dance",
+  "term": "尻振りダンス",
+  "reading": "しりふりだんす",
+  "category": "生態",
+  "kidsDefinition": "働き蜂が、餌場の方向と距離を仲間へ伝える動きです。",
+  "adultDefinition": "巣の中で体を振りながら進み、餌場の位置情報を伝える行動です。",
+  "aliases": [
+   "8の字ダンス",
+   "ワグルダンス"
+  ],
+  "example": "ミツバチは尻振りダンスで餌場を伝えます。"
+ },
+ {
+  "id": "ancestor",
+  "term": "祖先",
+  "reading": "そせん",
+  "category": "進化",
+  "kidsDefinition": "今の生き物へ続く、昔の世代の生き物です。",
+  "adultDefinition": "ある個体や系統より前の世代に位置する生物を指します。",
+  "aliases": [],
+  "example": "クジラの祖先の仲間には、陸上で暮らしたものがいました。"
+ },
+ {
+  "id": "common-ancestor",
+  "term": "共通祖先",
+  "reading": "きょうつうそせん",
+  "category": "進化",
+  "kidsDefinition": "二つ以上の生き物の系統が枝分かれする前にいた祖先です。",
+  "adultDefinition": "複数の系統が共有する、過去の祖先または祖先集団です。",
+  "aliases": [],
+  "example": "タコとイカは、過去の共通祖先から枝分かれしました。"
+ },
+ {
+  "id": "variation",
+  "term": "変異",
+  "reading": "へんい",
+  "category": "進化",
+  "kidsDefinition": "同じ種の中に見られる、体や性質の違いです。",
+  "adultDefinition": "遺伝や環境によって生じる、個体間の特徴の違いです。",
+  "aliases": [
+   "個体差"
+  ],
+  "example": "同じ種にも体の大きさなどの変異があります。"
+ },
+ {
+  "id": "inheritance",
+  "term": "遺伝",
+  "reading": "いでん",
+  "category": "進化",
+  "kidsDefinition": "親の遺伝情報が子へ受け継がれることです。",
+  "adultDefinition": "DNAなどを通して、生物の特徴に関わる情報が世代間で伝わることです。",
+  "aliases": [],
+  "example": "羽の色に関わる情報が親から子へ遺伝することがあります。"
+ },
+ {
+  "id": "adaptation",
+  "term": "適応",
+  "reading": "てきおう",
+  "category": "進化",
+  "kidsDefinition": "ある環境で子孫を残すことに役立つ、受け継がれる特徴です。",
+  "adultDefinition": "自然選択などを通して集団に広がった、環境との関係で働く特徴です。",
+  "aliases": [],
+  "example": "ペンギンの泳ぎに合った翼は、水中生活への適応です。"
+ },
+ {
+  "id": "lineage-splitting",
+  "term": "系統分岐",
+  "reading": "けいとうぶんき",
+  "category": "進化",
+  "kidsDefinition": "一つだった祖先の集団から、別々の生き物のつながりが分かれることです。",
+  "adultDefinition": "祖先集団から複数の系統が枝分かれしていく過程です。",
+  "aliases": [
+   "分岐"
+  ],
+  "example": "系統分岐をたどると、生き物どうしの関係が見えてきます。"
+ },
+ {
+  "id": "convergent-evolution",
+  "term": "収斂進化",
+  "reading": "しゅうれんしんか",
+  "category": "進化",
+  "kidsDefinition": "遠い仲間に、似た環境で似た特徴が別々に生まれることです。",
+  "adultDefinition": "異なる系統で、似た選択圧のもと似た形や機能が独立に生じることです。",
+  "aliases": [
+   "収束進化"
+  ],
+  "example": "遠い仲間の泳ぐ体が似ることは、収斂進化の例になりえます。"
+ },
+ {
+  "id": "fossil",
+  "term": "化石",
+  "reading": "かせき",
+  "category": "進化",
+  "kidsDefinition": "昔の生き物の体や足あとなどが、地層に残ったものです。",
+  "adultDefinition": "過去の生物の遺骸や生活の跡が、地質の中に保存された記録です。",
+  "aliases": [],
+  "example": "化石はクジラの祖先の変化を知る手がかりです。"
+ },
+ {
+  "id": "extinction",
+  "term": "絶滅",
+  "reading": "ぜつめつ",
+  "category": "進化",
+  "kidsDefinition": "ある種の生き物が地球上からいなくなることです。",
+  "adultDefinition": "種または系統の最後の個体が死に、以後続かなくなることです。",
+  "aliases": [],
+  "example": "長鼻目には、すでに絶滅した多くの仲間がいます。"
+ },
+ {
+  "id": "genetic-diversity",
+  "term": "遺伝的多様性",
+  "reading": "いでんてきたようせい",
+  "category": "進化",
+  "kidsDefinition": "同じ種の集団が持つ、受け継がれる特徴の豊かな違いです。",
+  "adultDefinition": "集団内にある遺伝情報の違いの幅を表します。",
+  "aliases": [],
+  "example": "個体数の急減は遺伝的多様性を小さくすることがあります。"
+ },
+ {
+  "id": "gene",
+  "term": "遺伝子",
+  "reading": "いでんし",
+  "category": "進化",
+  "kidsDefinition": "体をつくり働かせる情報を持つ、DNAの一部分です。",
+  "adultDefinition": "たんぱく質やRNAの情報を持ち、形や働きに関わるDNA上の単位です。",
+  "aliases": [],
+  "example": "体の色に関わる遺伝子が調べられることがあります。"
+ },
+ {
+  "id": "dna",
+  "term": "DNA",
+  "reading": "でぃーえぬえー",
+  "category": "進化",
+  "kidsDefinition": "生き物の体をつくり働かせる情報を記録した物質です。",
+  "adultDefinition": "塩基の並びとして遺伝情報を保存する分子です。",
+  "aliases": [
+   "デオキシリボ核酸"
+  ],
+  "example": "DNAを比べると、生き物どうしの系統を調べられます。"
+ },
+ {
+  "id": "chromosome",
+  "term": "染色体",
+  "reading": "せんしょくたい",
+  "category": "進化",
+  "kidsDefinition": "細胞の中で、DNAがまとまって入っているつくりです。",
+  "adultDefinition": "DNAとたんぱく質からでき、遺伝情報をまとめて保持する構造です。",
+  "aliases": [],
+  "example": "ミツバチの雄は通常、染色体を一組持ちます。"
+ },
+ {
+  "id": "mutation",
+  "term": "突然変異",
+  "reading": "とつぜんへんい",
+  "category": "進化",
+  "kidsDefinition": "DNAの文字の並びに、新しい変化が生じることです。",
+  "adultDefinition": "DNA配列に生じる変化で、受け継がれる変異の源になる場合があります。",
+  "aliases": [],
+  "example": "突然変異が起きても、役立つかどうかは環境によって変わります。"
+ },
+ {
+  "id": "species",
+  "term": "種",
+  "reading": "しゅ",
+  "category": "分類",
+  "kidsDefinition": "生き物を分ける基本のまとまりです。",
+  "adultDefinition": "交配、形、遺伝情報、系統など複数の基準から定める分類の単位です。",
+  "aliases": [],
+  "example": "この図鑑では、動物ごとに対象となる種を示します。"
+ },
+ {
+  "id": "genus",
+  "term": "属",
+  "reading": "ぞく",
+  "category": "分類",
+  "kidsDefinition": "近い種をいくつかまとめた分類です。",
+  "adultDefinition": "種の一つ上に置かれ、近縁な種をまとめる分類階級です。",
+  "aliases": [],
+  "example": "同じ属でも、別の種では特徴が違う場合があります。"
+ },
+ {
+  "id": "family",
+  "term": "科",
+  "reading": "か",
+  "category": "分類",
+  "kidsDefinition": "近い属をいくつかまとめた分類です。",
+  "adultDefinition": "属の上、目の下に置かれる分類階級です。",
+  "aliases": [],
+  "example": "ゾウ科には現在生きているゾウの仲間が含まれます。"
+ },
+ {
+  "id": "order",
+  "term": "目",
+  "reading": "もく",
+  "category": "分類",
+  "kidsDefinition": "近い科をいくつかまとめた分類です。",
+  "adultDefinition": "科の上に置かれ、近縁な科をまとめる分類階級です。",
+  "aliases": [],
+  "example": "カモノハシは単孔目に属します。"
+ },
+ {
+  "id": "taxon",
+  "term": "分類群",
+  "reading": "ぶんるいぐん",
+  "category": "分類",
+  "kidsDefinition": "種や属など、分類でまとめられた生き物の集まりです。",
+  "adultDefinition": "分類上のどの階級でも使える、生物のまとまりの呼び名です。",
+  "aliases": [
+   "タクソン"
+  ],
+  "example": "研究結果がどの分類群に当てはまるかを確認します。"
+ },
+ {
+  "id": "scientific-name",
+  "term": "学名",
+  "reading": "がくめい",
+  "category": "分類",
+  "kidsDefinition": "世界の研究者が同じ生き物を指せるようにつけた名前です。",
+  "adultDefinition": "国際的な命名規則に従って付けられる、生物の科学上の名称です。",
+  "aliases": [],
+  "example": "動物の詳細画面には学名も表示します。"
+ },
+ {
+  "id": "mammal",
+  "term": "哺乳類",
+  "reading": "ほにゅうるい",
+  "category": "分類",
+  "kidsDefinition": "子に乳を与えて育てる動物の仲間です。",
+  "adultDefinition": "乳腺と毛を共通の特徴として持つ脊椎動物の一群です。",
+  "aliases": [
+   "哺乳綱"
+  ],
+  "example": "クジラ、キリン、ゾウは哺乳類です。"
+ },
+ {
+  "id": "bird",
+  "term": "鳥類",
+  "reading": "ちょうるい",
+  "category": "分類",
+  "kidsDefinition": "羽毛を持つ動物の仲間です。",
+  "adultDefinition": "羽毛やくちばしを持つ脊椎動物の一群です。",
+  "aliases": [
+   "鳥綱"
+  ],
+  "example": "ペンギンとハヤブサは鳥類です。"
+ },
+ {
+  "id": "reptile",
+  "term": "爬虫類",
+  "reading": "はちゅうるい",
+  "category": "分類",
+  "kidsDefinition": "カメ、トカゲ、ヘビ、ワニなどの仲間です。",
+  "adultDefinition": "現生ではカメ類、ワニ類、有鱗類などを含む脊椎動物の一群です。",
+  "aliases": [
+   "爬虫綱"
+  ],
+  "example": "ウミガメは爬虫類です。"
+ },
+ {
+  "id": "amphibian",
+  "term": "両生類",
+  "reading": "りょうせいるい",
+  "category": "分類",
+  "kidsDefinition": "カエルやサンショウウオなどの仲間です。",
+  "adultDefinition": "生活史の中で水辺と陸上の両方に関わる種が多い脊椎動物の一群です。",
+  "aliases": [
+   "両生綱"
+  ],
+  "example": "ウーパールーパーは両生類です。"
+ },
+ {
+  "id": "fish",
+  "term": "魚類",
+  "reading": "ぎょるい",
+  "category": "分類",
+  "kidsDefinition": "おもに水中で暮らし、えらで呼吸する脊椎動物の仲間です。",
+  "adultDefinition": "あごを持たない魚、軟骨魚、硬骨魚などをまとめた呼び方です。",
+  "aliases": [],
+  "example": "魚類は多くの海の動物の食物になります。"
+ },
+ {
+  "id": "invertebrate",
+  "term": "無脊椎動物",
+  "reading": "むせきついどうぶつ",
+  "category": "分類",
+  "kidsDefinition": "背骨を持たない動物をまとめた呼び方です。",
+  "adultDefinition": "節足動物や軟体動物など、脊椎動物以外の多様な動物群の総称です。",
+  "aliases": [],
+  "example": "タコとミツバチは無脊椎動物です。"
+ },
+ {
+  "id": "organ",
+  "term": "器官",
+  "reading": "きかん",
+  "category": "身体",
+  "kidsDefinition": "目や心臓のように、体の中で決まった働きをする部分です。",
+  "adultDefinition": "複数の組織が組み合わさり、一定の機能を担う体の構造です。",
+  "aliases": [],
+  "example": "ゾウの鼻は、物をつかむ器官でもあります。"
+ },
+ {
+  "id": "tissue",
+  "term": "組織",
+  "reading": "そしき",
+  "category": "身体",
+  "kidsDefinition": "似た働きをする細胞が集まった体の部分です。",
+  "adultDefinition": "形や働きが近い細胞と、その周囲の成分からなる集まりです。",
+  "aliases": [],
+  "example": "筋肉の組織が縮むことで体が動きます。"
+ },
+ {
+  "id": "cell",
+  "term": "細胞",
+  "reading": "さいぼう",
+  "category": "身体",
+  "kidsDefinition": "生き物の体をつくる、とても小さな基本の単位です。",
+  "adultDefinition": "生命活動を行う基本単位で、動物の体は多くの細胞からできています。",
+  "aliases": [],
+  "example": "ヒアルロン酸は細胞の周りにあります。"
+ },
+ {
+  "id": "skeleton",
+  "term": "骨格",
+  "reading": "こっかく",
+  "category": "身体",
+  "kidsDefinition": "体を支え、形を保つ骨などのつくりです。",
+  "adultDefinition": "体を支持し、運動や内臓の保護にも関わる構造です。",
+  "aliases": [],
+  "example": "化石の骨格から、昔の動物の体を調べます。"
+ },
+ {
+  "id": "exoskeleton",
+  "term": "外骨格",
+  "reading": "がいこっかく",
+  "category": "身体",
+  "kidsDefinition": "体の外側をおおって支える、かたいつくりです。",
+  "adultDefinition": "節足動物などで、体表を支え保護する骨格です。",
+  "aliases": [],
+  "example": "ミツバチの体は外骨格におおわれています。"
+ },
+ {
+  "id": "body-temperature",
+  "term": "体温",
+  "reading": "たいおん",
+  "category": "身体",
+  "kidsDefinition": "生き物の体の温度です。",
+  "adultDefinition": "体内でつくられる熱と、外へ出る熱のつり合いで変わります。",
+  "aliases": [],
+  "example": "コウテイペンギンは寒さの中で体温を保ちます。"
+ },
+ {
+  "id": "endotherm",
+  "term": "内温動物",
+  "reading": "ないおんどうぶつ",
+  "category": "身体",
+  "kidsDefinition": "体の中でつくる熱を主に使って、体温を調節する動物です。",
+  "adultDefinition": "代謝で生じる熱を主な熱源とする動物です。内温性と体温が常に一定であることは同じ意味ではありません。",
+  "aliases": [
+   "内温性動物",
+   "恒温動物"
+  ],
+  "example": "鳥類と哺乳類の多くは内温動物ですが、体温がいつも完全に同じとは限りません。"
+ },
+ {
+  "id": "ectotherm",
+  "term": "外温動物",
+  "reading": "がいおんどうぶつ",
+  "category": "身体",
+  "kidsDefinition": "日光や周りの水など、体の外から得る熱を主に使う動物です。",
+  "adultDefinition": "環境から得る熱を主な熱源とする動物です。外温性だから常に体温が大きく変わるとは限りません。",
+  "aliases": [
+   "外温性動物",
+   "変温動物"
+  ],
+  "example": "爬虫類や両生類の多くは外温動物で、日なたと日陰の移動でも体温を調節します。"
+ },
+ {
+  "id": "mimicry",
+  "term": "擬態",
+  "reading": "ぎたい",
+  "category": "身体",
+  "kidsDefinition": "別の生き物や周りの物に似た姿や動きをすることです。",
+  "adultDefinition": "外見や行動が別の生物や環境に似ることで、相手の反応へ影響する現象です。",
+  "aliases": [],
+  "example": "タコには周りの形や色に似せるものがいます。"
+ },
+ {
+  "id": "camouflage",
+  "term": "保護色",
+  "reading": "ほごしょく",
+  "category": "身体",
+  "kidsDefinition": "周りにまぎれて見つかりにくくなる体の色や模様です。",
+  "adultDefinition": "背景との違いを小さくし、見つかりにくくする色彩や模様です。",
+  "aliases": [
+   "カモフラージュ"
+  ],
+  "example": "体の色を周囲に合わせるタコがいます。"
+ },
+ {
+  "id": "sense-organ",
+  "term": "感覚器",
+  "reading": "かんかくき",
+  "category": "身体",
+  "kidsDefinition": "光、音、におい、電気などを感じる体の部分です。",
+  "adultDefinition": "外界や体内の刺激を受け取り、神経へ情報を伝える器官です。",
+  "aliases": [
+   "感覚器官"
+  ],
+  "example": "カモノハシのくちばしには電気を感じる感覚器があります。"
+ },
+ {
+  "id": "respiration",
+  "term": "呼吸",
+  "reading": "こきゅう",
+  "category": "身体",
+  "kidsDefinition": "体に酸素を取り入れ、いらない気体を外へ出すことです。",
+  "adultDefinition": "外界とのガス交換と、細胞でエネルギーを得る働きに関わる過程です。",
+  "aliases": [],
+  "example": "クジラは水面に出て肺で呼吸します。"
+ },
+ {
+  "id": "metabolism",
+  "term": "代謝",
+  "reading": "たいしゃ",
+  "category": "身体",
+  "kidsDefinition": "体の中で物をつくったり分けたりして、命を保つ働きです。",
+  "adultDefinition": "体内で進む物質とエネルギーの化学反応の全体です。",
+  "aliases": [],
+  "example": "解糖系は代謝の一部です。"
+ },
+ {
+  "id": "ecosystem",
+  "term": "生態系",
+  "reading": "せいたいけい",
+  "category": "生態",
+  "kidsDefinition": "ある場所の生き物と、水や土などの環境がつながったまとまりです。",
+  "adultDefinition": "生物群集と、それを取り巻く非生物環境が相互に作用する仕組みです。",
+  "aliases": [],
+  "example": "ラッコは沿岸の生態系と深く関わります。"
+ },
+ {
+  "id": "habitat",
+  "term": "生息地",
+  "reading": "せいそくち",
+  "category": "生態",
+  "kidsDefinition": "生き物が暮らし、食べたり子を育てたりする場所です。",
+  "adultDefinition": "生物が生活に必要な条件を得る環境や地域です。",
+  "aliases": [
+   "すみか"
+  ],
+  "example": "海藻林はラッコの生息地の一つです。"
+ },
+ {
+  "id": "predator",
+  "term": "捕食者",
+  "reading": "ほしょくしゃ",
+  "category": "生態",
+  "kidsDefinition": "ほかの動物をつかまえて食べる動物です。",
+  "adultDefinition": "獲物を捕らえて食べることで栄養を得る生物です。",
+  "aliases": [
+   "食べる側"
+  ],
+  "example": "ラッコはウニなどを食べる捕食者です。"
+ },
+ {
+  "id": "prey",
+  "term": "被食者",
+  "reading": "ひしょくしゃ",
+  "category": "生態",
+  "kidsDefinition": "ほかの動物につかまって食べられる側の動物です。",
+  "adultDefinition": "捕食者に捕らえられ、食物となる生物です。",
+  "aliases": [
+   "獲物",
+   "食べられる側"
+  ],
+  "example": "ハヤブサにとって、小鳥は被食者になることがあります。"
+ },
+ {
+  "id": "food-web",
+  "term": "食物網",
+  "reading": "しょくもつもう",
+  "category": "生態",
+  "kidsDefinition": "食べる・食べられる関係が、網のようにつながったものです。",
+  "adultDefinition": "生態系内の多くの食う・食われる関係を網状に表したものです。",
+  "aliases": [],
+  "example": "生物濃縮は食物網を通して起こることがあります。"
+ },
+ {
+  "id": "reproduction",
+  "term": "繁殖",
+  "reading": "はんしょく",
+  "category": "生態",
+  "kidsDefinition": "生き物が次の世代の子を残すことです。",
+  "adultDefinition": "配偶子や子をつくり、次世代へつなぐ生命活動です。",
+  "aliases": [],
+  "example": "ウミガメは産卵する浜へ繁殖のため戻ります。"
+ },
+ {
+  "id": "courtship",
+  "term": "求愛",
+  "reading": "きゅうあい",
+  "category": "生態",
+  "kidsDefinition": "繁殖相手へ、動きや声などで合図を送ることです。",
+  "adultDefinition": "繁殖相手の認識や選択に関わる、一連の行動や信号です。",
+  "aliases": [
+   "求愛行動"
+  ],
+  "example": "鳥の声や動きには求愛に使われるものがあります。"
+ },
+ {
+  "id": "territory",
+  "term": "縄張り",
+  "reading": "なわばり",
+  "category": "生態",
+  "kidsDefinition": "動物が、ほかの個体に入られないよう守る場所です。",
+  "adultDefinition": "個体や群れが、同種のほかの個体から防衛する空間です。",
+  "aliases": [
+   "テリトリー"
+  ],
+  "example": "繁殖期に縄張りを守る動物がいます。"
+ },
+ {
+  "id": "group",
+  "term": "群れ",
+  "reading": "むれ",
+  "category": "生態",
+  "kidsDefinition": "同じ種類の動物が集まり、いっしょに行動するまとまりです。",
+  "adultDefinition": "採食、防御、繁殖などに関わり、複数個体でつくられる社会的な集団です。",
+  "aliases": [
+   "集団"
+  ],
+  "example": "ペンギンは繁殖地で大きな群れをつくります。"
+ },
+ {
+  "id": "symbiosis",
+  "term": "共生",
+  "reading": "きょうせい",
+  "category": "生態",
+  "kidsDefinition": "別の種類の生き物どうしが、近い関係で暮らすことです。",
+  "adultDefinition": "異なる種が長く密接に関わって生活する関係の総称です。",
+  "aliases": [],
+  "example": "動物の体内の微生物との共生が研究されることがあります。"
+ },
+ {
+  "id": "parasitism",
+  "term": "寄生",
+  "reading": "きせい",
+  "category": "生態",
+  "kidsDefinition": "ある生き物が別の生き物から栄養などを得て暮らすことです。",
+  "adultDefinition": "寄生する側が利益を得て、寄生される側が負担を受ける種間関係です。",
+  "aliases": [],
+  "example": "野生動物の健康を調べるとき、寄生する生物も確認します。"
+ },
+ {
+  "id": "nocturnal",
+  "term": "夜行性",
+  "reading": "やこうせい",
+  "category": "生態",
+  "kidsDefinition": "おもに夜に活動する性質です。",
+  "adultDefinition": "一日の活動時間が主に夜間に集中する生活の型です。",
+  "aliases": [],
+  "example": "夜行性の動物には暗い中で働く感覚が発達したものがいます。"
+ },
+ {
+  "id": "diurnal",
+  "term": "昼行性",
+  "reading": "ちゅうこうせい",
+  "category": "生態",
+  "kidsDefinition": "おもに明るい昼に活動する性質です。",
+  "adultDefinition": "一日の活動時間が主に昼間に集中する生活の型です。",
+  "aliases": [],
+  "example": "昼行性の動物は、明るい時間に餌を探すことが多いです。"
+ },
+ {
+  "id": "hypothesis",
+  "term": "仮説",
+  "reading": "かせつ",
+  "category": "研究",
+  "kidsDefinition": "観察したことを説明するために立て、確かめていく考えです。",
+  "adultDefinition": "観察や実験によって検証できる形で示した、仮の説明です。",
+  "aliases": [],
+  "example": "キリンの首が長くなった理由には、複数の仮説があります。"
+ },
+ {
+  "id": "observation",
+  "term": "観察",
+  "reading": "かんさつ",
+  "category": "研究",
+  "kidsDefinition": "生き物の姿や行動をよく見て、記録することです。",
+  "adultDefinition": "対象をできるだけ条件に沿って見たり測ったりし、証拠を記録する方法です。",
+  "aliases": [],
+  "example": "野生での観察から、動物の行動を調べます。"
+ },
+ {
+  "id": "specimen",
+  "term": "標本",
+  "reading": "ひょうほん",
+  "category": "研究",
+  "kidsDefinition": "研究や学習のために残された、生き物の体やその一部です。",
+  "adultDefinition": "採集情報とともに保存され、後から確かめられる研究資料です。",
+  "aliases": [],
+  "example": "博物館の標本から、昔の動物の体を調べられます。"
+ },
+ {
+  "id": "radiometric-dating",
+  "term": "放射年代測定",
+  "reading": "ほうしゃねんだいそくてい",
+  "category": "研究",
+  "kidsDefinition": "物質が決まった速さで変わる性質を使い、岩や化石の年代を調べる方法です。",
+  "adultDefinition": "放射性同位体の減り方を測り、試料ができた年代を推定する方法です。",
+  "aliases": [
+   "放射性年代測定"
+  ],
+  "example": "化石を含む地層の年代を調べる手がかりになります。"
+ },
+ {
+  "id": "peer-review",
+  "term": "査読",
+  "reading": "さどく",
+  "category": "研究",
+  "kidsDefinition": "研究の発表前に、同じ分野の研究者が方法や説明を確かめることです。",
+  "adultDefinition": "論文の方法、結果、解釈などを専門家が評価する仕組みです。",
+  "aliases": [
+   "ピアレビュー"
+  ],
+  "example": "この図鑑では査読された論文も出典に使います。"
+ },
+ {
+  "id": "confirmed",
+  "term": "確定",
+  "reading": "かくてい",
+  "category": "研究",
+  "kidsDefinition": "今ある証拠から、かなり確かだと判断されていることです。",
+  "adultDefinition": "示した対象と条件の範囲で、複数の証拠により強く支持される判断です。",
+  "aliases": [],
+  "example": "卵のふ化日数は、観察から確定した情報として示します。"
+ },
+ {
+  "id": "leading-hypothesis",
+  "term": "有力説",
+  "reading": "ゆうりょくせつ",
+  "category": "研究",
+  "kidsDefinition": "証拠によく合うものの、まだ決まりきっていない考えです。",
+  "adultDefinition": "現在の証拠で比較的強く支持されますが、別の説明や今後の更新が残る説です。",
+  "aliases": [],
+  "example": "クジラの巨大化と餌の集まり方の関係は、有力説として紹介します。"
+ },
+ {
+  "id": "unresolved",
+  "term": "未解明",
+  "reading": "みかいめい",
+  "category": "研究",
+  "kidsDefinition": "調べている途中で、まだ答えが分かっていないことです。",
+  "adultDefinition": "証拠が不足している、または複数の説明をまだ区別できない状態です。",
+  "aliases": [],
+  "example": "なぜシロナガスクジラが最大になったかは未解明です。"
+ },
+ {
+  "id": "estimate",
+  "term": "推定",
+  "reading": "すいてい",
+  "category": "研究",
+  "kidsDefinition": "集めた証拠や数字から、もっとも近そうな答えを考えることです。",
+  "adultDefinition": "観測値やモデルから、直接測れない値や過去の状態を見積もることです。",
+  "aliases": [
+   "推定する"
+  ],
+  "example": "化石から昔の動物の体の大きさを推定します。"
+ },
+ {
+  "id": "analysis",
+  "term": "解析",
+  "reading": "かいせき",
+  "category": "研究",
+  "kidsDefinition": "集めた情報を分けたり比べたりして、意味を調べることです。",
+  "adultDefinition": "データへ決めた方法を適用し、傾向や関係を検討する作業です。",
+  "aliases": [
+   "解析する"
+  ],
+  "example": "化石と系統の解析から、巨大化した時期を比べます。"
+ },
+ {
+  "id": "experiment",
+  "term": "実験",
+  "reading": "じっけん",
+  "category": "研究",
+  "kidsDefinition": "条件を決めて試し、何が起きるかを確かめる方法です。",
+  "adultDefinition": "条件を操作または統制し、結果の違いから関係を検討する研究方法です。",
+  "aliases": [],
+  "example": "カモノハシが電場を感じるか、実験で確かめました。"
+ },
+ {
+  "id": "causality",
+  "term": "因果",
+  "reading": "いんが",
+  "category": "研究",
+  "kidsDefinition": "あることが原因となって、別のことが起きるつながりです。",
+  "adultDefinition": "二つの出来事が同時に起きるだけでなく、一方が他方へ影響する関係です。",
+  "aliases": [
+   "因果関係"
+  ],
+  "example": "時期が重なるだけでは、巨大化との因果は決められません。"
+ },
+ {
+  "id": "generalization",
+  "term": "一般化",
+  "reading": "いっぱんか",
+  "category": "研究",
+  "kidsDefinition": "一部で分かったことを、広い範囲にも当てはめることです。",
+  "adultDefinition": "限られた対象や条件の結果を、別の集団や状況へ広げて解釈することです。",
+  "aliases": [
+   "一般化する"
+  ],
+  "example": "一つの地域の結果を、種全体へ一般化しません。"
+ },
+ {
+  "id": "extant",
+  "term": "現生",
+  "reading": "げんせい",
+  "category": "進化",
+  "kidsDefinition": "今の時代に生きていることです。",
+  "adultDefinition": "化石でのみ知られる絶滅した生物に対し、現在生存している生物を示します。",
+  "aliases": [
+   "現生種"
+  ],
+  "example": "現生キリンと化石の仲間を分けて説明します。"
+ },
+ {
+  "id": "trait",
+  "term": "形質",
+  "reading": "けいしつ",
+  "category": "進化",
+  "kidsDefinition": "体の形や行動など、生き物が持つ特徴です。",
+  "adultDefinition": "観察や測定ができ、遺伝や環境の影響を受ける生物の特徴です。",
+  "aliases": [],
+  "example": "牙を持つかどうかも形質の一つです。"
+ },
+ {
+  "id": "population",
+  "term": "個体群",
+  "reading": "こたいぐん",
+  "category": "生態",
+  "kidsDefinition": "同じ場所やつながった範囲で暮らす、同じ種類の生き物の集まりです。",
+  "adultDefinition": "一定の地域で暮らし、互いに繁殖する可能性がある同種個体の集団です。",
+  "aliases": [],
+  "example": "ハヤブサは個体群ごとに移動のしかたが違います。"
+ },
+ {
+  "id": "regional-population",
+  "term": "地域集団",
+  "reading": "ちいきしゅうだん",
+  "category": "生態",
+  "kidsDefinition": "ある地域にまとまって暮らす、同じ種類の生き物の集まりです。",
+  "adultDefinition": "地理的な範囲で区切って調べる個体群で、他地域との違いを持つ場合があります。",
+  "aliases": [],
+  "example": "牙のないゾウが増えた変化は、特定の地域集団で確認されました。"
+ },
+ {
+  "id": "foraging",
+  "term": "採食",
+  "reading": "さいしょく",
+  "category": "生態",
+  "kidsDefinition": "食べ物を探し、選び、食べる行動です。",
+  "adultDefinition": "餌の探索、獲得、処理、摂取までを含む行動です。",
+  "aliases": [
+   "採餌"
+  ],
+  "example": "クジラは餌の濃さに合わせて採食の回数を変えました。"
+ },
+ {
+  "id": "regeneration",
+  "term": "再生",
+  "reading": "さいせい",
+  "category": "身体",
+  "kidsDefinition": "失ったり傷ついたりした体の一部を、作り直すことです。",
+  "adultDefinition": "損傷した組織や器官の構造と働きを、細胞の増殖や分化により回復する過程です。",
+  "aliases": [
+   "再生能力"
+  ],
+  "example": "メキシコサンショウウオは切断した四肢を再生できます。"
+ },
+ {
+  "id": "limbs",
+  "term": "四肢",
+  "reading": "しし",
+  "category": "身体",
+  "kidsDefinition": "背骨を持つ動物の、前と後ろにある手足です。",
+  "adultDefinition": "脊椎動物の体幹から伸びる、左右一対ずつの前肢と後肢です。",
+  "aliases": [
+   "手足"
+  ],
+  "example": "初期クジラ類には陸を歩ける四肢を持つ仲間がいました。"
+ },
+ {
+  "id": "upwelling",
+  "term": "湧昇流",
+  "reading": "ゆうしょうりゅう",
+  "category": "生態",
+  "kidsDefinition": "海の深い所の水が、表面近くへ上がってくる流れです。",
+  "adultDefinition": "風や海流の影響で、栄養分に富む深層水が表層へ上がる現象です。",
+  "aliases": [
+   "湧昇"
+  ],
+  "example": "湧昇流は、クジラの餌が集まる海を作ることがあります。"
+ },
+ {
+  "id": "filter-feeding",
+  "term": "濾過採食",
+  "reading": "ろかさいしょく",
+  "category": "生態",
+  "kidsDefinition": "水の中から、小さな食べ物だけをこし取って食べる方法です。",
+  "adultDefinition": "水を通す器官で粒子状の餌を分離して取り込む採食方法です。",
+  "aliases": [
+   "ろ過採食"
+  ],
+  "example": "ヒゲクジラ類は、ひげ板を使って濾過採食します。"
+ },
+ {
+  "id": "pliocene",
+  "term": "鮮新世",
+  "reading": "せんしんせい",
+  "category": "進化",
+  "kidsDefinition": "地球の歴史を分けた時代の一つで、更新世より前の時代です。",
+  "adultDefinition": "新生代の地質時代の一つで、中新世の後、更新世の前に位置します。",
+  "aliases": [],
+  "example": "ヒゲクジラ類の巨大化は、鮮新世後期から更新世に広がりました。"
+ },
+ {
+  "id": "pleistocene",
+  "term": "更新世",
+  "reading": "こうしんせい",
+  "category": "進化",
+  "kidsDefinition": "氷期が何度も訪れた、地球の歴史の時代の一つです。",
+  "adultDefinition": "鮮新世の後に続く地質時代で、寒暖の大きな変化が繰り返されました。",
+  "aliases": [],
+  "example": "ラッコ属の化石は初期更新世の地層から見つかっています。"
+ },
+ {
+  "id": "forelimb",
+  "term": "前肢",
+  "reading": "ぜんし",
+  "category": "身体",
+  "kidsDefinition": "背骨を持つ動物の、体の前側にある一対の手足です。",
+  "adultDefinition": "脊椎動物の四肢のうち前方の一対で、腕、前脚、翼、フリッパーなどになります。",
+  "aliases": [
+   "前足"
+  ],
+  "example": "クジラの前肢はフリッパーとして働きます。"
+ },
+ {
+  "id": "hindlimb",
+  "term": "後肢",
+  "reading": "こうし",
+  "category": "身体",
+  "kidsDefinition": "背骨を持つ動物の、体の後ろ側にある一対の足です。",
+  "adultDefinition": "脊椎動物の四肢のうち後方の一対で、系統によって縮小や消失も見られます。",
+  "aliases": [
+   "後ろ足"
+  ],
+  "example": "初期クジラ類の枝分かれでは、後肢が縮小しました。"
+ },
+ {
+  "id": "circulatory-system",
+  "term": "循環器",
+  "reading": "じゅんかんき",
+  "category": "身体",
+  "kidsDefinition": "心臓や血管など、血を体中へ送るためのしくみです。",
+  "adultDefinition": "心臓、血管、血液などからなり、酸素や物質を運ぶ器官系です。",
+  "aliases": [
+   "循環器系"
+  ],
+  "example": "キリンの高い頭へ血を送る循環器の特徴を調べます。"
+ },
+ {
+  "id": "candidate-gene",
+  "term": "候補遺伝子",
+  "reading": "こうほいでんし",
+  "category": "研究",
+  "kidsDefinition": "ある特徴に関係しそうだと考えられ、調べられている遺伝子です。",
+  "adultDefinition": "比較や機能から形質との関係が予想されますが、因果がまだ確定していない遺伝子です。",
+  "aliases": [],
+  "example": "キリンでは骨格や循環器に関わる候補遺伝子が報告されました。"
+ },
+ {
+  "id": "head-neck-region",
+  "term": "頭頸部",
+  "reading": "とうけいぶ",
+  "category": "身体",
+  "kidsDefinition": "頭と首を合わせた体の部分です。",
+  "adultDefinition": "頭部と頸部をまとめて示す解剖学的な範囲です。",
+  "aliases": [
+   "頭頚部"
+  ],
+  "example": "化石キリン上科の頭頸部の形を比べます。"
+ },
+ {
+  "id": "sex-chromosome",
+  "term": "性染色体",
+  "reading": "せいせんしょくたい",
+  "category": "身体",
+  "kidsDefinition": "体の性の決まり方に関わる遺伝情報を持つ染色体です。",
+  "adultDefinition": "性決定に関わる遺伝子を含み、組み合わせが性と対応する染色体です。",
+  "aliases": [],
+  "example": "カモノハシの性染色体は、人と同じ組み合わせではありません。"
+ },
+ {
+  "id": "electric-field",
+  "term": "電場",
+  "reading": "でんば",
+  "category": "身体",
+  "kidsDefinition": "電気の力が周りへはたらく場所です。",
+  "adultDefinition": "電荷がほかの電荷へ力を及ぼす空間の状態です。",
+  "aliases": [],
+  "example": "カモノハシは、くちばしで弱い電場を感じます。"
+ },
+ {
+  "id": "mammary-gland",
+  "term": "乳腺",
+  "reading": "にゅうせん",
+  "category": "身体",
+  "kidsDefinition": "子どもへ与える乳を作る体の部分です。",
+  "adultDefinition": "哺乳類が乳を作り分泌する腺組織です。",
+  "aliases": [],
+  "example": "カモノハシは乳腺から乳を分泌します。"
+ },
+ {
+  "id": "sea-ice",
+  "term": "海氷",
+  "reading": "かいひょう",
+  "category": "生態",
+  "kidsDefinition": "海の水が冷えて凍った氷です。",
+  "adultDefinition": "海水が凍結して生じ、季節により広さや厚さが変わる氷です。",
+  "aliases": [],
+  "example": "コウテイペンギンは海氷の上で子育てします。"
+ },
+ {
+  "id": "flight-ability",
+  "term": "飛翔能力",
+  "reading": "ひしょうのうりょく",
+  "category": "身体",
+  "kidsDefinition": "翼などを使い、空中を飛んで進む力です。",
+  "adultDefinition": "揚力と推進力を生み、空中を移動する能力です。",
+  "aliases": [
+   "飛ぶ能力"
+  ],
+  "example": "ペンギン類の系統は飛翔能力を失い、水中で進む翼を持ちました。"
+ },
+ {
+  "id": "breeding-population",
+  "term": "繁殖集団",
+  "reading": "はんしょくしゅうだん",
+  "category": "生態",
+  "kidsDefinition": "同じ場所や時期に、子どもを残す動物の集まりです。",
+  "adultDefinition": "繁殖に参加する個体を、地域や繁殖地ごとにまとめた集団です。",
+  "aliases": [],
+  "example": "衛星画像からコウテイペンギンの繁殖集団を数えました。"
+ },
+ {
+  "id": "sexual-maturity",
+  "term": "性成熟",
+  "reading": "せいせいじゅく",
+  "category": "身体",
+  "kidsDefinition": "成長して、子どもを作れる体になることです。",
+  "adultDefinition": "生殖器官が発達し、繁殖が可能な段階へ達することです。",
+  "aliases": [],
+  "example": "メキシコサンショウウオは幼い特徴を残したまま性成熟します。"
+ },
+ {
+  "id": "larva",
+  "term": "幼生",
+  "reading": "ようせい",
+  "category": "身体",
+  "kidsDefinition": "卵から出た後の、成体とは形や暮らし方が違う時期です。",
+  "adultDefinition": "成体になる前に、成体と異なる形態や生態を示す発生段階です。",
+  "aliases": [],
+  "example": "サンショウウオの幼生は水中でえらを使います。"
+ },
+ {
+  "id": "thyroid-hormone",
+  "term": "甲状腺ホルモン",
+  "reading": "こうじょうせんほるもん",
+  "category": "身体",
+  "kidsDefinition": "成長や体の変化を調節する、体内の合図になる物質です。",
+  "adultDefinition": "甲状腺から分泌され、発生、代謝、変態などの調節に関わるホルモンです。",
+  "aliases": [],
+  "example": "甲状腺ホルモンを与える実験で、変態を誘導しました。"
+ },
+ {
+  "id": "gene-expression",
+  "term": "遺伝子発現",
+  "reading": "いでんしはつげん",
+  "category": "身体",
+  "kidsDefinition": "遺伝子の情報が読み取られ、体の中で使われることです。",
+  "adultDefinition": "遺伝情報からRNAやタンパク質が作られ、細胞の働きへつながる過程です。",
+  "aliases": [],
+  "example": "再生中に変わる遺伝子発現を調べます。"
+ },
+ {
+  "id": "blastema",
+  "term": "再生芽",
+  "reading": "さいせいが",
+  "category": "身体",
+  "kidsDefinition": "失った体の部分を作り直すとき、傷口近くにできる細胞の集まりです。",
+  "adultDefinition": "再生する組織のもとになる細胞が、損傷部に集まって形成する構造です。",
+  "aliases": [
+   "ブラステマ"
+  ],
+  "example": "切断した四肢にできる再生芽を調べました。"
+ },
+ {
+  "id": "spinal-cord",
+  "term": "脊髄",
+  "reading": "せきずい",
+  "category": "身体",
+  "kidsDefinition": "脳と体の間で合図を運ぶ、背骨の中の太い神経です。",
+  "adultDefinition": "脳と末梢神経をつなぎ、感覚や運動の信号を伝える中枢神経です。",
+  "aliases": [],
+  "example": "尾を切断した後に脊髄が伸びる過程を測りました。"
+ },
+ {
+  "id": "endocrine-system",
+  "term": "内分泌",
+  "reading": "ないぶんぴつ",
+  "category": "身体",
+  "kidsDefinition": "体内で作ったホルモンを使い、成長や働きを調節するしくみです。",
+  "adultDefinition": "内分泌腺がホルモンを血液などへ放出し、離れた器官を調節する仕組みです。",
+  "aliases": [
+   "内分泌系"
+  ],
+  "example": "幼形成熟に関わる内分泌の仕組みを調べます。"
+ },
+ {
+  "id": "identification",
+  "term": "同定",
+  "reading": "どうてい",
+  "category": "研究",
+  "kidsDefinition": "特徴を比べ、その生き物が何という種類か確かめることです。",
+  "adultDefinition": "形態や遺伝情報などを基準と照合し、分類上の名前を判断することです。",
+  "aliases": [
+   "種同定"
+  ],
+  "example": "外套や吸盤の特徴を使ってミズダコを同定します。"
+ },
+ {
+  "id": "mantle",
+  "term": "外套",
+  "reading": "がいとう",
+  "category": "身体",
+  "kidsDefinition": "イカやタコで、内臓を包む体の部分です。",
+  "adultDefinition": "軟体動物で内臓を覆い、外套腔を作る体壁です。",
+  "aliases": [
+   "外套膜"
+  ],
+  "example": "ミズダコは柔らかな卵形の外套を持ちます。"
+ },
+ {
+  "id": "transmitter",
+  "term": "発信器",
+  "reading": "はっしんき",
+  "category": "研究",
+  "kidsDefinition": "動物の場所や動きを追うため、電波などの合図を送る道具です。",
+  "adultDefinition": "個体へ装着し、位置や行動を遠隔で記録する追跡装置です。",
+  "aliases": [
+   "追跡発信器"
+  ],
+  "example": "ミズダコへ発信器を付け、海底での動きを追いました。"
+ },
+ {
+  "id": "bycatch",
+  "term": "混獲",
+  "reading": "こんかく",
+  "category": "生態",
+  "kidsDefinition": "漁でねらった生き物とは別の生き物も、一緒に捕まることです。",
+  "adultDefinition": "漁具により対象外の種や大きさの個体が意図せず捕獲されることです。",
+  "aliases": [],
+  "example": "ミズダコやアオウミガメが混獲されることがあります。"
+ },
+ {
+  "id": "poaching",
+  "term": "密猟",
+  "reading": "みつりょう",
+  "category": "生態",
+  "kidsDefinition": "法律や決まりに反して、野生動物を捕まえたり殺したりすることです。",
+  "adultDefinition": "許可や規制に反して野生生物を捕獲し、取引や利用を行うことです。",
+  "aliases": [],
+  "example": "象牙を目的とした密猟がゾウの地域集団へ影響しました。"
+ },
+ {
+  "id": "frequency",
+  "term": "頻度",
+  "reading": "ひんど",
+  "category": "研究",
+  "kidsDefinition": "あることが、どれくらいよく起きるかを表す数や割合です。",
+  "adultDefinition": "出来事や形質が、一定の回数や集団の中で現れる割合です。",
+  "aliases": [],
+  "example": "牙を持たない形質の頻度が上がりました。"
+ },
+ {
+  "id": "commercial-fur-trade",
+  "term": "商業毛皮交易",
+  "reading": "しょうぎょうけがわこうえき",
+  "category": "研究",
+  "kidsDefinition": "売るための毛皮を、遠い地域どうしで取り引きすることです。",
+  "adultDefinition": "利益を目的に動物の毛皮を大規模に集め、地域間で流通させる交易です。",
+  "aliases": [
+   "毛皮交易"
+  ],
+  "example": "商業毛皮交易でラッコの多くの集団が減りました。"
+ },
+ {
+  "id": "abrasion",
+  "term": "摩耗",
+  "reading": "まもう",
+  "category": "研究",
+  "kidsDefinition": "こすれたり打ちつけられたりして、少しずつすり減ることです。",
+  "adultDefinition": "接触や摩擦が繰り返され、物の表面が失われていく変化です。",
+  "aliases": [],
+  "example": "ラッコが貝を打ちつけた岩には摩耗が残ります。"
+ },
+ {
+  "id": "inbreeding",
+  "term": "近親交配",
+  "reading": "きんしんこうはい",
+  "category": "進化",
+  "kidsDefinition": "遺伝的に近い仲間どうしで子どもを作ることです。",
+  "adultDefinition": "共通祖先を近くに持つ個体間の交配で、同じ遺伝子型がそろいやすくなります。",
+  "aliases": [],
+  "example": "島のハヤブサ集団では近親交配の程度も調べました。"
+ },
+ {
+  "id": "eggshell",
+  "term": "卵殻",
+  "reading": "らんかく",
+  "category": "身体",
+  "kidsDefinition": "卵の中身を包んで守る、外側の殻です。",
+  "adultDefinition": "胚を保護し、気体や水分の出入りにも関わる卵の外層です。",
+  "aliases": [
+   "卵の殻"
+  ],
+  "example": "DDEの影響でハヤブサの卵殻が薄くなりました。"
+ },
+ {
+  "id": "metabolite",
+  "term": "代謝物",
+  "reading": "たいしゃぶつ",
+  "category": "身体",
+  "kidsDefinition": "体や環境の中で、物質が変化してできたものです。",
+  "adultDefinition": "代謝反応によって元の物質から作られる中間物質または生成物です。",
+  "aliases": [],
+  "example": "DDEはDDTが変化してできる代謝物です。"
+ },
+ {
+  "id": "miocene",
+  "term": "中新世",
+  "reading": "ちゅうしんせい",
+  "category": "進化",
+  "kidsDefinition": "地球の歴史を分けた時代の一つで、鮮新世より前の時代です。",
+  "adultDefinition": "新生代の地質時代の一つで、鮮新世の前に位置します。",
+  "aliases": [],
+  "example": "Falco属の多様化は後期中新世から高まったと推定されました。"
+ },
+ {
+  "id": "sex-ratio",
+  "term": "雌雄比",
+  "reading": "しゆうひ",
+  "category": "生態",
+  "kidsDefinition": "集まりの中に、雌と雄がどれくらいいるかを表す割合です。",
+  "adultDefinition": "個体群や子の集団における雌雄の数の比率です。",
+  "aliases": [
+   "性比"
+  ],
+  "example": "砂の温度はアオウミガメの子の雌雄比へ影響します。"
+ },
+ {
+  "id": "geomagnetism",
+  "term": "地磁気",
+  "reading": "ちじき",
+  "category": "生態",
+  "kidsDefinition": "地球全体が持つ、方位磁針を動かす磁石のような力です。",
+  "adultDefinition": "地球内部などに由来する磁場で、方向や場所の手がかりになります。",
+  "aliases": [
+   "地球磁場"
+  ],
+  "example": "アオウミガメが地磁気をどう使うか研究されています。"
+ },
+ {
+  "id": "cultured-cells",
+  "term": "培養細胞",
+  "reading": "ばいようさいぼう",
+  "category": "研究",
+  "kidsDefinition": "体から取り出し、実験室で育てて調べる細胞です。",
+  "adultDefinition": "管理した条件の容器内で維持・増殖させ、反応を調べる細胞です。",
+  "aliases": [
+   "培養した細胞"
+  ],
+  "example": "培養細胞でヒアルロン酸の働きを調べました。"
+ },
+ {
+  "id": "high-molecular-weight",
+  "term": "高分子量",
+  "reading": "こうぶんしりょう",
+  "category": "身体",
+  "kidsDefinition": "とても大きな分子でできていることを表します。",
+  "adultDefinition": "同じ物質の中でも、分子を構成する部分が多く分子量が大きい状態です。",
+  "aliases": [],
+  "example": "ハダカデバネズミには高分子量のヒアルロン酸があります。"
+ },
+ {
+  "id": "malignant-transformation",
+  "term": "悪性化",
+  "reading": "あくせいか",
+  "category": "身体",
+  "kidsDefinition": "細胞が体の決まりを外れ、増え続けやすくなる変化です。",
+  "adultDefinition": "細胞が増殖制御を失い、周囲へ広がる性質などを獲得する変化です。",
+  "aliases": [],
+  "example": "培養細胞の悪性化を抑える働きが調べられました。"
+ },
+ {
+  "id": "tumor",
+  "term": "腫瘍",
+  "reading": "しゅよう",
+  "category": "身体",
+  "kidsDefinition": "細胞が普通とは違う増え方をしてできる、体の中のかたまりです。",
+  "adultDefinition": "細胞が自律的に増殖して生じる組織で、良性と悪性があります。",
+  "aliases": [],
+  "example": "ハダカデバネズミにも腫瘍の症例は報告されています。"
+ },
+ {
+  "id": "csd-gene",
+  "term": "csd",
+  "reading": "しーえすでぃー",
+  "category": "身体",
+  "kidsDefinition": "セイヨウミツバチで、雌と雄の決まり方に関わる遺伝子です。",
+  "adultDefinition": "complementary sex determinerの略で、対立型の組み合わせが性決定に関わります。",
+  "aliases": [
+   "CSD",
+   "complementary sex determiner"
+  ],
+  "example": "csd遺伝子の組み合わせで雌雄の発生が分かれます。"
+ },
+ {
+  "id": "gene-locus",
+  "term": "遺伝子座",
+  "reading": "いでんしざ",
+  "category": "進化",
+  "kidsDefinition": "染色体の中で、ある遺伝子がある場所です。",
+  "adultDefinition": "染色体上で遺伝子や遺伝マーカーが占める位置です。",
+  "aliases": [
+   "座位"
+  ],
+  "example": "csd遺伝子座の組み合わせを調べます。"
+ },
+ {
+  "id": "heterozygous",
+  "term": "ヘテロ接合",
+  "reading": "へてろせつごう",
+  "category": "進化",
+  "kidsDefinition": "同じ場所の遺伝情報に、異なる二つの型を持つことです。",
+  "adultDefinition": "相同染色体の同じ遺伝子座に、異なる対立型を持つ状態です。",
+  "aliases": [
+   "ヘテロ接合体"
+  ],
+  "example": "csd遺伝子座がヘテロ接合なら雌へ発生します。"
+ },
+ {
+  "id": "diploid",
+  "term": "二倍体",
+  "reading": "にばいたい",
+  "category": "進化",
+  "kidsDefinition": "染色体の組を、二つずつ持つ細胞や生き物です。",
+  "adultDefinition": "相同染色体を二組持つ細胞または個体を示します。",
+  "aliases": [],
+  "example": "ミツバチでは受精卵から二倍体の個体が育ちます。"
+ },
+ {
+  "id": "haplodiploidy",
+  "term": "半倍数性",
+  "reading": "はんばいすうせい",
+  "category": "進化",
+  "kidsDefinition": "染色体を一組持つか二組持つかが、雌雄の決まり方に関わるしくみです。",
+  "adultDefinition": "半数体と二倍体の違いが性決定に関わる仕組みで、膜翅目に広く見られます。",
+  "aliases": [
+   "半倍数性性決定"
+  ],
+  "example": "半倍数性だけでは、ミツバチの分業社会を説明できません。"
+ },
+ {
+  "id": "hymenoptera",
+  "term": "膜翅目",
+  "reading": "まくしもく",
+  "category": "分類",
+  "kidsDefinition": "ハチやアリなどを含む、昆虫の大きな仲間分けです。",
+  "adultDefinition": "ハチ、アリ、ハバチなどを含む昆虫の分類群です。",
+  "aliases": [
+   "ハチ目"
+  ],
+  "example": "半倍数性は膜翅目に広く見られます。"
+ },
+ {
+  "id": "aculeata",
+  "term": "有剣類",
+  "reading": "ゆうけんるい",
+  "category": "分類",
+  "kidsDefinition": "ハチやアリなどを含む、膜翅目の中の仲間です。",
+  "adultDefinition": "産卵管が毒針などへ変化した系統を含む、膜翅目内の分類群です。",
+  "aliases": [
+   "Aculeata"
+  ],
+  "example": "csdにつながる遺伝子重複は、有剣類の祖先で起きたと推定されました。"
+ },
+ {
+  "id": "fertilized-egg",
+  "term": "受精卵",
+  "reading": "じゅせいらん",
+  "category": "身体",
+  "kidsDefinition": "卵と精子が一つになり、育ち始めた最初の細胞です。",
+  "adultDefinition": "卵細胞と精子が融合して生じ、発生を始める接合子です。",
+  "aliases": [],
+  "example": "セイヨウミツバチでは、受精卵から雌が育つ場合があります。"
+ },
+ {
+  "id": "beeswax",
+  "term": "蜜蝋",
+  "reading": "みつろう",
+  "category": "身体",
+  "kidsDefinition": "ミツバチが体から出し、巣を作るために使うろうです。",
+  "adultDefinition": "働き蜂のろう腺から分泌され、巣房の材料になる脂質性の物質です。",
+  "aliases": [
+   "蜜ろう"
+  ],
+  "example": "約9000年前の土器から蜜蝋の化学的な跡が見つかりました。"
+ },
+ {
+  "id": "thyroxine-t4",
+  "term": "T4",
+  "reading": "てぃーふぉー",
+  "category": "身体",
+  "kidsDefinition": "成長や体の変化に関わる甲状腺ホルモンの一つです。",
+  "adultDefinition": "チロキシンとも呼ばれ、体内でT3へ変換される甲状腺ホルモンです。",
+  "aliases": [
+   "チロキシン"
+  ],
+  "example": "飼育個体へT4を与え、変態を誘導する実験があります。"
+ },
+ {
+  "id": "triiodothyronine-t3",
+  "term": "T3",
+  "reading": "てぃーすりー",
+  "category": "身体",
+  "kidsDefinition": "成長や体の変化を強く調節する甲状腺ホルモンの一つです。",
+  "adultDefinition": "トリヨードチロニンとも呼ばれ、受容体を通じて遺伝子発現を調節する甲状腺ホルモンです。",
+  "aliases": [
+   "トリヨードチロニン"
+  ],
+  "example": "飼育個体へT3を与え、変態を誘導する実験があります。"
+ },
+ {
+  "id": "lion-pride",
+  "term": "プライド",
+  "reading": "ぷらいど",
+  "category": "くらし",
+  "kidsDefinition": "血のつながったメスたちを中心とする、ライオンの群れのことです。",
+  "adultDefinition": "血縁のメスたちと子ども、少数の常駐オスからなるライオンの群れの単位です。オスは成長すると生まれた群れを離れます。",
+  "aliases": [],
+  "example": "プライドの狩りの主な担い手は、血縁のメスたちです。"
+ },
+ {
+  "id": "apex-predator",
+  "term": "頂点捕食者",
+  "reading": "ちょうてんほしょくしゃ",
+  "category": "環境",
+  "kidsDefinition": "その場所の食べる・食べられるの関係で、いちばん上にいる動物です。",
+  "adultDefinition": "その生態系の食物網の最上位にいて、ほかの動物にほとんど捕食されない捕食者です。",
+  "aliases": [
+   "トッププレデター"
+  ],
+  "example": "トラはアジアの森の頂点捕食者ですが、獲物や生息地が減ると真っ先に行き詰まります。"
+ },
+ {
+  "id": "homozygous",
+  "term": "ホモ接合",
+  "reading": "ほもせつごう",
+  "category": "進化",
+  "kidsDefinition": "お父さんとお母さんからもらった体の設計図が、同じ場所で同じ型になっていることです。",
+  "adultDefinition": "両親から受けついだ染色体の同じ場所で、遺伝子の型が同じになっている状態です。ヘテロ接合の対になる言葉です。",
+  "aliases": [
+   "ホモ接合体"
+  ],
+  "example": "チーターのゲノムは平均93%の領域がホモ接合で、際立って均質です。"
+ },
+ {
+  "id": "reintroduction",
+  "term": "再導入",
+  "reading": "さいどうにゅう",
+  "category": "環境",
+  "kidsDefinition": "いなくなった場所へ、人の手でその生き物を運んで野生にもどすことです。",
+  "adultDefinition": "姿を消した地域へ、人の手で同じ種を運び、野生の個体群を回復させる保全の方法です。",
+  "aliases": [],
+  "example": "1995〜97年、イエローストーンに計41頭のオオカミが再導入されました。"
+ },
+ {
+  "id": "domestication",
+  "term": "家畜化",
+  "reading": "かちくか",
+  "category": "進化",
+  "kidsDefinition": "野生の生き物が、人といっしょにくらすうちに、長い時間をかけて姿や性質を変えていくことです。",
+  "adultDefinition": "野生の動物や植物が、人との関わりの中で世代を重ね、遺伝的に姿や性質を変えていく過程です。",
+  "aliases": [
+   "ドメスティケーション"
+  ],
+  "example": "イヌは古代のオオカミの家畜化から生まれましたが、直接の祖先集団はまだ見つかっていません。"
+ },
+ {
+  "id": "marsupial",
+  "term": "有袋類",
+  "reading": "ゆうたいるい",
+  "category": "進化",
+  "kidsDefinition": "お母さんのおなかの袋(育児嚢)で赤ちゃんを育てる哺乳類のなかまです。",
+  "adultDefinition": "ごく未熟な状態で子を産み、多くは育児嚢の中で乳によって育てる哺乳類のグループです。カンガルーやコアラが含まれます。",
+  "aliases": [],
+  "example": "アカカンガルーは、現生の有袋類でいちばん大きな動物です。"
+ },
+ {
+  "id": "marsupium",
+  "term": "育児嚢",
+  "reading": "いくじのう",
+  "category": "身体",
+  "kidsDefinition": "有袋類のお母さんのおなかにある、赤ちゃんを育てる袋です。",
+  "adultDefinition": "有袋類のメスが持つ、乳首のある袋状の器官です。未熟なまま生まれた子は、この中で成長します。",
+  "aliases": [
+   "袋"
+  ],
+  "example": "アカカンガルーの子は、約235日を育児嚢の中で育ちます。"
+ },
+ {
+  "id": "embryonic-diapause",
+  "term": "胚休眠",
+  "reading": "はいきゅうみん",
+  "category": "身体",
+  "kidsDefinition": "おなかの中の赤ちゃんのもと(胚)の成長を、いったん止めておくしくみです。",
+  "adultDefinition": "受精卵から育った胚の発生を一時停止させ、条件が整ってから再開させる繁殖の仕組みです。",
+  "aliases": [],
+  "example": "アカカンガルーのメスは胚休眠を使い、袋の中の子と着床待ちの胚を同時に抱えられます。"
+ },
+ {
+  "id": "sesamoid-bone",
+  "term": "種子骨",
+  "reading": "しゅしこつ",
+  "category": "身体",
+  "kidsDefinition": "筋や腱の中にできる小さな骨です。パンダの『偽の親指』もこの骨です。",
+  "adultDefinition": "腱の中に形成される小さな骨で、力の向きを変えたり関節を守ったりします。パンダの偽親指は手首の橈側種子骨が伸びたものです。",
+  "aliases": [
+   "橈側種子骨"
+  ],
+  "example": "ジャイアントパンダは手首の種子骨をのばして、竹をつかみます。"
+ },
+ {
+  "id": "pseudogene",
+  "term": "偽遺伝子",
+  "reading": "ぎいでんし",
+  "category": "進化",
+  "kidsDefinition": "こわれて働かなくなった遺伝子のことです。昔の暮らしの跡が残ります。",
+  "adultDefinition": "変異によって機能を失った遺伝子の名残です。祖先が持っていた能力の痕跡として、進化の歴史を伝えます。",
+  "aliases": [],
+  "example": "パンダのうま味受容体遺伝子Tas1r1は、偽遺伝子になっています。"
+ },
+ {
+  "id": "gut-microbiota",
+  "term": "腸内細菌叢",
+  "reading": "ちょうないさいきんそう",
+  "category": "身体",
+  "kidsDefinition": "腸の中にすむ、たくさんの細菌の集まりです。消化を手伝います。",
+  "adultDefinition": "腸内にすみつく微生物の集まり全体のことです。宿主の消化や免疫と深く関わります。",
+  "aliases": [
+   "腸内フローラ"
+  ],
+  "example": "パンダの腸内細菌叢は、竹食なのに肉食動物型に近い構成でした。"
+ },
+ {
+  "id": "detox-enzyme",
+  "term": "解毒酵素",
+  "reading": "げどくこうそ",
+  "category": "身体",
+  "kidsDefinition": "体に入った毒を、こわして無害にするたんぱく質です。",
+  "adultDefinition": "毒性のある物質を分解・変換して排出しやすくする酵素です。多くは肝臓で働きます。",
+  "aliases": [
+   "シトクロムP450"
+  ],
+  "example": "コアラのゲノムでは、解毒酵素CYP2Cの遺伝子が31個に増えていました。"
+ },
+ {
+  "id": "silverback",
+  "term": "シルバーバック",
+  "reading": "しるばーばっく",
+  "category": "くらし",
+  "kidsDefinition": "せなかの毛が銀色になった、群れの中心のおとなのオスゴリラです。",
+  "adultDefinition": "成熟したオスゴリラの呼び名で、背中の毛が銀白色になります。群れの移動や安全の要になります。",
+  "aliases": [],
+  "example": "ニシローランドゴリラの群れは、1頭のシルバーバックを中心に平均5頭ほどで暮らします。"
+ },
+ {
+  "id": "knuckle-walking",
+  "term": "ナックル歩行",
+  "reading": "なっくるほこう",
+  "category": "身体",
+  "kidsDefinition": "まげた指のせなか側を地面につけて歩く、ゴリラやチンパンジーの歩き方です。",
+  "adultDefinition": "曲げた指の背側を接地させて体重を支える四足歩行の様式で、ゴリラやチンパンジーに見られます。",
+  "aliases": [],
+  "example": "ゴリラは曲げた手の第3・第4指に体重を乗せてナックル歩行をします。"
+ },
+ {
+  "id": "tool-use",
+  "term": "道具使用",
+  "reading": "どうぐしよう",
+  "category": "くらし",
+  "kidsDefinition": "ものを使って、えさ取りや移動などの課題を解決する行動です。",
+  "adultDefinition": "外部の物体を操作して採食や移動などの課題を解決する行動です。加工して作ってから使う場合もあります。",
+  "aliases": [
+   "道具行動"
+  ],
+  "example": "野生のゴリラの道具使用は、2004年に初めて記録されました。"
+ },
+ {
+  "id": "social-learning",
+  "term": "社会的学習",
+  "reading": "しゃかいてきがくしゅう",
+  "category": "くらし",
+  "kidsDefinition": "なかまの行動を見たりまねたりして、新しい行動をおぼえることです。",
+  "adultDefinition": "他個体の行動やその結果から学ぶことです。文化的な行動が群れに広がる土台になります。",
+  "aliases": [
+   "観察学習"
+  ],
+  "example": "幸島のイモ洗いは、社会的学習によって群れに広がったと考えられています。"
+ },
+ {
+  "id": "flange",
+  "term": "フランジ",
+  "reading": "ふらんじ",
+  "category": "身体",
+  "kidsDefinition": "おとなのオスのオランウータンのほおにできる、大きな出っぱりです。",
+  "adultDefinition": "成熟したオスのオランウータンに発達する、ほおの大きな張り出しです。",
+  "aliases": [
+   "チークパッド"
+  ],
+  "example": "フランジのあるオスのオランウータンは、メスの2倍ほどの大きさになります。"
+ },
+ {
+  "id": "arboreal",
+  "term": "樹上性",
+  "reading": "じゅじょうせい",
+  "category": "くらし",
+  "kidsDefinition": "木の上でくらす性質のことです。",
+  "adultDefinition": "生活の大部分を樹上で送る性質です。地上で暮らす性質は地上性といいます。",
+  "aliases": [],
+  "example": "ボルネオオランウータンは樹上性で、地上に降りることはまれです。"
+ },
+ {
+  "id": "hybridization",
+  "term": "交雑",
+  "reading": "こうざつ",
+  "category": "進化",
+  "kidsDefinition": "ちがう種や、ちがう系統のなかまどうしの間に子どもが生まれることです。",
+  "adultDefinition": "異なる種や系統の個体の間に子が生まれ、遺伝子が混ざり合うことです。種の境界が完全には閉じていないことを示す現象です。",
+  "aliases": [
+   "雑種形成"
+  ],
+  "example": "ABC諸島のヒグマには、ホッキョクグマとの交雑の痕跡がミトコンドリアDNAとX染色体に残っています。"
+ },
+ {
+  "id": "delayed-implantation",
+  "term": "遅延着床",
+  "reading": "ちえんちゃくしょう",
+  "category": "身体",
+  "kidsDefinition": "おなかの中の赤ちゃんのもと(受精卵)が、育ち始めるのをしばらく待つしくみです。",
+  "adultDefinition": "受精卵が子宮に着床するのを一定期間止め、出産の時期を調整する繁殖の仕組みです。クマ類などで知られています。",
+  "aliases": [
+   "着床遅延"
+  ],
+  "example": "ヒグマでは受精卵が約5か月待ってから育ち始める遅延着床が知られ、出産は冬の巣ごもり中になります。"
+ },
+ {
+  "id": "hibernation",
+  "term": "冬眠",
+  "reading": "とうみん",
+  "category": "くらし",
+  "kidsDefinition": "食べ物の少ない冬を、体のはたらきを下げてねむって過ごすことです。",
+  "adultDefinition": "体温や代謝を下げて冬を越す状態です。クマは体温の低下が小さい浅いタイプで、冬ごもりとも呼ばれます。",
+  "aliases": [
+   "冬ごもり"
+  ],
+  "example": "冬眠中のヒグマは5〜7か月間、食べも飲みもせず、心拍数は平均毎分26回まで下がります。"
+ },
+ {
+  "id": "omnivore",
+  "term": "雑食",
+  "reading": "ざっしょく",
+  "category": "くらし",
+  "kidsDefinition": "植物も動物も、どちらも食べることです。",
+  "adultDefinition": "植物質と動物質の両方を食べる食性です。季節や場所によって食べ物の内訳が大きく変わります。",
+  "aliases": [
+   "雑食性"
+  ],
+  "example": "ヒグマは雑食で、草や木の実からサケまで幅広く食べます。"
+ },
+ {
+  "id": "hemoglobin",
+  "term": "ヘモグロビン",
+  "reading": "へもぐろびん",
+  "category": "身体",
+  "kidsDefinition": "血の中で酸素を運ぶ、赤い色のもとになるタンパク質です。",
+  "adultDefinition": "赤血球に含まれ、肺で酸素と結びつき全身へ運ぶタンパク質です。酸素との結びつきやすさは動物によって異なります。",
+  "aliases": [],
+  "example": "ユキヒョウのヘモグロビンは、低地で暮らすネコ科と同じ性質のままでした。"
+ },
+ {
+  "id": "alpine-zone",
+  "term": "高山帯",
+  "reading": "こうざんたい",
+  "category": "環境",
+  "kidsDefinition": "森林が育たないほど高い、山の上のほうの場所です。",
+  "adultDefinition": "森林限界より上に広がる、寒く空気のうすい高山の環境帯です。",
+  "aliases": [],
+  "example": "ユキヒョウは中央アジアの高山帯の岩場で暮らし、標高6,000メートル超でも記録されています。"
+ },
+ {
+  "id": "melanism",
+  "term": "メラニズム",
+  "reading": "めらにずむ",
+  "category": "身体",
+  "kidsDefinition": "生まれつき体の色が黒っぽくなることです。黒豹(クロヒョウ)もこれです。",
+  "adultDefinition": "黒い色素メラニンが増え、体色が黒化する遺伝的変異です。ネコ科では別々の変異で繰り返し生じています。",
+  "aliases": [
+   "黒化",
+   "黒変種"
+  ],
+  "example": "スリランカの黒いヒョウのメラニズムは、ASIP遺伝子の一塩基変異が原因でした。"
+ },
+ {
+  "id": "rodent",
+  "term": "齧歯類",
+  "reading": "げっしるい",
+  "category": "分類",
+  "kidsDefinition": "一生のび続ける前歯で、物をかじって食べるネズミやリスのなかまです。",
+  "adultDefinition": "一生伸び続ける門歯を持ち、かじる採食に特化した哺乳類のグループです。",
+  "aliases": [
+   "げっ歯類",
+   "ネズミ目"
+  ],
+  "example": "カピバラは現生で世界最大の齧歯類です。"
+ },
+ {
+  "id": "semiaquatic",
+  "term": "半水生",
+  "reading": "はんすいせい",
+  "category": "生態",
+  "kidsDefinition": "水の中と陸の上、両方を行き来してくらすくらし方です。",
+  "adultDefinition": "生活の一部を水中で、一部を陸上で送る生活様式です。",
+  "aliases": [],
+  "example": "カピバラもカバも半水生で、危険が近づくと水へ逃げこみます。"
+ },
+ {
+  "id": "cetartiodactyla",
+  "term": "鯨偶蹄目",
+  "reading": "くじらぐうていもく",
+  "category": "分類",
+  "kidsDefinition": "クジラと、ウシやカバなどのひづめの動物をひとつにまとめたグループです。",
+  "adultDefinition": "偶蹄類とクジラ類を合わせた哺乳類の目です。DNAの証拠から一つのまとまりだと分かりました。",
+  "aliases": [
+   "クジラ偶蹄目"
+  ],
+  "example": "カバとクジラは、鯨偶蹄目の中でたがいに最も近い親戚どうしです。"
+ },
+ {
+  "id": "ivf",
+  "term": "体外受精",
+  "reading": "たいがいじゅせい",
+  "category": "研究",
+  "kidsDefinition": "卵と精子を体の外で出会わせて、赤ちゃんのもと（胚）を作る技術です。",
+  "adultDefinition": "卵子と精子を体外で受精させ、胚を作る生殖補助技術です。",
+  "aliases": [
+   "IVF"
+  ],
+  "example": "北シロサイでは、体外受精で作った胚が凍結保存されています。"
+ },
+ {
+  "id": "ancient-dna",
+  "term": "古代DNA",
+  "reading": "こだいでぃーえぬえー",
+  "category": "研究",
+  "kidsDefinition": "化石や古い標本にわずかに残された、昔の生き物のDNAのことです。",
+  "adultDefinition": "化石・標本・堆積物などに残る過去の生物のDNAです。壊れて断片化しているため、特別な方法で読み取ります。",
+  "aliases": [
+   "aDNA"
+  ],
+  "example": "絶滅したクアッガの標本から、古代DNAとしてミトコンドリアDNA229塩基対が読み取られました。"
+ },
+ {
+  "id": "xenarthra",
+  "term": "異節類",
+  "reading": "いせつるい",
+  "category": "分類",
+  "kidsDefinition": "ナマケモノ・アリクイ・アルマジロをふくむ、南アメリカで栄えたほにゅう類のなかまです。",
+  "adultDefinition": "背骨に独特の補助関節を持つ哺乳類の一群で、ナマケモノ、アリクイ、アルマジロを含みます。南アメリカを中心に多様化しました。",
+  "aliases": [
+   "異節上目"
+  ],
+  "example": "ミツユビナマケモノは異節類の一員で、絶滅した地上性ナマケモノたちの親戚です。"
+ },
+ {
+  "id": "echolocation",
+  "term": "エコーロケーション",
+  "reading": "えこーろけーしょん",
+  "category": "身体",
+  "kidsDefinition": "自分で出した音のはね返りを聞いて、まわりの様子や獲物のいる場所を知る方法です。",
+  "adultDefinition": "発した音の反響から、周囲の物体の位置・形・動きを知る感覚方式です。イルカ類やコウモリ類で高度に発達しています。",
+  "aliases": [
+   "反響定位"
+  ],
+  "example": "ハンドウイルカはエコーロケーションで海底の地形や獲物を探ります。"
+ },
+ {
+  "id": "signature-whistle",
+  "term": "シグネチャーホイッスル",
+  "reading": "しぐねちゃーほいっする",
+  "category": "生態",
+  "kidsDefinition": "イルカが一頭ずつ持っている、自分だけの笛のような鳴き声です。名前のように使われます。",
+  "adultDefinition": "ハンドウイルカが生後に発達させる個体固有の笛音で、声の質とは独立に個体の識別情報を伝えます。",
+  "aliases": [],
+  "example": "ハンドウイルカは自分のシグネチャーホイッスルの複製を聞くと鳴き返します。"
+ },
+ {
+  "id": "ecotype",
+  "term": "生態型",
+  "reading": "せいたいがた",
+  "category": "生態",
+  "kidsDefinition": "同じ種の中で、くらす場所や食べ物などがまとまってちがうグループのことです。",
+  "adultDefinition": "同一種の中で、環境や食性に対応して行動・形態・遺伝がまとまって分化した集団の型です。",
+  "aliases": [
+   "エコタイプ"
+  ],
+  "example": "シャチには魚を食べる生態型と、海の哺乳類を狩る生態型が知られています。"
+ },
+ {
+  "id": "pod",
+  "term": "ポッド",
+  "reading": "ぽっど",
+  "category": "生態",
+  "kidsDefinition": "クジラやイルカの、家族を中心とした群れのことです。",
+  "adultDefinition": "クジラ類の社会集団の単位です。シャチでは母系の血縁個体からなる群れを指し、固有の音声（方言）を受けつぎます。",
+  "aliases": [],
+  "example": "シャチのポッドは、学習で受けつがれる固有の方言を持ちます。"
+ },
+ {
+  "id": "lungfish",
+  "term": "肺魚",
+  "reading": "はいぎょ",
+  "category": "分類",
+  "kidsDefinition": "えらだけでなく、肺でも息ができる魚のなかまです。ときどき水面に空気を吸いに来ます。",
+  "adultDefinition": "肺呼吸を併用する淡水魚の一群で、酸素の少ない水域でも空気呼吸によって生きられます。",
+  "aliases": [
+   "ハイギョ"
+  ],
+  "example": "ハシビロコウは、息つぎのため水面へ上がってくる肺魚を待ち伏せます。"
+ },
+ {
+  "id": "ratite",
+  "term": "走鳥類",
+  "reading": "そうちょうるい",
+  "category": "進化",
+  "kidsDefinition": "ダチョウやキーウィのように、飛ばずに地上でくらす鳥のなかまです。",
+  "adultDefinition": "古顎類のうち飛翔能力を失った鳥の総称です。単一の祖先から出たのではなく、複数の系統で独立に飛べなくなったと考えられています。",
+  "aliases": [
+   "ラタイト"
+  ],
+  "example": "ダチョウは現生の走鳥類で最大の種です。"
+ },
+ {
+  "id": "incubation",
+  "term": "抱卵",
+  "reading": "ほうらん",
+  "category": "くらし",
+  "kidsDefinition": "親鳥が卵の上にすわって、あたためてかえすことです。",
+  "adultDefinition": "親が卵を体温で温め、発生を進める行動です。期間や雌雄の分担は種によって異なります。",
+  "aliases": [],
+  "example": "ダチョウの共同の巣では、卵はおよそ40日の抱卵でかえります。"
+ },
+ {
+  "id": "nesting",
+  "term": "営巣",
+  "reading": "えいそう",
+  "category": "くらし",
+  "kidsDefinition": "鳥などが子育てのために巣を作ることです。",
+  "adultDefinition": "繁殖のために巣を作り、維持する行動です。場所や材料、使い続ける年数は種ごとに大きく異なります。",
+  "aliases": [],
+  "example": "ハクトウワシは同じ場所で営巣を続け、巣は高さ4メートルに達することがあります。"
+ },
+ {
+  "id": "bird-migration",
+  "term": "渡り",
+  "reading": "わたり",
+  "category": "くらし",
+  "kidsDefinition": "季節に合わせて、鳥が遠くはなれた場所へ移動することです。",
+  "adultDefinition": "繁殖地と越冬地の間などを季節的に往復する移動のことです。不定期に起こる大移動(イラプション)とは区別されます。",
+  "aliases": [],
+  "example": "シロフクロウの南下は決まった渡りではなく、年によって規模が大きく変わります。"
+ },
+ {
+  "id": "irruption",
+  "term": "イラプション",
+  "reading": "いらぷしょん",
+  "category": "くらし",
+  "kidsDefinition": "ある年にだけ、たくさんの鳥がふだん来ない場所まで移動してくることです。",
+  "adultDefinition": "食物事情などに応じて不定期に起こる大規模な移動・出現のことです。毎年決まって往復する渡りと区別されます。",
+  "aliases": [
+   "大量渡来"
+  ],
+  "example": "シロフクロウのイラプションでは、2011年にハワイまで達した記録があります。"
+ },
+ {
+  "id": "carotenoid",
+  "term": "カロテノイド",
+  "reading": "かろてのいど",
+  "category": "身体",
+  "kidsDefinition": "ニンジンやエビなどにふくまれる、黄色や赤色のもとになる色素です。",
+  "adultDefinition": "動植物に広く見られる黄〜赤系の色素の総称です。多くの動物は自分で作れず、食べ物から取り込みます。",
+  "aliases": [],
+  "example": "フラミンゴの桃色は、餌にふくまれるカロテノイドに由来します。"
+ },
+ {
+  "id": "crop-milk",
+  "term": "素嚢乳",
+  "reading": "そのうにゅう",
+  "category": "くらし",
+  "kidsDefinition": "親鳥の体の中で作られる、ヒナのための特別なミルクのような栄養です。",
+  "adultDefinition": "消化管の上部(素嚢のあたり)で作られ、ヒナに口移しで与えられる栄養分です。ハトやフラミンゴ、ペンギンの仲間で知られます。",
+  "aliases": [
+   "クロップミルク",
+   "フラミンゴミルク"
+  ],
+  "example": "フラミンゴの親は素嚢乳を与えるあいだに、体の色があせていきます。"
+ },
+ {
+  "id": "haplotype",
+  "term": "ハプロタイプ",
+  "reading": "はぷろたいぷ",
+  "category": "進化",
+  "kidsDefinition": "親から子へ、ひとまとまりで受けつがれるDNAの型のことです。",
+  "adultDefinition": "ひとまとまりで親から子へ受けつがれるDNA配列の組み合わせの型です。集団の歴史をたどる手がかりになります。",
+  "aliases": [],
+  "example": "北海道のタンチョウでは、母から受けつがれるミトコンドリアDNAのハプロタイプが2種類しか見つかっていません。"
+ },
+ {
+  "id": "artificial-feeding",
+  "term": "給餌",
+  "reading": "きゅうじ",
+  "category": "生態",
+  "kidsDefinition": "人が野生の動物にエサをあげることです。",
+  "adultDefinition": "人が野生動物へ意図的に食物を与える保護・管理の手法です。個体が集まりすぎることによる感染症などの副作用も議論されます。",
+  "aliases": [
+   "人工給餌"
+  ],
+  "example": "タンチョウは1952年に始まった冬の給餌をきっかけに回復へ向かいました。"
+ },
+ {
+  "id": "upper-tail-coverts",
+  "term": "上尾筒",
+  "reading": "じょうびとう",
+  "category": "身体",
+  "kidsDefinition": "しっぽの羽の上がわをおおう羽のことです。クジャクのかざり羽はこの羽がのびたものです。",
+  "adultDefinition": "尾羽の付け根の上面をおおう羽です。インドクジャクのオスでは著しく伸長し、目玉模様のある飾り羽になります。",
+  "aliases": [],
+  "example": "クジャクの目玉模様の飾り羽は、尾羽ではなく上尾筒です。"
+ },
+ {
+  "id": "resonance",
+  "term": "共鳴",
+  "reading": "きょうめい",
+  "category": "身体",
+  "kidsDefinition": "ものが、ゆれやすいリズムでゆすられると、大きくゆれる現象です。",
+  "adultDefinition": "物体が固有の振動数に近い刺激を受けたとき、振動の幅が大きくなる物理現象です。",
+  "aliases": [
+   "共振"
+  ],
+  "example": "クジャクの飾り羽の束は、求愛で使う毎秒約26回の振動数で共鳴します。"
+ },
+ {
+  "id": "introduced-predator",
+  "term": "外来捕食者",
+  "reading": "がいらいほしょくしゃ",
+  "category": "生態",
+  "kidsDefinition": "人がよそから持ちこんだ、その土地にもともといなかった肉食の動物です。",
+  "adultDefinition": "人間活動によって本来の分布域の外へ持ち込まれ、在来の動物を捕食する動物です。島の生態系に大きな影響を与えます。",
+  "aliases": [
+   "移入捕食者"
+  ],
+  "example": "ニュージーランドでは、外来捕食者のストートがキーウィのひなの死亡の約半分を占めます。"
+ },
+ {
+  "id": "parthenogenesis",
+  "term": "単為生殖",
+  "reading": "たんいせいしょく",
+  "category": "生態",
+  "kidsDefinition": "メスがオスなしで、ひとりで子どもを残すふやし方です。",
+  "adultDefinition": "卵が受精せずに発生し、母親だけから子が生じる生殖様式です。",
+  "aliases": [
+   "処女生殖"
+  ],
+  "example": "飼育下のコモドオオトカゲのメスが、単為生殖で子を残した例が遺伝子鑑定で確認されています。"
+ },
+ {
+  "id": "venom-gland",
+  "term": "毒腺",
+  "reading": "どくせん",
+  "category": "身体",
+  "kidsDefinition": "毒を作って出す、体の中のふくろのような器官です。",
+  "adultDefinition": "毒液を合成・分泌する腺です。コモドオオトカゲでは下顎に6つの区画を持つ毒腺がMRIで確認されました。",
+  "aliases": [],
+  "example": "コモドオオトカゲの毒腺から出る毒は、獲物の血を固まりにくくします。"
+ },
+ {
+  "id": "iridophore",
+  "term": "虹色素胞",
+  "reading": "こうしきそほう",
+  "category": "身体",
+  "kidsDefinition": "皮ふの中で、光をはね返す小さな結晶を持っている細胞です。",
+  "adultDefinition": "グアニンなどの結晶を含み、光の反射によって色を作る色素胞です。結晶の並び方が変わると、反射する色も変わります。",
+  "aliases": [],
+  "example": "パンサーカメレオンは、虹色素胞の結晶の間隔を変えて体の色を変えます。"
+ },
+ {
+  "id": "structural-color",
+  "term": "構造色",
+  "reading": "こうぞうしょく",
+  "category": "身体",
+  "kidsDefinition": "絵の具のような色素ではなく、細かい形のしくみが光をはね返して見える色です。",
+  "adultDefinition": "微細な構造が特定の波長の光を反射・干渉させることで生じる色です。色素の色と違い、構造が変わると色も変わります。",
+  "aliases": [],
+  "example": "カメレオンの緑や青の発色には、ナノ結晶による構造色が関わっています。"
+ },
+ {
+  "id": "cryptic-species",
+  "term": "隠蔽種",
+  "reading": "いんぺいしゅ",
+  "category": "分類",
+  "kidsDefinition": "見た目がそっくりで同じ種だと思われていたのに、調べてみると別の種だった生き物のことです。",
+  "adultDefinition": "形態がよく似ているため単一の種とされてきたが、遺伝子などの解析で別種と分かる、または示唆される種です。",
+  "aliases": [
+   "クリプティック種"
+  ],
+  "example": "キングコブラは2024年に4種へ整理され、隠蔽種が含まれていたことが分かりました。"
+ },
+ {
+  "id": "brackish-water",
+  "term": "汽水域",
+  "reading": "きすいいき",
+  "category": "生態",
+  "kidsDefinition": "川の水と海の水がまざり合う、少ししょっぱい水の場所です。",
+  "adultDefinition": "河口などで淡水と海水が混ざり合う水域です。塩分が変化しやすく、そこで生きられる生き物は限られます。",
+  "aliases": [],
+  "example": "イリエワニは淡水から汽水域、海まで、幅広い塩分の水で暮らせます。"
+ },
+ {
+  "id": "bite-force",
+  "term": "咬合力",
+  "reading": "こうごうりょく",
+  "category": "身体",
+  "kidsDefinition": "あごでかみしめる力の強さのことです。",
+  "adultDefinition": "あごを閉じる筋肉が生み出す力で、ニュートンという単位で測ります。体の大きさと強く関係します。",
+  "aliases": [
+   "かむ力"
+  ],
+  "example": "実測されたイリエワニの咬合力16,414ニュートンは、動物の測定値として最高です。"
+ },
+ {
+  "id": "neurotoxin",
+  "term": "神経毒",
+  "reading": "しんけいどく",
+  "category": "身体",
+  "kidsDefinition": "体の中の連絡係である神経のはたらきを止めてしまう毒です。",
+  "adultDefinition": "神経の信号伝達を妨げる毒素です。呼吸などに関わる神経が働かなくなることがあります。",
+  "aliases": [],
+  "example": "キングコブラの毒は神経毒で、獲物の呼吸に関わる神経に作用します。"
+ },
+ {
+  "id": "species-complex",
+  "term": "種複合体",
+  "reading": "しゅふくごうたい",
+  "category": "分類",
+  "kidsDefinition": "『1種』とよばれてきたけれど、よく調べるといくつかの種の集まりかもしれないグループです。",
+  "adultDefinition": "互いによく似ていて区別が難しい、近縁な複数の種（または種になりつつある系統）のまとまりです。",
+  "aliases": [
+   "種群"
+  ],
+  "example": "キングコブラは長く1種とされましたが、種複合体であることが分かり、4種に整理されました。"
+ },
+ {
+  "id": "rafting-dispersal",
+  "term": "漂流分散",
+  "reading": "ひょうりゅうぶんさん",
+  "category": "生態",
+  "kidsDefinition": "生き物が海に流されて、遠くの島などへたどりつき、すみかを広げることです。",
+  "adultDefinition": "個体が海流などに運ばれて新しい土地へ到達し、分布を広げる現象です。偶然に大きく左右されます。",
+  "aliases": [
+   "ラフティング"
+  ],
+  "example": "ガラパゴスゾウガメの祖先は、南米から漂流分散で島に到達したと考えられています。"
+ },
+ {
+  "id": "cutaneous-respiration",
+  "term": "皮膚呼吸",
+  "reading": "ひふこきゅう",
+  "category": "身体",
+  "kidsDefinition": "肺やえらではなく、皮ふの表面で酸素を取り入れる呼吸のしかたです。",
+  "adultDefinition": "皮膚の表層を通じて酸素と二酸化炭素を交換する呼吸です。皮膚が薄く湿っていて、毛細血管が表面近くを走る動物で成り立ちます。",
+  "aliases": [
+   "皮膚ガス交換"
+  ],
+  "example": "オオサンショウウオは機能する肺をほとんど使わず、しわの多い皮膚で酸素を取り込みます。"
+ },
+ {
+  "id": "lateral-line",
+  "term": "側線",
+  "reading": "そくせん",
+  "category": "身体",
+  "kidsDefinition": "水のうごきや流れの変化を感じ取る、体の表面にならんだセンサーです。",
+  "adultDefinition": "水流や圧力の変化を受け取る感覚器の並びで、多くの魚類や水生の両生類に見られます。暗い水中でも周囲の状況や獲物の位置を捉えられます。",
+  "aliases": [
+   "側線器"
+  ],
+  "example": "オオサンショウウオは皮膚のこぶが側線に似たはたらきをして、水の動きから獲物を捉えます。"
+ },
+ {
+  "id": "invasive-alien-species-jp",
+  "term": "特定外来生物",
+  "reading": "とくていがいらいせいぶつ",
+  "category": "生態",
+  "kidsDefinition": "生態系などに大きな影響があるとして、日本の法律で飼うことや放すことが禁じられている外来の生き物です。",
+  "adultDefinition": "日本の外来生物法にもとづき、生態系・人の生命身体・農林水産業への影響が大きいとして指定される生物です。指定されると輸入・飼養・運搬・放出などが規制されます。",
+  "aliases": [
+   "外来生物法の指定種"
+  ],
+  "example": "2024年7月1日、日本固有のオオサンショウウオ以外のAndrias属と交雑個体が特定外来生物に指定されました。"
+ },
+ {
+  "id": "batrachotoxin",
+  "term": "バトラコトキシン",
+  "reading": "ばとらこときしん",
+  "category": "身体",
+  "kidsDefinition": "神経や筋肉のはたらきを乱す、とても強い毒です。一部のカエルや鳥の体の表面から見つかります。",
+  "adultDefinition": "ナトリウムチャネルを開いたままにして神経と筋肉の働きを乱すステロイド系アルカロイドです。ヤドクガエル科のPhyllobates属や、ニューギニアの有毒鳥から検出されています。",
+  "aliases": [
+   "BTX"
+  ],
+  "example": "モウドクフキヤガエル1個体の皮膚には、およそ1,900マイクログラムのバトラコトキシンが含まれるという報告があります。"
+ },
+ {
+  "id": "aposematic-coloration",
+  "term": "警告色",
+  "reading": "けいこくしょく",
+  "category": "生態",
+  "kidsDefinition": "目立つ色やもようで、「食べると危ない」と相手に知らせるはたらきをする体の色です。",
+  "adultDefinition": "捕食者に対して不味さや毒性を知らせる、目立つ体色や模様です。化学的な防御と組み合わさって現れることが多く、系統によっては独立に何度も生じます。",
+  "aliases": [
+   "警戒色"
+  ],
+  "example": "ヤドクガエル科では、警告色は少なくとも4〜5回、独立に生じたと推定されています。"
+ },
+ {
+  "id": "toxin-autoresistance",
+  "term": "自己耐性",
+  "reading": "じこたいせい",
+  "category": "身体",
+  "kidsDefinition": "自分が持っている毒で、自分自身は害を受けにくい性質のことです。",
+  "adultDefinition": "毒をもつ生物が自身の毒の作用を受けにくい性質です。標的分子の変異による場合と、毒を捕まえるタンパク質による場合などが議論されています。",
+  "aliases": [
+   "自家耐性"
+  ],
+  "example": "モウドクフキヤガエルの自己耐性は、ナトリウムチャネルの変異では説明できないことが2021年に示されました。"
+ },
+ {
+  "id": "gill-raker",
+  "term": "鰓耙",
+  "reading": "さいは",
+  "category": "身体",
+  "kidsDefinition": "えらの内側にならぶ突起で、水から餌をこしとるふるいのはたらきをします。",
+  "adultDefinition": "鰓弓の内側に並ぶ突起状の構造です。濾過採食を行う魚類では細かく発達し、水を通しながら餌の粒子を留めます。",
+  "aliases": [
+   "えら耙"
+  ],
+  "example": "ジンベエザメでは鰓耙が変形したふるいが、2〜3ミリより大きなものを留めます。"
+ },
+ {
+  "id": "individual-identification",
+  "term": "個体識別",
+  "reading": "こたいしきべつ",
+  "category": "研究",
+  "kidsDefinition": "もようや傷などの特徴から、1頭ずつを見分けて記録する調べ方です。",
+  "adultDefinition": "模様・傷・遺伝情報などの個体差から特定の個体を識別し、再確認できるようにする手法です。標識再捕獲や長期追跡の土台になります。",
+  "aliases": [
+   "個体識別法"
+  ],
+  "example": "ジンベエザメの個体識別には、星の並びを照合する天文学のアルゴリズムが転用されました。"
+ },
+ {
+  "id": "regional-endothermy",
+  "term": "局所内温性",
+  "reading": "きょくしょないおんせい",
+  "category": "身体",
+  "kidsDefinition": "体の一部だけを、まわりの水より温かく保てる性質です。",
+  "adultDefinition": "遊泳筋・眼・内臓など体の一部の温度を周囲の水温より高く保つ性質です。ネズミザメ科のサメやマグロ類に見られ、巡航速度を高める一方で消費エネルギーも増えます。",
+  "aliases": [
+   "部分的内温性"
+  ],
+  "example": "ホホジロザメは局所内温性で、体の内部を周囲の海水より高く保てます。"
+ },
+ {
+  "id": "oophagy",
+  "term": "卵食",
+  "reading": "らんしょく",
+  "category": "生態",
+  "kidsDefinition": "母親の体の中で、先に育った子が未受精の卵を食べて大きくなる育ち方です。",
+  "adultDefinition": "胎内の胚が母体の産む未受精卵を摂食して成長する繁殖様式です。ネズミザメ科をはじめ複数のサメで知られ、少数の大きな仔を産むことにつながります。",
+  "aliases": [
+   "食卵性"
+  ],
+  "example": "ホホジロザメは卵食をともなう胎生で、大きな新生仔を産みます。"
+ },
+ {
+  "id": "cephalic-lobe",
+  "term": "頭鰭",
+  "reading": "とうき",
+  "category": "身体",
+  "kidsDefinition": "マンタの頭の前についている2枚のひれで、海水を口へ送りこみます。",
+  "adultDefinition": "マンタ類の頭部前方にある一対の可動する突起で、遊泳時に水流を口へ導きます。丸めて棒状にすることもできます。",
+  "aliases": [
+   "セファリックローブ"
+  ],
+  "example": "ナンヨウマンタは頭鰭を広げて海水を口へ導き、えらで餌をこし取ります。"
+ },
+ {
+  "id": "ricochet-separation",
+  "term": "リコシェ分離",
+  "reading": "りこしぇぶんり",
+  "category": "身体",
+  "kidsDefinition": "粒が突起に当たってはね返ることで、水と食べ物を分ける仕組みです。",
+  "adultDefinition": "ふるいのように穴で粒を止めるのではなく、突起の上の流れが作る渦によって粒を跳ね返し、水と分離する濾過方式です。穴より小さな粒も保持でき、目詰まりしにくくなります。",
+  "aliases": [
+   "跳ね返し分離"
+  ],
+  "example": "オニイトマキエイの鰓では、リコシェ分離で餌が集められることが報告されました。"
+ },
+ {
+  "id": "protandry",
+  "term": "雄性先熟",
+  "reading": "ゆうせいせんじゅく",
+  "category": "生態",
+  "kidsDefinition": "はじめはオスとして育ち、あとからメスに変わる性のあり方です。",
+  "adultDefinition": "雌雄同体の一形式で、個体がまず雄として成熟し、体の大きさや社会的順位に応じて雌へ性転換します。",
+  "aliases": [
+   "雄性先熟型雌雄同体"
+  ],
+  "example": "カクレクマノミは雄性先熟で、群れで最大の個体がメスになります。"
+ },
+ {
+  "id": "sialic-acid",
+  "term": "シアル酸",
+  "reading": "しあるさん",
+  "category": "身体",
+  "kidsDefinition": "体の表面などにある糖の一種で、相手を見分ける目印にもなります。",
+  "adultDefinition": "N-アセチルノイラミン酸などの総称で、細胞表面や粘液の糖鎖の末端に位置し、細胞間の認識や識別に関わります。",
+  "aliases": [
+   "N-アセチルノイラミン酸"
+  ],
+  "example": "クマノミ類の粘液はシアル酸が少なく、イソギンチャクの刺胞が働きにくくなると考えられています。"
+ },
+ {
+  "id": "nematocyst",
+  "term": "刺胞",
+  "reading": "しほう",
+  "category": "身体",
+  "kidsDefinition": "イソギンチャクやクラゲが持つ、刺す糸を発射する小さな装置です。",
+  "adultDefinition": "刺胞動物の細胞内にある小器官で、刺激を受けると内部の糸状構造を高速で射出し、相手に毒を注入します。",
+  "aliases": [
+   "ネマトシスト"
+  ],
+  "example": "イソギンチャクの触手にある刺胞は、相手の表面の糖を手がかりの一つにして働きます。"
+ },
+ {
+  "id": "pseudoplacenta",
+  "term": "偽胎盤",
+  "reading": "ぎたいばん",
+  "category": "身体",
+  "kidsDefinition": "胎盤ではないのに、酸素や物質のやりとりを担う血管の多い組織です。",
+  "adultDefinition": "哺乳類の胎盤とは由来が異なりながら、ガス交換・老廃物の除去・浸透圧調節など似た役割を果たす組織です。タツノオトシゴのオスの育房内側に発達します。",
+  "aliases": [
+   "擬胎盤"
+  ],
+  "example": "ビッグベリーシーホースの育房には、血管に富む偽胎盤が広がります。"
+ },
+ {
+  "id": "male-pregnancy",
+  "term": "雄性妊娠",
+  "reading": "ゆうせいにんしん",
+  "category": "生態",
+  "kidsDefinition": "オスが体の中で赤ちゃんを育てて産む、めずらしい繁殖のしかたです。",
+  "adultDefinition": "ヨウジウオ科に見られる繁殖様式で、雄が受け取った卵を体表の溝や閉じた育房で受精・保育し、出産まで担います。",
+  "aliases": [
+   "オスの妊娠"
+  ],
+  "example": "タツノオトシゴの雄性妊娠では、育房の中で胚に酸素と栄養が渡されます。"
+ },
+ {
+  "id": "immune-tolerance",
+  "term": "免疫寛容",
+  "reading": "めんえきかんよう",
+  "category": "身体",
+  "kidsDefinition": "自分以外のものでも攻撃しないでおく、免疫のはたらき方です。",
+  "adultDefinition": "免疫系が特定の抗原に対して反応を起こさない状態です。妊娠では、母体や父体が胚を異物として拒絶しないために働きます。",
+  "aliases": [
+   "免疫的寛容"
+  ],
+  "example": "ヨウジウオ科では、免疫寛容と引き換えに免疫の遺伝子が作り替えられたと考えられています。"
+ },
+ {
+  "id": "electric-organ",
+  "term": "発電器官",
+  "reading": "はつでんきかん",
+  "category": "身体",
+  "kidsDefinition": "電気を作る細胞が並んだ器官で、筋肉のもとから作られます。",
+  "adultDefinition": "筋肉由来の細胞が変化してできた器官で、電位を発生させます。魚類では独立に複数回進化したと推定されています。",
+  "aliases": [
+   "電気器官"
+  ],
+  "example": "デンキウナギの体の後半には、3つの発電器官があります。"
+ },
+ {
+  "id": "electrocyte",
+  "term": "発電細胞",
+  "reading": "はつでんさいぼう",
+  "category": "身体",
+  "kidsDefinition": "発電器官を作る平たい細胞で、たくさん並んで電気を強くします。",
+  "adultDefinition": "発電器官を構成する扁平な細胞で、片面だけが刺激を受けて電位差を生みます。直列に並ぶことで電圧が加算されます。",
+  "aliases": [
+   "エレクトロサイト"
+  ],
+  "example": "デンキウナギでは、多数の発電細胞が直列に並んで高い電圧を作ります。"
+ },
+ {
+  "id": "electrolocation",
+  "term": "電気定位",
+  "reading": "でんきていい",
+  "category": "生態",
+  "kidsDefinition": "自分で出した弱い電気の乱れから、まわりの物や生き物を知る方法です。",
+  "adultDefinition": "自ら発した電場のゆがみを電気受容器で読み取り、周囲の物体や生物の位置を把握する能動的な感覚です。",
+  "aliases": [
+   "能動的電気定位"
+  ],
+  "example": "デンキウナギは弱い放電による電気定位で、濁った水の中でも周囲を探ります。"
+ },
+ {
+  "id": "lobe-finned-fish",
+  "term": "肉鰭類",
+  "reading": "にくきるい",
+  "category": "分類",
+  "kidsDefinition": "ひれの付け根が太い肉の柄になっている魚の仲間です。",
+  "adultDefinition": "ひれが肉質の柄で体につながる脊椎動物のまとまりで、シーラカンス、肺魚、そして四肢動物へつながる系統を含みます。",
+  "aliases": [
+   "肉鰭綱"
+  ],
+  "example": "シーラカンスは肉鰭類ですが、四肢動物にもっとも近い現生の系統は肺魚とされています。"
+ },
+ {
+  "id": "living-fossil",
+  "term": "生きた化石",
+  "reading": "いきたかせき",
+  "category": "進化",
+  "kidsDefinition": "大昔の化石とよく似た姿で、今も生きている生き物を指す言い方です。進化が止まったという意味ではありません。",
+  "adultDefinition": "古い時代の化石と形がよく似た現生の生物を指す通称です。変化の速さが部分的に遅いことを指す場合はあっても、進化が停止していることを意味しません。",
+  "aliases": [],
+  "example": "シーラカンスは生きた化石と呼ばれますが、ゲノムのすべてが止まっているわけではありません。"
+ },
+ {
+  "id": "rostral-organ",
+  "term": "吻器官",
+  "reading": "ふんきかん",
+  "category": "身体",
+  "kidsDefinition": "シーラカンスの鼻先にある、まわりの弱い電気を感じ取る器官です。",
+  "adultDefinition": "シーラカンスの吻部にある電気受容器で、3対の管が中央の袋から放射状に伸び、鼻先の孔で外へ開いています。",
+  "aliases": [
+   "ロストラル器官"
+  ],
+  "example": "吻器官の感度は口の正面に集中しており、捕食の瞬間にはたらくと考えられています。"
+ },
+ {
+  "id": "cardenolide",
+  "term": "カルデノリド",
+  "reading": "かるでのりど",
+  "category": "身体",
+  "kidsDefinition": "トウワタなどの植物が持つ毒で、動物の細胞のはたらきをじゃまします。",
+  "adultDefinition": "強心配糖体の一群で、細胞膜のナトリウムポンプに結合してその働きを妨げます。トウワタ類が多く含みます。",
+  "aliases": [
+   "強心配糖体"
+  ],
+  "example": "オオカバマダラの幼虫はトウワタのカルデノリドを体にためて身を守ります。"
+ },
+ {
+  "id": "sodium-pump",
+  "term": "ナトリウムポンプ",
+  "reading": "なとりうむぽんぷ",
+  "category": "身体",
+  "kidsDefinition": "細胞のまくにあって、ナトリウムを外へ、カリウムを中へ運ぶしくみです。",
+  "adultDefinition": "細胞膜にあるNa+/K+-ATPaseのことで、エネルギーを使ってナトリウムを細胞外へ、カリウムを細胞内へ運びます。多くの動物の神経や筋肉の働きを支えます。",
+  "aliases": [
+   "ナトリウムカリウムポンプ"
+  ],
+  "example": "オオカバマダラのナトリウムポンプでは、3か所のアミノ酸が置き換わって毒の影響を受けにくくなっています。"
+ },
+ {
+  "id": "sun-compass",
+  "term": "太陽コンパス",
+  "reading": "たいようこんぱす",
+  "category": "生態",
+  "kidsDefinition": "太陽の位置と体内時計を組み合わせて、進む方角を決めるしくみです。",
+  "adultDefinition": "太陽の方位と体内時計の時刻情報を組み合わせて方位を決める仕組みです。時刻を補正しないと、太陽が動くぶんだけ方位がずれます。",
+  "aliases": [
+   "時刻補正型太陽コンパス"
+  ],
+  "example": "オオカバマダラでは、触角の概日時計が太陽コンパスの時刻補正を担っていました。"
+ },
+ {
+  "id": "carapace-width",
+  "term": "甲幅",
+  "reading": "こうふく",
+  "category": "身体",
+  "kidsDefinition": "カニの甲羅の、左右の幅のことです。",
+  "adultDefinition": "カニ類の甲羅の左右方向の幅で、成長や漁獲の記録で甲長とともによく用いられる基本的な計測値です。",
+  "aliases": [],
+  "example": "タカアシガニの雌1個体は、脱皮で甲幅が12.81センチから15.60センチになりました。"
+ },
+ {
+  "id": "deep-ocean-water",
+  "term": "海洋深層水",
+  "reading": "かいようしんそうすい",
+  "category": "生態",
+  "kidsDefinition": "深いところから汲み上げた海水で、冷たくてきれいなのが特ちょうです。",
+  "adultDefinition": "水深およそ200メートルより深い層から取水した海水で、低温で清浄という性質があり、深海性生物の飼育などに利用されます。",
+  "aliases": [],
+  "example": "タカアシガニの脱皮の観察は、水深397メートルから汲み上げた海洋深層水の水槽で行われました。"
+ },
+ {
+  "id": "feeding-tentacle",
+  "term": "触腕",
+  "reading": "しょくわん",
+  "category": "身体",
+  "kidsDefinition": "イカが持つ、ふだんの腕より長くのびる2本の腕です。",
+  "adultDefinition": "イカ類が持つ1対の長い腕で、通常の8本の腕より長く伸び、先端の膨らんだ部分で獲物を捕らえます。",
+  "aliases": [],
+  "example": "小笠原沖で撮影されたダイオウイカは、切れた触腕を5.5メートル残していきました。"
+ },
+ {
+  "id": "allometry",
+  "term": "アロメトリー",
+  "reading": "あろめとりー",
+  "category": "研究",
+  "kidsDefinition": "体が大きくなるとき、体の各部分の大きさがどんな割合で変わるかを表す関係です。",
+  "adultDefinition": "体サイズの変化に対して各部位の大きさや形質がどのように比例して変わるかを表す関係で、種間比較では体の大きさの効果を取り除く基準として使われます。",
+  "aliases": [
+   "相対成長"
+  ],
+  "example": "アロメトリーを考慮すると、ダイオウイカの目の大きさはイカ類の中で例外的ではないと主張されました。"
+ },
+ {
+  "id": "cavitation",
+  "term": "キャビテーション",
+  "reading": "きゃびてーしょん",
+  "category": "身体",
+  "kidsDefinition": "水の中で圧力が急に下がってあわができ、そのあわがつぶれるときに強い力や音が出る現象です。",
+  "adultDefinition": "液体中で局所的に圧力が低下して蒸気の泡が生じ、崩壊する際に熱・光・音として大きなエネルギーを放出する現象です。船のスクリューを傷めることでも知られます。",
+  "aliases": [
+   "空洞現象"
+  ],
+  "example": "モンハナシャコの打撃は速すぎるため、獲物との間にキャビテーションが起こります。"
+ },
+ {
+  "id": "photoreceptor",
+  "term": "光受容体",
+  "reading": "ひかりじゅようたい",
+  "category": "身体",
+  "kidsDefinition": "目の中で光を受け取り、神経の信号に変えるしくみです。",
+  "adultDefinition": "光を吸収する視物質を持ち、光の刺激を電気信号へ変換する細胞や、その感度の型のことです。感度の異なる型の数と、色を見分ける能力は同じではありません。",
+  "aliases": [
+   "視細胞"
+  ],
+  "example": "シャコ類は12種類の光受容体を持ちますが、色の弁別は人ほど細かくありません。"
+ },
+ {
+  "id": "rhopalium",
+  "term": "ロパリア",
+  "reading": "ろぱりあ",
+  "category": "身体",
+  "kidsDefinition": "クラゲのかさのふちにある小さな感覚のかたまりで、かたむきや光を感じます。",
+  "adultDefinition": "刺胞動物のクラゲ類がかさの縁に持つ感覚器で、平衡石を含む平衡胞や光を感じる眼点が集まっています。脳を持たない体で拍動の調整に関わります。",
+  "aliases": [
+   "縁膜感覚器"
+  ],
+  "example": "ミズクラゲはロパリアの平衡胞で体の傾きを知ります。"
+ },
+ {
+  "id": "life-cycle",
+  "term": "生活環",
+  "reading": "せいかつかん",
+  "category": "生態",
+  "kidsDefinition": "卵から親になり、また卵ができるまでの、一連の姿の移り変わりです。",
+  "adultDefinition": "ある生物が世代をひとめぐりする間にたどる発生段階の連なりです。種によっては環境条件で経路が切り替わり、一本道とは限りません。",
+  "aliases": [
+   "ライフサイクル"
+  ],
+  "example": "ミズクラゲの生活環では、冬にポリプ期を経ずエフィラへ進む経路も見つかっています。"
+ },
+ {
+  "id": "chelicerata",
+  "term": "鋏角類",
+  "reading": "きょうかくるい",
+  "category": "分類",
+  "kidsDefinition": "口の前にはさみのような部分を持つ、クモ・サソリ・ダニ・カブトガニの仲間です。",
+  "adultDefinition": "節足動物のうち、触角を持たず口の前に鋏角と呼ばれる付属肢を備えるグループです。カブトガニ類やクモガタ類が含まれ、内部の系統関係は研究が続いています。",
+  "aliases": [
+   "鋏角亜門"
+  ],
+  "example": "カブトガニは甲殻類ではなく鋏角類で、クモやサソリに近い動物です。"
+ },
+ {
+  "id": "anhydrobiosis",
+  "term": "乾眠",
+  "reading": "かんみん",
+  "category": "生態",
+  "kidsDefinition": "体の水をほとんど失った状態で活動を止め、水がもどると生き返るねむり方です。",
+  "adultDefinition": "脱水にともなって代謝がほぼ停止し、給水によって活動を再開する休眠状態です。クリプトビオシスの一形態で、糖やタンパク質による細胞内構造の保護が関わると考えられています。",
+  "aliases": [
+   "アンヒドロビオシス"
+  ],
+  "example": "クマムシは乾眠に入ると、たるの形になって強い放射線にも耐えます。"
+ },
+ {
+  "id": "tardigrada-phylum",
+  "term": "緩歩動物門",
+  "reading": "かんぽどうぶつもん",
+  "category": "分類",
+  "kidsDefinition": "クマムシが属する動物のグループです。8本のあしでゆっくり歩きます。",
+  "adultDefinition": "4対の脚を持つ微小な動物からなる門で、節足動物や有爪動物と近縁とされます。1000種を超える種が記載され、海・淡水・陸のコケや土壌に広く分布します。",
+  "aliases": [
+   "クマムシ類"
+  ],
+  "example": "クマムシは1つの種名ではなく、緩歩動物門というグループの呼び名です。"
+ }
+]
