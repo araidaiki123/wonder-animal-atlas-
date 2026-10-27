@@ -18,6 +18,10 @@ export function toast(message, { kind = 'info', duration = 3500, action = null }
       onclick: () => { remove(); if (typeof action.onClick === 'function') action.onClick(); },
     }));
   }
+  // 常駐トーストは画面下のボタンを覆い続けないよう、必ず閉じられるようにする
+  if (persistent) {
+    node.append(el('button', { class: 'toast-close', type: 'button', text: '×', 'aria-label': '閉じる', onclick: remove }));
+  }
   host.append(node);
   // 同時表示は 3 件まで（常駐トーストは数えず、間引きもしない）
   const transient = () => Array.from(host.children).filter((c) => !c.dataset || c.dataset.persistent == null);

@@ -14,7 +14,8 @@ const WARMUP_HUB_TEXT = '上の動画枠の中央を1回タップして準備';
 const STANDALONE_HINT_KEY = 'intro-don:standaloneHintShown';
 const GUIDE_TOAST_MS = 4000;    // 案内トーストの表示時間
 const GUARD_BACK_TEXT = 'ゲーム中です。やめる場合は左上の × を押してください';
-const LEAVE_FALLBACK_MS = 600;  // 番兵の履歴を history.back() で捨てたあと popstate が来ない場合の保険
+const LEAVE_FALLBACK_MS = 600;
+let lastGuardToastAt = -Infinity;   // 戻る連打で案内トーストを積まないため  // 番兵の履歴を history.back() で捨てたあと popstate が来ない場合の保険
 
 let els;
 let player = null;
@@ -149,7 +150,10 @@ export function initPlay() {
     if (!active) return;
     if (parseHash().name !== 'play') return;        // hash が変わった遷移はルーターに任せる
     if (e.state && e.state.introDonGuard) return;   // forward() で番兵の履歴に戻ってきただけ
-    toast(GUARD_BACK_TEXT, { duration: 3000 });
+    if (performance.now() - lastGuardToastAt > 3000) {
+      lastGuardToastAt = performance.now();
+      toast(GUARD_BACK_TEXT, { duration: 3000 });
+    }
     history.forward();
   });
 
@@ -408,7 +412,9 @@ function onStateChange(st, info = {}) {
       const detail = info.error && info.error.message ? info.error.message : '';
       if (detail === PLAY_START_TIMEOUT_MESSAGE) {
         // watchdog：文言は player のものだけ（「再生できませんでした。」を重ねない）。復帰は onDon 側で再 cue + 暖機
-        notifyError(detail);
+        const cq = currentQuestion();
+        const isYt = !!(cq && cq.source && cq.source.type === 'youtube');
+        notifyError(isYt ? detail : '再生が始まりませんでした。もう一度「どん！」を押してください');
       } else {
         notifyError('再生できませんでした。' + (detail || (navigator.onLine === false ? '圏外のため YouTube は再生できません。' : '')));
       }

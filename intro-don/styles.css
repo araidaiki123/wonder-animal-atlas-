@@ -424,6 +424,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .toast[data-kind="error"] { background: var(--red); color: #fff; }
 .toast[data-kind="success"] { background: var(--green); }
 .toast-msg { flex: 1 1 auto; }
+.toast-close { min-width: 44px; min-height: 44px; margin: -8px -8px -8px 0; border: 0; background: transparent; color: inherit; font-size: 22px; font-weight: 800; }
 .toast-action { min-height: 36px; padding: 4px 12px; border-radius: 8px; border: 2px solid currentColor; background: transparent; font-weight: 800; white-space: nowrap; }
 @keyframes toastin { from { transform: translateY(16px); opacity: 0; } }
 /* プレイ画面ではどん！ボタン・早押しパネルに被らないよう上部に出す */
@@ -433,7 +434,9 @@ body:has(.screen-play:not([hidden])) .toast-host { bottom: auto; top: calc(var(-
 body[data-active-screen="play"] .toast,
 body:has(.screen-play:not([hidden])) .toast { pointer-events: none; }
 body[data-active-screen="play"] .toast-action,
-body:has(.screen-play:not([hidden])) .toast-action { pointer-events: auto; }
+body[data-active-screen="play"] .toast-close,
+body:has(.screen-play:not([hidden])) .toast-action,
+body:has(.screen-play:not([hidden])) .toast-close { pointer-events: auto; }
 
 /* ---------- 横向き（早押し）・広い画面 ---------- */
 @media (orientation: landscape) and (max-height: 500px) {
