@@ -4,6 +4,8 @@
  * - UI は createPlayer() が返す Player だけを使い、adapter の存在を意識しない。
  * - 停止タイマーは「実際に再生が始まった瞬間」（YouTube: PLAYING 状態 / local: playing イベント）から数え、
  *   バッファ待ちの時間を含めない。進捗は約 100ms ごとに onStateChange('playing', {...}) で通知する。
+ * - 再生開始が PLAY_START_TIMEOUT_MS（4 秒）以内に来なければ watchdog が 'error' にする（iOS で iframe の
+ *   playVideo() が黙って無視された場合などに、UI が「再生中」のまま固まらないようにする）。
  * - DOM / window はトップレベルで参照しない（Node のテストで import しても落ちない）。
  */
 import { createYouTubeAdapter } from './youtube.mjs';
@@ -14,6 +16,12 @@ export const STATES = ['idle', 'loading', 'ready', 'warming', 'playing', 'error'
 
 /** 進捗通知の間隔（ms） */
 export const PROGRESS_INTERVAL_MS = 100;
+
+/** play() から再生開始（PLAYING / playing イベント）までの待ち時間の上限（ms）。超えたら 'error' */
+export const PLAY_START_TIMEOUT_MS = 4000;
+
+/** watchdog が発火したときのメッセージ（UI はこの文言をそのまま表示してよい） */
+export const PLAY_START_TIMEOUT_MESSAGE = '再生が始まりませんでした。動画枠を直接タップしてから「どん！」を押してください';
 
 /** 既定の adapter ファクトリ（テストではフェイクに差し替える） */
 export const DEFAULT_ADAPTERS = {
@@ -100,7 +108,7 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
   let adapter = null;            // 現在の音源の adapter
   const cache = {};              // 種別ごとに 1 つだけ作って使い回す（<audio> や iframe を増やさない）
   let prepareToken = 0;          // prepare の競合（連打・問題スキップ）対策
-  let run = null;                // 再生中の情報 { start, seconds, counting, startedAt, stopAt, timeoutId, intervalId, resolve }
+  let run = null;                // 再生中の情報 { start, seconds, counting, startedAt, stopAt, timeoutId, intervalId, watchdogId, resolve }
 
   function emit(next, detail = {}) {
     state = next;
@@ -114,6 +122,7 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
     if (!run) return;
     if (run.timeoutId != null) t.clearTimeout(run.timeoutId);
     if (run.intervalId != null) t.clearInterval(run.intervalId);
+    if (run.watchdogId != null) t.clearTimeout(run.watchdogId);
     const { resolve, counting } = run;
     run = null;
     if (resolve) resolve(counting);
@@ -145,6 +154,7 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
   function startCounting() {
     if (!run || run.counting) return;
     const now = t.now();
+    if (run.watchdogId != null) { t.clearTimeout(run.watchdogId); run.watchdogId = null; }
     run.counting = true;
     run.startedAt = now;
     run.stopAt = computeStopAt(now, run.seconds);
@@ -191,6 +201,7 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
       lastError = null;
 
       if (!source) {
+        if (adapter && typeof adapter.release === 'function') { try { adapter.release(); } catch { /* 無視 */ } }
         adapter = null;
         kind = 'none';
         emit('none', {});
@@ -203,6 +214,10 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
         kind = 'none';
         fail(new Error(`未対応の音源種別です: ${String(type)}`));
         return;
+      }
+      if (adapter && adapter !== next && typeof adapter.release === 'function') {
+        // 別種別に切り替える：前の adapter が掴んでいる ObjectURL 等を手放す
+        try { adapter.release(); } catch { /* 無視 */ }
       }
       adapter = next;
       kind = type;
@@ -242,7 +257,13 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
 
       let resolve;
       const promise = new Promise((r) => { resolve = r; });
-      run = { start: startSec, seconds: sec, counting: false, startedAt: 0, stopAt: 0, timeoutId: null, intervalId: null, resolve };
+      run = { start: startSec, seconds: sec, counting: false, startedAt: 0, stopAt: 0, timeoutId: null, intervalId: null, watchdogId: null, resolve };
+      // watchdog：PLAY_START_TIMEOUT_MS 以内に再生開始が来なければ error（clearRun で必ず clear される）
+      run.watchdogId = t.setTimeout(() => {
+        if (!run || run.counting) return;
+        run.watchdogId = null;
+        fail(new Error(PLAY_START_TIMEOUT_MESSAGE));
+      }, PLAY_START_TIMEOUT_MS);
       emit('playing', { remainingMs: Math.round(sec * 1000), elapsedMs: 0, buffering: true });
       try {
         adapter.play({ start: startSec });   // ← 同期呼び出し（iOS の自動再生制限を通す）

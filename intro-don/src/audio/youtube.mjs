@@ -144,6 +144,7 @@ export function createYouTubeAdapter({
   let creating = null;        // 作成中の Promise
   let pendingCue = null;      // { resolve, reject, timer }
   let holder = null;          // mountEl の中に作る要素（YT.Player がこれを iframe に置き換える）
+  let abortCreating = null;   // 作成中に destroy() されたときに作りかけを捨てる
   let destroyed = false;
   // iOS 対策の「暖機」：親ページのタップでは cross-origin iframe の再生が許可されないことがあるので、
   // 初回だけ利用者に iframe を直接タップしてもらい（ミュート状態で）即座に一時停止→頭出しする。
@@ -195,7 +196,11 @@ export function createYouTubeAdapter({
     safe(onError, err);
   }
 
-  /** YT.Player を 1 回だけ作る（onReady まで待つ） */
+  /**
+   * YT.Player を 1 回だけ作る（onReady まで待つ）。
+   * タイムアウトしたら作りかけの player を destroy() し holder も除去する。遅れて来た onReady は無視する
+   * （古い iframe が mount 内に残って次回の作成と二重になるのを防ぐ）。
+   */
   function ensurePlayer(YT) {
     if (player) return Promise.resolve(player);
     if (creating) return creating;
@@ -205,61 +210,89 @@ export function createYouTubeAdapter({
         return;
       }
       const doc = E.document || mountEl.ownerDocument;
-      holder = doc.createElement('div');
-      mountEl.appendChild(holder);
+      const myHolder = doc.createElement('div');
+      holder = myHolder;
+      mountEl.appendChild(myHolder);
 
-      const timer = E.setTimeout(() => {
-        creating = null;
-        reject(new Error(YT_LOAD_ERROR_MESSAGE));
-      }, timeoutMs);
-
+      let settled = false;
       let created = null;
-      created = new YT.Player(holder, {
-        width: '100%',
-        height: '100%',
-        playerVars: {
-          playsinline: 1,
-          controls: 0,
-          disablekb: 1,
-          rel: 0,
-          modestbranding: 1,
-          fs: 0,
-          iv_load_policy: 3,
-          origin: E.window && E.window.location ? E.window.location.origin : undefined,
-        },
-        events: {
-          onReady: (ev) => {
-            E.clearTimeout(timer);
-            player = created || (ev && ev.target) || null;
-            creating = null;
-            // iframe を mount 要素いっぱいに描画（display:none 等は使わない）
-            try {
-              const iframe = typeof player.getIframe === 'function' ? player.getIframe() : null;
-              if (iframe && iframe.style) {
-                iframe.style.width = '100%';
-                iframe.style.height = '100%';
-                iframe.style.display = 'block';
-                iframe.style.border = '0';
+
+      const removeHolder = () => {
+        if (myHolder.parentNode && typeof myHolder.parentNode.removeChild === 'function') {
+          try { myHolder.parentNode.removeChild(myHolder); } catch { /* 無視 */ }
+        }
+        if (holder === myHolder) holder = null;
+      };
+
+      const abort = (err) => {
+        if (settled) return;
+        settled = true;
+        E.clearTimeout(timer);
+        creating = null;
+        abortCreating = null;
+        if (created) { try { created.destroy(); } catch { /* 無視 */ } }
+        removeHolder();
+        reject(err);
+      };
+      abortCreating = abort;
+      const timer = E.setTimeout(() => abort(new Error(YT_LOAD_ERROR_MESSAGE)), timeoutMs);
+
+      try {
+        created = new YT.Player(myHolder, {
+          width: '100%',
+          height: '100%',
+          playerVars: {
+            playsinline: 1,
+            controls: 0,
+            disablekb: 1,
+            rel: 0,
+            modestbranding: 1,
+            fs: 0,
+            iv_load_policy: 3,
+            origin: E.window && E.window.location ? E.window.location.origin : undefined,
+          },
+          events: {
+            onReady: (ev) => {
+              if (settled) {
+                // タイムアウト後 / destroy 後に遅れて来た onReady：念のため破棄して無視
+                const late = created || (ev && ev.target) || null;
+                if (late && !player) { try { late.destroy(); } catch { /* 無視 */ } }
+                return;
               }
-            } catch { /* 無視 */ }
-            resolve(player);
-          },
-          onStateChange: handleStateChange,
-          onError: (e) => {
-            // 作成中のエラーは prepare を失敗させる
-            if (!player) {
+              settled = true;
               E.clearTimeout(timer);
+              abortCreating = null;
+              player = created || (ev && ev.target) || null;
               creating = null;
-              const code = e && e.data;
-              const err = new Error(youtubeErrorMessage(code));
-              err.code = code;
-              reject(err);
-              return;
-            }
-            handleError(e);
+              // iframe を mount 要素いっぱいに描画（display:none 等は使わない）
+              try {
+                const iframe = typeof player.getIframe === 'function' ? player.getIframe() : null;
+                if (iframe && iframe.style) {
+                  iframe.style.width = '100%';
+                  iframe.style.height = '100%';
+                  iframe.style.display = 'block';
+                  iframe.style.border = '0';
+                }
+              } catch { /* 無視 */ }
+              resolve(player);
+            },
+            onStateChange: (ev) => { if (!settled || player) handleStateChange(ev); },
+            onError: (e) => {
+              // 作成中のエラーは prepare を失敗させる
+              if (!player) {
+                const code = e && e.data;
+                const err = new Error(youtubeErrorMessage(code));
+                err.code = code;
+                abort(err);
+                return;
+              }
+              handleError(e);
+            },
           },
-        },
-      });
+        });
+      } catch (e) {
+        abort(e instanceof Error ? e : new Error(YT_LOAD_ERROR_MESSAGE));
+      }
     });
     return creating;
   }
@@ -334,6 +367,7 @@ export function createYouTubeAdapter({
       destroyed = true;
       finishWarmUp(false);
       settleCue(false, new Error('プレイヤーは破棄されています'));
+      if (abortCreating) abortCreating(new Error('プレイヤーは破棄されています'));   // 作りかけも捨てる（遅延 onReady は無視）
       if (player) { try { player.destroy(); } catch { /* 無視 */ } }
       player = null;
       creating = null;

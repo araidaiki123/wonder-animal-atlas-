@@ -98,7 +98,7 @@ export function normalizeSet(obj) -> NormalizedSet       // validate の ok 前�
 export function newUserSet(partial = {}) -> NormalizedSet // id は "user-" + 乱数、builtin:false
 export function newQuestion(partial = {}) -> Question
 export function parseYouTubeId(text) -> string | null     // URL(watch?v=, youtu.be/, shorts/, embed/, music.youtube.com) か 11文字ID を受け付ける
-export function exportSet(set) -> { json: string, droppedLocalSources: number }  // 整形JSON。builtin は false に落とす（複製として扱う）
+export function exportSet(set) -> { json: string, droppedLocalSources: number }  // 整形JSON。builtin は false に落とす（複製として扱う）。builtin:true のセットは id も "user-" 付きに付け替える（元のセットは変更しない）
 export function importSet(text) -> { ok, set, errors }     // JSON.parse + validateSet。id が builtin と衝突したら "user-" を付け直す
 export function cloneSetForEditing(set) -> NormalizedSet   // 同梱セットを複製してユーザーセットにする
 ```
@@ -157,7 +157,12 @@ export function playbackWindow(s) -> { start: 0, seconds }  // 今回の再生�
 export function createPlayer({ youtubeMount /* HTMLElement */, onStateChange }) -> Player
 Player = {
   async prepare(source)                 // 問題遷移時に呼ぶ。youtube: cue、local: Blob→ObjectURL。source が null なら 'none'
+                                        // adapter を別種別（または none）に切り替えるとき、前の adapter に release() があれば呼ぶ
   async play({ start = 0, seconds })    // 必ずユーザー操作（タップ）ハンドラ内から同期的に呼ぶこと（iOS対策）。seconds 後に自動停止。
+                                        // 戻り値 Promise<boolean>：実際に再生が始まれば true。
+                                        // watchdog：再生開始（PLAYING / playing イベント）が PLAY_START_TIMEOUT_MS（4 秒）以内に
+                                        // 来なければ lastError = Error(PLAY_START_TIMEOUT_MESSAGE) で 'error' を通知し false で解決する。
+                                        // watchdog は stop() / prepare() / destroy() / 再 play() でも必ず clear される。
   stop()
   unlock()                              // 初回タップで呼ぶ。HTMLAudio の無音再生で iOS のオーディオを解放
   get state()                           // 'idle'|'loading'|'ready'|'playing'|'error'|'none'
@@ -166,10 +171,17 @@ Player = {
   destroy()
 }
 // onStateChange(state, { remainingMs?, error? }) を 100ms 間隔程度で呼ぶ（UI がプログレスを描く）
+// play() 直後は onStateChange('playing', { remainingMs, elapsedMs: 0, buffering: true }) を 1 回通知する（バッファ待ち中。
+// UI は buffering:true の間はリングを回さない）。実際に音が出始めてから buffering 無しの 'playing' が 100ms ごとに来る。
+export const PLAY_START_TIMEOUT_MS = 4000;
+export const PLAY_START_TIMEOUT_MESSAGE = '再生が始まりませんでした。動画枠を直接タップしてから「どん！」を押してください';
 ```
 
-- `youtube.mjs`：IFrame API（`https://www.youtube.com/iframe_api`）を遅延ロード。オフライン/ロード失敗は `error`。`playsinline:1, controls:0, disablekb:1, rel:0, modestbranding:1, origin`。`seekTo(start,true); playVideo()` → `seconds` 後に `pauseVideo()`。再生開始検知は `onStateChange(PLAYING)` で行い、停止タイマーはそこから数える。**動画の見た目はUI側が不透明オーバーレイで覆う**（サムネ・タイトルがネタバレになるため）。音量0や display:none は使わない（iOS で再生されない恐れ）。
-- `local.mjs`：`<audio playsinline>` 1要素を使い回し。`currentTime=start; play()`。停止は `timeupdate`+`setTimeout` 併用で ±50ms 以内。録音：`createRecorder()` → `start()/stop()` → `{ blob, mimeType, duration }`。mimeType は `audio/mp4`→`audio/webm;codecs=opus`→`audio/webm` の順で `MediaRecorder.isTypeSupported`。
+- `youtube.mjs`：IFrame API（`https://www.youtube.com/iframe_api`）を遅延ロード。オフライン/ロード失敗は `error`。`YT.Player` 作成（onReady 待ち）が `timeoutMs` でタイムアウトしたら作りかけの player を `destroy()` して holder を mount から除去し、遅れて来た `onReady` は無視する（次回の `prepare` で作り直す。`destroy()` 中の作成も同様に捨てる）。`playsinline:1, controls:0, disablekb:1, rel:0, modestbranding:1, origin`。`seekTo(start,true); playVideo()` → `seconds` 後に `pauseVideo()`。再生開始検知は `onStateChange(PLAYING)` で行い、停止タイマーはそこから数える。**動画の見た目はUI側が不透明オーバーレイで覆う**（サムネ・タイトルがネタバレになるため）。音量0や display:none は使わない（iOS で再生されない恐れ）。
+- `local.mjs`：`<audio playsinline>` 1要素を使い回し。`currentTime=start; play()`。停止は `timeupdate`+`setTimeout` 併用で ±50ms 以内。adapter の `release()` は ObjectURL を revoke し `audio.removeAttribute('src'); audio.load()` する（要素とリスナーは残す。player.mjs が種別切替時に呼ぶ）。録音：`createRecorder({ onLevel, audioContext, env })` → `start()/stop()` → `{ blob, mimeType, duration }`。mimeType は `audio/mp4`→`audio/webm;codecs=opus`→`audio/webm` の順で `MediaRecorder.isTypeSupported`。
+  - `audioContext`：UI がタップの同期区間で生成した `AudioContext` を渡せる（iOS でレベルメーターを動かすため）。渡された場合はレベル計測に使い、**close しない**（UI の責務）。省略時は内部で生成し `stop()/cancel()` で close する。
+  - `cancel()` / `stop()` は `getUserMedia` 待ち中（`state === 'requesting'`）でも有効：解決後に取得した track を stop して `start()` を `Error('録音を中止しました')` で reject する（マイクが掴まれたまま残らない）。`MediaRecorder` の生成や `recorder.start()` が throw した場合も stream を解放して reject。
+  - `state`：`'inactive' | 'requesting' | 'recording'`。
 
 ## 6. ストレージ（`src/storage.mjs`）
 
@@ -182,6 +194,15 @@ Player = {
   `saveResult(summary)`, `listResults(limit)`, `loadSettings()`, `saveSettings(obj)`。
 - `navigator.storage.persist()` を初回保存時に要求（iOS の自動削除対策、失敗は無視）。
 
+### Service Worker のキャッシュ方針（`sw.js`）
+
+- **デプロイ時は必ず `sw.js` の `VERSION` を上げる**（現在 `v1.1.0`）。キャッシュ名は `intro-don-<VERSION>`。
+- install：`SHELL`（index.html / styles.css / app.js / src/**/*.mjs / manifest / icons / data/sets/index.json）と `index.json` が列挙する `data/sets/*.json` を `cache.add(new Request(u, { cache: 'reload' }))` で precache する（HTTP キャッシュを経由せず必ずネットワークから取る）。
+- fetch：
+  - `SHELL` と `data/sets/*`（および navigate）は **バージョン付きキャッシュから cache-first**。バックグラウンド更新（stale-while-revalidate）は**しない**。古い `app.js` と新しい `*.mjs` が混在しないよう、更新は `VERSION` を上げて丸ごと入れ替える（activate で旧キャッシュを削除 → `app.js` が「新しいバージョンがあります」トースト → `SKIP_WAITING` → 再読み込み）。
+  - `SHELL` 以外の同一オリジン（将来の追加ファイル）は network-first + キャッシュ fallback。
+  - クロスオリジン（YouTube 等）には触らない。navigate がオフラインかつ未キャッシュなら `index.html` を返す。
+
 ## 7. 画面（`app.js` + `index.html`）
 
 1. **ホーム**：セット一覧（同梱・自作）。各カードに曲数・難易度・音源設定済み数「🎧 8/12」。「＋ 自作セット」「読み込み(JSON)」。
@@ -192,6 +213,14 @@ Player = {
 - 画面遷移中に `screen.orientation`／`wakeLock`（`navigator.wakeLock.request('screen')`）でプレイ中の画面消灯を防ぐ（失敗は無視）。
 - 文言はすべて日本語。タップ領域は 44px 以上。セーフエリア（`env(safe-area-inset-*)`）対応。ダーク配色（屋外の視認性のため高コントラスト）。
 - Web Share Target（Android）：`manifest.share_target` で `?url=` を受け、起動時に「このYouTube動画を問題に追加」導線を出す。
+
+### UI 基盤モジュールの API（`src/ui/router.mjs`, `toast.mjs`, `dom.mjs`）
+
+- `router.mjs`：`registerScreen(name, { el, enter, leave })` / `navigate(name, params, { replace })` / `parseHash(hash)` / `startRouter()`。
+  - 遷移の競合：`enter()` 中に別の遷移が始まった場合、その `enter` 完了後に割り込まれた画面の `leave()` を必ず呼ぶ（表示はしない）。`leave()` 中に別遷移が始まった場合は後の遷移が続きを担当する。
+  - `parseHash` は `decodeURIComponent` に失敗する不正値（`#/set/%E0` 等）を `{ name: 'home' }` として扱い、throw しない。
+- `toast(message, { kind, duration = 3500, action })`：`duration: 0` は常駐（返り値の `remove()` かアクションボタンで閉じる）。一時トーストは最多 `MAX_TOASTS`（3）件で古いものから間引くが、**常駐トーストは数えず間引かない**（`data-persistent` 属性が付く）。
+- `dom.bindDialogClose(dlg, onClose, { backdrop = true } = {})`：`backdrop: false` で背景タップによるクローズを無効化できる（Esc と `[data-close]` の × は従来どおり）。
 
 ## 8. 品質基準（レビューで見る観点）
 

@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 
 import {
   createPlayer, computeStopAt, computeProgress, shouldStopByTime, toError, PROGRESS_INTERVAL_MS,
+  PLAY_START_TIMEOUT_MS, PLAY_START_TIMEOUT_MESSAGE,
 } from '../src/audio/player.mjs';
 import {
   loadYouTubeApi, createYouTubeAdapter, youtubeErrorMessage, PlayerState,
@@ -125,6 +126,7 @@ function fakeAdapterFactory(log, opts = {}) {
       play({ start }) { log.push(`play:${start}`); if (opts.playThrows) throw opts.playThrows; },
       stop() { log.push('stop'); },
       unlock() { log.push('unlock'); },
+      release() { log.push(`release:${this.kind}`); },
       destroy() { log.push('destroy'); this.destroyed = true; },
     };
     instances.push(a);
@@ -374,6 +376,29 @@ test('local adapter: destroy で pause / revoke / src 解除', async () => {
   await assert.rejects(adapter.prepare({ type: 'local', blobId: 'b2' }), /破棄/);
 });
 
+test('local adapter: release は revoke + src 解除、要素は残して次の prepare で再利用できる', async () => {
+  const { adapter, audio, urls } = makeLocal();
+  let p = adapter.prepare({ type: 'local', blobId: 'b1' });
+  await Promise.resolve(); await Promise.resolve();
+  audio.dispatch('loadedmetadata');
+  await p;
+  audio.calls.length = 0;
+  adapter.release();
+  assert.deepEqual(urls.revoked, ['blob:fake/1']);
+  assert.equal(audio.src, '');
+  assert.deepEqual(audio.calls, ['pause', 'load']);
+  assert.equal(adapter.getElement(), audio);
+  assert.throws(() => adapter.play({ start: 0 }), /準備ができていません/);
+  // 2 回呼んでも revoke は重複しない
+  adapter.release();
+  assert.deepEqual(urls.revoked, ['blob:fake/1']);
+  p = adapter.prepare({ type: 'local', blobId: 'b2' });
+  await Promise.resolve(); await Promise.resolve();
+  audio.dispatch('loadedmetadata');
+  await p;
+  assert.equal(audio.src, 'blob:fake/2');
+});
+
 // ---------------------------------------------------------------------------
 // local.mjs: recorder
 // ---------------------------------------------------------------------------
@@ -414,6 +439,7 @@ function makeRecorder(opts = {}) {
   }
   const recorder = createRecorder({
     onLevel: (v) => levels.push(v),
+    audioContext: opts.audioContext || null,
     env: {
       navigator: { mediaDevices: { getUserMedia: opts.getUserMedia || (async () => stream) } },
       MediaRecorder: FakeMediaRecorder,
@@ -424,7 +450,7 @@ function makeRecorder(opts = {}) {
       isTypeSupported: opts.isTypeSupported || ((t) => t === 'audio/mp4'),
     },
   });
-  return { recorder, timers, levels, stream, ctxLog, setNow: (v) => { now = v; } };
+  return { recorder, timers, levels, stream, ctxLog, FakeAudioContext, setNow: (v) => { now = v; } };
 }
 
 test('createRecorder: start → stop で { blob, mimeType, duration } を返し track を止める', async () => {
@@ -480,6 +506,79 @@ test('createRecorder: 録音していない時の stop は reject、cancel は�
 test('createRecorder: 非対応環境では日本語エラー', async () => {
   const recorder = createRecorder({ env: { navigator: {}, MediaRecorder: undefined } });
   await assert.rejects(recorder.start(), /このブラウザは録音に対応していません/);
+});
+
+test('createRecorder: getUserMedia 待ち中の cancel() は解決後に track を止めて start() を reject', async () => {
+  let resolveMedia;
+  const stream = fakeStream();
+  const { recorder } = makeRecorder({ getUserMedia: () => new Promise((r) => { resolveMedia = r; }) });
+  const p = recorder.start();
+  await Promise.resolve();
+  assert.equal(recorder.state, 'requesting');
+  recorder.cancel();
+  assert.equal(recorder.state, 'inactive');
+  resolveMedia(stream);
+  await assert.rejects(p, /録音を中止しました/);
+  assert.equal(stream.tracks[0].stopped, true, 'マイクが解放される');
+  assert.equal(recorder.state, 'inactive');
+  // その後の start() は普通に動く
+  const again = makeRecorder();
+  await again.recorder.start();
+  assert.equal(again.recorder.state, 'recording');
+  again.recorder.cancel();
+});
+
+test('createRecorder: getUserMedia 待ち中の stop() も同様にマイクを解放する', async () => {
+  let resolveMedia;
+  const stream = fakeStream();
+  const { recorder } = makeRecorder({ getUserMedia: () => new Promise((r) => { resolveMedia = r; }) });
+  const p = recorder.start();
+  await assert.rejects(recorder.stop(), /録音していません/);
+  resolveMedia(stream);
+  await assert.rejects(p, /録音を中止しました/);
+  assert.equal(stream.tracks[0].stopped, true);
+});
+
+test('createRecorder: recorder.start() が throw したら stream を解放して reject', async () => {
+  class ThrowingRecorder extends FakeMediaRecorder {
+    start() { throw new Error('boom'); }
+  }
+  const stream = fakeStream();
+  const recorder = createRecorder({
+    env: {
+      navigator: { mediaDevices: { getUserMedia: async () => stream } },
+      MediaRecorder: ThrowingRecorder,
+      isTypeSupported: () => true,
+    },
+  });
+  await assert.rejects(recorder.start(), (e) => /録音を開始できません/.test(e.message) && e.cause.message === 'boom');
+  assert.equal(stream.tracks[0].stopped, true);
+  assert.equal(recorder.state, 'inactive');
+  // MediaRecorder のコンストラクタが throw した場合も同様
+  class BadCtor { constructor() { throw new Error('ctor'); } }
+  const s2 = fakeStream();
+  const r2 = createRecorder({ env: { navigator: { mediaDevices: { getUserMedia: async () => s2 } }, MediaRecorder: BadCtor, isTypeSupported: () => true } });
+  await assert.rejects(r2.start(), /録音を開始できません/);
+  assert.equal(s2.tracks[0].stopped, true);
+});
+
+test('createRecorder: 外から渡した audioContext を使い、close しない', async () => {
+  const log = [];
+  const external = {
+    state: 'suspended',
+    resume() { log.push('resume'); return Promise.resolve(); },
+    createMediaStreamSource() { return { connect: () => log.push('connect') }; },
+    createAnalyser() { return { fftSize: 2048, getByteTimeDomainData: (buf) => buf.fill(128) }; },
+    close() { log.push('close'); return Promise.resolve(); },
+  };
+  const { recorder, timers, levels, ctxLog } = makeRecorder({ audioContext: external });
+  await recorder.start();
+  timers.advance(120);
+  assert.equal(levels.length, 2);
+  await recorder.stop();
+  assert.deepEqual(log, ['connect', 'resume']);   // close は呼ばれない
+  assert.deepEqual(ctxLog, []);                     // 内部で new AudioContext しない
+  assert.equal(timers.pendingCount(), 0);
 });
 
 // ---------------------------------------------------------------------------
@@ -683,8 +782,27 @@ test('youtube adapter: onReady が来なければタイムアウト、destroy �
   const ctx = makeYouTubeAdapter({ manualReady: true });
   const p = ctx.adapter.prepare({ type: 'youtube', videoId: 'dQw4w9WgXcQ' });
   for (let i = 0; i < 10; i++) await Promise.resolve();
+  assert.equal(ctx.mount.children.length, 1);
   ctx.timers.advance(8000);
   await assert.rejects(p, (e) => e.message === YT_LOAD_ERROR_MESSAGE);
+  // 作りかけの player は destroy され、holder は mount から除去される
+  assert.deepEqual(ctx.players[0].calls, [['destroy']]);
+  assert.equal(ctx.mount.children.length, 0);
+  assert.equal(ctx.adapter.getPlayer(), null);
+  // 遅れて来た onReady は無視（player にならない）
+  ctx.players[0].ready();
+  assert.equal(ctx.adapter.getPlayer(), null);
+  assert.throws(() => ctx.adapter.play({ start: 0 }), /準備ができていません/);
+  // 再試行すると新しい player を作る（holder も 1 つだけ）
+  const p2 = ctx.adapter.prepare({ type: 'youtube', videoId: 'dQw4w9WgXcQ' });
+  for (let i = 0; i < 10; i++) await Promise.resolve();
+  assert.equal(ctx.players.length, 2);
+  assert.equal(ctx.mount.children.length, 1);
+  ctx.players[1].ready();
+  for (let i = 0; i < 5; i++) await Promise.resolve();
+  ctx.players[1].state(PlayerState.CUED);
+  await p2;
+  assert.equal(ctx.adapter.getPlayer(), ctx.players[1]);
 
   const ctx2 = makeYouTubeAdapter();
   const player = await prepareYT(ctx2, { type: 'youtube', videoId: 'dQw4w9WgXcQ' });
@@ -953,6 +1071,87 @@ test('player: destroy は全 adapter を破棄し idle に戻る、onStateChange
   const throwing = createPlayer({ adapters: { youtube: fakeAdapterFactory([]) }, onStateChange: () => { throw new Error('UI bug'); } });
   await throwing.prepare({ type: 'youtube', videoId: 'x' });
   assert.equal(throwing.state, 'ready');
+});
+
+test('player: 再生開始が 4 秒以内に来なければ watchdog が error にし、play() は false で解決', async () => {
+  const { player, events, log, timers, youtube } = makePlayer();
+  await player.prepare({ type: 'youtube', videoId: 'x' });
+  events.length = 0;
+  const p = player.play({ start: 0, seconds: 1.5 });
+  assert.equal(PLAY_START_TIMEOUT_MS, 4000);
+  timers.advance(PLAY_START_TIMEOUT_MS - 1);
+  assert.equal(player.state, 'playing');
+  timers.advance(1);
+  assert.equal(await p, false);
+  assert.equal(player.state, 'error');
+  assert.equal(player.lastError.message, PLAY_START_TIMEOUT_MESSAGE);
+  assert.match(player.lastError.message, /動画枠を直接タップ/);
+  assert.deepEqual(events.at(-1), ['error', { error: player.lastError }]);
+  assert.equal(log.at(-1), 'stop');
+  assert.equal(timers.pendingCount(), 0);
+  // 遅れて PLAYING が来ても無視
+  youtube.instances[0].hooks.onPlaying();
+  assert.equal(player.state, 'error');
+});
+
+test('player: 再生開始が来れば watchdog は解除され、stop()/prepare() でも clear される', async () => {
+  const { player, timers, youtube } = makePlayer();
+  await player.prepare({ type: 'youtube', videoId: 'x' });
+  // 開始が来た → 以後 4 秒経っても error にならない
+  const p1 = player.play({ seconds: 10 });
+  timers.advance(3000);
+  youtube.instances[0].hooks.onPlaying();
+  assert.equal(await p1, true);
+  timers.advance(5000);
+  assert.equal(player.state, 'playing');
+  player.stop();
+  assert.equal(player.state, 'ready');
+  assert.equal(timers.pendingCount(), 0);
+
+  // バッファ中に stop() → watchdog も消える
+  const p2 = player.play({ seconds: 1 });
+  player.stop();
+  assert.equal(await p2, false);
+  assert.equal(timers.pendingCount(), 0);
+  timers.advance(10000);
+  assert.equal(player.state, 'ready');
+
+  // バッファ中に prepare() → watchdog も消える
+  player.play({ seconds: 1 });
+  assert.equal(timers.pendingCount(), 1);
+  await player.prepare({ type: 'youtube', videoId: 'y' });
+  assert.equal(timers.pendingCount(), 0);
+  timers.advance(10000);
+  assert.equal(player.state, 'ready');
+
+  // 再生中に play() し直すと watchdog も張り直す（古い方は消える）
+  player.play({ seconds: 1 });
+  timers.advance(3000);
+  player.play({ seconds: 1 });
+  timers.advance(1500);
+  assert.equal(player.state, 'playing', '新しい watchdog は 4 秒を数え直す');
+  timers.advance(2500);
+  assert.equal(player.state, 'error');
+});
+
+test('player: prepare で adapter を切り替えると前の adapter の release() を呼ぶ', async () => {
+  const { player, log } = makePlayer();
+  await player.prepare({ type: 'local', blobId: 'b1' });
+  assert.equal(log.includes('release:local'), false);
+  await player.prepare({ type: 'local', blobId: 'b2' });
+  assert.equal(log.includes('release:local'), false, '同じ adapter なら release しない');
+  await player.prepare({ type: 'youtube', videoId: 'x' });
+  assert.equal(log.filter((l) => l === 'release:local').length, 1);
+  assert.equal(log.includes('release:youtube'), false);
+  await player.prepare(null);
+  assert.equal(log.filter((l) => l === 'release:youtube').length, 1, 'none に切り替えても release');
+  await player.prepare({ type: 'local', blobId: 'b3' });
+  assert.equal(player.state, 'ready', 'release 後も再度 prepare できる');
+  // release が無い adapter でも落ちない
+  const bare = createPlayer({ adapters: { youtube: () => ({ async prepare() {}, play() {}, stop() {}, destroy() {} }), local: () => ({ async prepare() {}, play() {}, stop() {}, destroy() {} }) } });
+  await bare.prepare({ type: 'youtube', videoId: 'x' });
+  await bare.prepare({ type: 'local', blobId: 'b' });
+  assert.equal(bare.state, 'ready');
 });
 
 test('player: 既定 adapter で import しても DOM 無しで落ちず、local の prepare は日本語エラー', async () => {

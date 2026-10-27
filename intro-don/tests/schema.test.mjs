@@ -290,6 +290,24 @@ describe('exportSet / importSet 往復', () => {
     assert.ok(json.includes('\n  '), '整形 JSON');
   });
 
+  test('builtin:true のセットは id を user- 付きに付け替える（複製扱い）、ユーザーセットの id はそのまま', () => {
+    const a = JSON.parse(exportSet(VALID).json);
+    assert.match(a.id, /^user-[a-z0-9]+$/);
+    assert.notEqual(a.id, VALID.id);
+    assert.equal(a.builtin, false);
+    // 書き出し元は変更しない
+    assert.equal(VALID.id, 'konbini-chime');
+    // 2 回書き出すと別の id（乱数）
+    assert.notEqual(JSON.parse(exportSet(VALID).json).id, a.id);
+    // builtin でなければ id を保持
+    const user = { ...VALID, id: 'user-keepme', builtin: false };
+    assert.equal(JSON.parse(exportSet(user).json).id, 'user-keepme');
+    // builtinIds を渡さずに取り込んでも同梱セットと衝突しない
+    const r = importSet(exportSet(VALID).json);
+    assert.equal(r.ok, true);
+    assert.match(r.set.id, /^user-/);
+  });
+
   test('local 音源がなければ _droppedLocalSources は付かない', () => {
     const { json, droppedLocalSources } = exportSet({ ...VALID, questions: VALID.questions.slice(0, 2) });
     assert.equal(droppedLocalSources, 0);

@@ -17,8 +17,13 @@ export function buildHash(name, params = {}) {
 }
 
 export function parseHash(hash = location.hash) {
-  const parts = hash.replace(/^#\/?/, '').split('/');
-  return { name: parts[0] || 'home', id: parts[1] ? decodeURIComponent(parts[1]) : undefined };
+  const parts = String(hash ?? '').replace(/^#\/?/, '').split('/');
+  try {
+    return { name: parts[0] || 'home', id: parts[1] ? decodeURIComponent(parts[1]) : undefined };
+  } catch {
+    // 不正なパーセントエンコード（#/set/%E0 など）はホーム扱い
+    return { name: 'home', id: undefined };
+  }
 }
 
 export function navigate(name, params = {}, { replace = false } = {}) {
@@ -42,6 +47,10 @@ export function back(fallback = 'home') {
   else navigate(fallback, {}, { replace: true });
 }
 
+async function safeLeave(screen) {
+  try { await screen.leave?.(); } catch (e) { console.warn(e); }
+}
+
 async function route() {
   const token = ++routing;
   const { name, id } = parseHash();
@@ -50,11 +59,16 @@ async function route() {
   if (current && current !== target) {
     const prev = current;
     current = null;
-    try { await prev.leave?.(); } catch (e) { console.warn(e); }
+    await safeLeave(prev);
   }
+  if (token !== routing) return; // leave 中に別の遷移が始まった（その遷移が続きを担当する）
   let result;
   try { result = await target.enter?.({ id }); } catch (e) { console.error(e); result = false; }
-  if (token !== routing) return; // 途中で別の遷移が始まった
+  if (token !== routing) {
+    // enter 中に別の遷移が始まった：この画面は表示されないので、enter で確保したものを leave で片付ける
+    if (current !== target) await safeLeave(target);
+    return;
+  }
   if (result === false) { navigate('home', {}, { replace: true }); return; }
   if (result && typeof result === 'object' && result.redirect) {
     navigate(result.redirect, result.params || {}, { replace: true });
@@ -66,6 +80,13 @@ async function route() {
 }
 
 export function startRouter() {
-  window.addEventListener('hashchange', route);
+  window.addEventListener('hashchange', () => { route(); });
   route();
+}
+
+/** テスト用：登録画面と現在画面をリセットする */
+export function _resetRouterForTests() {
+  screens.clear();
+  current = null;
+  routing = 0;
 }

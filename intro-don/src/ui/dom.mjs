@@ -41,10 +41,11 @@ export function closeDialog(dlg) {
   else dlg.removeAttribute('open');
 }
 
-// data-close ボタンと背景タップで閉じる
-export function bindDialogClose(dlg, onClose) {
+// data-close ボタン（×）と背景タップで閉じる。Esc は <dialog> 標準の cancel で閉じる。
+// { backdrop: false } で背景タップによるクローズを無効化できる（録音中など誤タップで閉じたくないダイアログ用）。
+export function bindDialogClose(dlg, onClose, { backdrop = true } = {}) {
   $$('[data-close]', dlg).forEach((b) => b.addEventListener('click', () => closeDialog(dlg)));
-  dlg.addEventListener('click', (e) => { if (e.target === dlg) closeDialog(dlg); });
+  if (backdrop) dlg.addEventListener('click', (e) => { if (e.target === dlg) closeDialog(dlg); });
   if (onClose) dlg.addEventListener('close', onClose);
 }
 

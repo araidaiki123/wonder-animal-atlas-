@@ -3,8 +3,11 @@
  * - createLocalAdapter(): <audio playsinline preload="auto"> 1 要素を使い回し、Blob → ObjectURL で再生。
  *   前の ObjectURL は revoke。play() は同期的に audio.play() を呼ぶ（iOS の自動再生制限対策）。
  *   unlock() は無音 WAV を play()→pause() して iOS のオーディオを解放する。
+ *   release() は ObjectURL を revoke して src を外す（player.mjs が adapter を切り替えるときに呼ぶ）。
  * - createRecorder(): getUserMedia → MediaRecorder。mimeType は audio/mp4 → webm;opus → webm の順で選ぶ。
  *   duration は performance.now() の差分で計測（Blob の duration は Infinity になることがある）。
+ *   getUserMedia 待ち中に cancel()/stop() されても、解決後に track を止めてマイクを解放する。
+ *   audioContext を外から渡せる（UI がタップの同期区間で生成したものを使う。渡されたものは close しない）。
  * - DOM / navigator はトップレベルで参照しない（Node のテストで import しても落ちない）。
  */
 
@@ -248,6 +251,19 @@ export function createLocalAdapter({
       return Promise.resolve();
     },
 
+    /**
+     * 音源を手放す（ObjectURL を revoke し src を外す）。<audio> 要素とリスナーは残すので、
+     * 次の prepare() でそのまま使える。player.mjs が別種別の adapter に切り替えるときに呼ぶ。
+     */
+    release() {
+      pendingStart = null;
+      if (audio) {
+        try { audio.pause(); } catch { /* 無視 */ }
+        try { audio.removeAttribute('src'); audio.load(); } catch { /* 無視 */ }
+      }
+      revoke();
+    },
+
     /** テスト・デバッグ用 */
     getElement() { return audio; },
 
@@ -283,9 +299,10 @@ function userMediaErrorToError(err) {
  * マイク録音を作る。start() はタップハンドラ内から呼ぶ（権限ダイアログと AudioContext のため）。
  * @param {object} [opts]
  * @param {(level: number) => void} [opts.onLevel] 0..1 の入力レベル（約 60ms ごと。AudioContext が無ければ呼ばれない）
+ * @param {AudioContext} [opts.audioContext] UI がタップの同期区間で生成した AudioContext。渡された場合はレベル計測に使い、close しない
  * @param {object} [opts.env] テスト用 { navigator, MediaRecorder, AudioContext, performance, setInterval, clearInterval, isTypeSupported }
  */
-export function createRecorder({ onLevel = null, env = null } = {}) {
+export function createRecorder({ onLevel = null, audioContext = null, env = null } = {}) {
   const E = {
     navigator: env?.navigator ?? globalThis.navigator,
     MediaRecorder: env?.MediaRecorder ?? globalThis.MediaRecorder,
@@ -303,20 +320,30 @@ export function createRecorder({ onLevel = null, env = null } = {}) {
   let mimeType = '';
   let startedAt = 0;
   let audioCtx = null;
+  let ownsCtx = false;      // 自分で new した AudioContext だけ close する
   let levelTimer = null;
-  let state = 'inactive';   // 'inactive' | 'recording'
+  let state = 'inactive';   // 'inactive' | 'requesting' | 'recording'
+  let requestSeq = 0;       // getUserMedia 待ち中の cancel() 検知用
 
   function startLevelMeter(mediaStream) {
-    if (typeof onLevel !== 'function' || typeof E.AudioContext !== 'function') return;
+    if (typeof onLevel !== 'function') return;
+    const external = audioContext && typeof audioContext.createMediaStreamSource === 'function';
+    if (!external && typeof E.AudioContext !== 'function') return;
     try {
-      audioCtx = new E.AudioContext();
+      if (external) {
+        audioCtx = audioContext;
+        ownsCtx = false;
+      } else {
+        audioCtx = new E.AudioContext();
+        ownsCtx = true;
+      }
       const source = audioCtx.createMediaStreamSource(mediaStream);
       const analyser = audioCtx.createAnalyser();
       analyser.fftSize = 256;
       source.connect(analyser);   // destination には繋がない（ハウリング防止）
       const buf = new Uint8Array(analyser.fftSize);
       if (audioCtx.state === 'suspended' && typeof audioCtx.resume === 'function') {
-        audioCtx.resume().catch(() => {});
+        try { const r = audioCtx.resume(); if (r && r.catch) r.catch(() => {}); } catch { /* 無視 */ }
       }
       levelTimer = E.setInterval(() => {
         try {
@@ -325,21 +352,31 @@ export function createRecorder({ onLevel = null, env = null } = {}) {
         } catch { /* 無視 */ }
       }, LEVEL_INTERVAL_MS);
     } catch {
+      if (ownsCtx && audioCtx) { try { const r = audioCtx.close(); if (r && r.catch) r.catch(() => {}); } catch { /* 無視 */ } }
       audioCtx = null;   // AudioContext が無い / 失敗 → レベル表示は省略
+      ownsCtx = false;
     }
   }
 
   function stopLevelMeter() {
     if (levelTimer != null) { E.clearInterval(levelTimer); levelTimer = null; }
     if (audioCtx) {
-      try { const r = audioCtx.close(); if (r && r.catch) r.catch(() => {}); } catch { /* 無視 */ }
+      if (ownsCtx) {
+        try { const r = audioCtx.close(); if (r && r.catch) r.catch(() => {}); } catch { /* 無視 */ }
+      }
       audioCtx = null;
+      ownsCtx = false;
     }
+  }
+
+  function stopTracks(mediaStream) {
+    if (!mediaStream) return;
+    try { for (const track of mediaStream.getTracks()) track.stop(); } catch { /* 無視 */ }
   }
 
   function releaseStream() {
     if (stream) {
-      try { for (const track of stream.getTracks()) track.stop(); } catch { /* 無視 */ }
+      stopTracks(stream);
       stream = null;
     }
   }
@@ -355,18 +392,31 @@ export function createRecorder({ onLevel = null, env = null } = {}) {
     get state() { return state; },
     get mimeType() { return mimeType; },
 
-    /** 権限取得 → MediaRecorder.start()。権限拒否は日本語メッセージの Error で reject */
+    /**
+     * 権限取得 → MediaRecorder.start()。権限拒否は日本語メッセージの Error で reject。
+     * getUserMedia 待ち中に cancel()/stop() されたら、取得した track を止めて reject する（マイクを掴んだままにしない）。
+     */
     async start() {
-      if (state === 'recording') return;
+      if (state === 'recording' || state === 'requesting') return;
       const nav = E.navigator;
       if (!nav || !nav.mediaDevices || typeof nav.mediaDevices.getUserMedia !== 'function' || typeof E.MediaRecorder !== 'function') {
         throw new Error(RECORDER_UNSUPPORTED_MESSAGE);
       }
+      const seq = ++requestSeq;
+      state = 'requesting';
+      let got;
       try {
-        stream = await nav.mediaDevices.getUserMedia({ audio: true });
+        got = await nav.mediaDevices.getUserMedia({ audio: true });
       } catch (err) {
+        if (seq === requestSeq) state = 'inactive';
         throw userMediaErrorToError(err);
       }
+      if (seq !== requestSeq || state !== 'requesting') {
+        // 待っている間に cancel()/stop() された
+        stopTracks(got);
+        throw new Error('録音を中止しました');
+      }
+      stream = got;
       const isSupported = E.isTypeSupported
         || ((type) => typeof E.MediaRecorder.isTypeSupported === 'function' && E.MediaRecorder.isTypeSupported(type));
       mimeType = pickMimeType(isSupported);
@@ -375,12 +425,22 @@ export function createRecorder({ onLevel = null, env = null } = {}) {
         recorder = mimeType ? new E.MediaRecorder(stream, { mimeType }) : new E.MediaRecorder(stream);
       } catch (err) {
         releaseStream();
+        state = 'inactive';
         const e = new Error('録音を開始できません');
         e.cause = err;
         throw e;
       }
       recorder.ondataavailable = (ev) => { if (ev && ev.data && ev.data.size > 0) chunks.push(ev.data); };
-      recorder.start();   // timeslice なし（Safari の audio/mp4 は分割チャンクが不安定なため）
+      try {
+        recorder.start();   // timeslice なし（Safari の audio/mp4 は分割チャンクが不安定なため）
+      } catch (err) {
+        recorder = null;
+        releaseStream();
+        state = 'inactive';
+        const e = new Error('録音を開始できません');
+        e.cause = err;
+        throw e;
+      }
       startedAt = now();
       state = 'recording';
       startLevelMeter(stream);
@@ -389,6 +449,8 @@ export function createRecorder({ onLevel = null, env = null } = {}) {
     /** 停止して { blob, mimeType, duration(秒) } を返す。track は停止する */
     stop() {
       if (!recorder || state !== 'recording') {
+        // getUserMedia 待ち中なら、解決後に start() 側が track を止める
+        requestSeq++;
         cleanup();
         return Promise.reject(new Error('録音していません'));
       }
@@ -425,8 +487,9 @@ export function createRecorder({ onLevel = null, env = null } = {}) {
       });
     },
 
-    /** 結果を捨てて停止 */
+    /** 結果を捨てて停止。getUserMedia 待ち中でも有効（解決後に track を止めて start() を reject する） */
     cancel() {
+      requestSeq++;
       const rec = recorder;
       if (rec) {
         rec.ondataavailable = null;
