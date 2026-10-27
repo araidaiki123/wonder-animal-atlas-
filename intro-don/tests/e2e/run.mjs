@@ -26,6 +26,20 @@ async function shot(page, name) {
   await page.screenshot({ path: path.join(SHOTS, `${String(shotNo).padStart(2, '0')}-${name}.png`) });
 }
 
+/** 表示中の画面名（data-screen） */
+async function visibleScreen(page) {
+  return page.evaluate(() => {
+    const s = Array.from(document.querySelectorAll('[data-screen]')).find((x) => !x.hidden);
+    return s ? s.dataset.screen : null;
+  });
+}
+
+/** 案内系トースト（エラーではないお知らせ）の本文だけを集める */
+async function guideToasts(page) {
+  const all = await page.locator('#toast-host .toast').allTextContents();
+  return all.filter((t) => /ホーム画面に追加|自動ロック|音が出ないとき/.test(t));
+}
+
 async function newPage(context) {
   const page = await context.newPage();
   page.on('console', (m) => {
@@ -37,9 +51,10 @@ async function newPage(context) {
     }
   });
   page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
-  page.on('dialog', (d) => d.accept());
+  page.on('dialog', (d) => { dialogCount += 1; d.accept(); });
   return page;
 }
+let dialogCount = 0;
 
 async function hostFlow(context) {
   const page = await newPage(context);
@@ -107,6 +122,8 @@ async function hostFlow(context) {
   await page.waitForSelector('[data-screen="play"]:not([hidden])');
   await page.waitForTimeout(300);
   await shot(page, 'play-host');
+  const guides0 = await guideToasts(page);
+  assert(guides0.length <= 1, `案内トーストは 1 ゲームに 1 件まで（${guides0.join(' | ')}）`);
 
   // 1問目：音源あり/なし両方に対応して「再生」操作をする
   for (let q = 0; q < 3; q += 1) {
@@ -143,6 +160,50 @@ async function hostFlow(context) {
   const summary = await page.locator('#summary-text').textContent();
   assert(summary.includes('たろう') && summary.includes('点'), '共有テキストに名前と得点');
   await shot(page, 'result');
+  // 結果画面は番兵の履歴を捨ててから置換遷移しているので、「戻る」1 回で設定画面に戻る（プレイには戻らない）
+  await page.goBack();
+  await page.waitForTimeout(500);
+  const afterResultBack = await visibleScreen(page);
+  assert(afterResultBack === 'setup', `結果画面から戻ると 1 回で設定画面（実際 ${afterResultBack}）`);
+  await page.close();
+}
+
+// × でやめる → ホーム → 戻る：設定画面に戻り、プレイ画面との間で無限ループしない（第2回レビュー #1）
+async function quitBackFlow(context) {
+  const page = await newPage(context);
+  await page.goto(BASE + '#/home', { waitUntil: 'networkidle' });
+  await page.waitForSelector('#builtin-list .set-card');
+  await page.locator('#builtin-list .set-card').nth(3).locator('[data-action="play"]').click();
+  await page.waitForSelector('#btn-start:visible');
+  const setupHash = await page.evaluate(() => location.hash);
+  assert(/^#\/setup\//.test(setupHash), `設定画面の hash（${setupHash}）`);
+  await page.click('#mode-seg [data-mode="host"]');
+  await page.click('#btn-start');
+  await page.waitForSelector('[data-screen="play"]:not([hidden])');
+  await page.waitForTimeout(300);
+  assert(await page.evaluate(() => !!(history.state && history.state.introDonGuard)), '番兵の履歴が積まれている');
+  // × → confirm（自動 OK）→ ホーム（置換遷移）
+  await page.click('#btn-quit');
+  await page.waitForSelector('[data-screen="home"]:not([hidden])', { timeout: 5000 });
+  await page.waitForTimeout(300);
+  assert(/^#\/home/.test(await page.evaluate(() => location.hash)), 'やめるとホームへ');
+  // 戻る → 設定画面（直前の画面）。進む／戻るを繰り返してもプレイ画面には行かない
+  await page.goBack();
+  await page.waitForTimeout(500);
+  let screen = await visibleScreen(page);
+  assert(screen === 'setup', `やめたあとの「戻る」は設定画面に戻る（実際 ${screen}）`);
+  assert((await page.evaluate(() => location.hash)) === setupHash, '設定画面の hash に戻る');
+  for (let i = 0; i < 3; i += 1) {
+    await page.goForward();
+    await page.waitForTimeout(300);
+    screen = await visibleScreen(page);
+    assert(screen !== 'play', `進んでもプレイ画面に戻らない（#${i + 1}: ${screen}）`);
+    await page.goBack();
+    await page.waitForTimeout(300);
+    screen = await visibleScreen(page);
+    assert(screen === 'setup', `戻ると設定画面（#${i + 1}: ${screen}）`);
+  }
+  await shot(page, 'after-quit-back');
   await page.close();
 }
 
@@ -269,6 +330,8 @@ async function youtubeBuzzerFlow(context) {
     return r.top;
   });
   assert(toastTop < 200, `プレイ画面ではトーストが上部に出る（top=${toastTop}）`);
+  const guides = await guideToasts(page);
+  assert(guides.length <= 1, `案内トーストは 1 ゲームに 1 件まで（${guides.join(' | ')}）`);
   await shot(page, 'play-buzzer-youtube');
 
   // 暖機オーバーレイ：中央だけタップが iframe 側に通り、周囲の帯は通らない（DOM を直接暖機状態にして検証）
@@ -311,7 +374,7 @@ async function youtubeBuzzerFlow(context) {
   const answerText = await page.locator('#reveal-answer').textContent();
   assert(answerText.includes('YouTube の答え'), `正解が表示される（${answerText}）`);
   await shot(page, 'reveal-buzzer-youtube');
-  // 戻る操作の確認：pushState の番兵があり、戻っても #/play のまま（confirm は自動で OK → ホームへ）
+  // 戻る操作の番兵：pushState の番兵がある
   const guard = await page.evaluate(() => !!(history.state && history.state.introDonGuard));
   assert(guard, '戻る確認用の履歴が積まれている');
   // 暖機中の見た目（帯と中央の枠）
@@ -320,11 +383,26 @@ async function youtubeBuzzerFlow(context) {
   await page.evaluate(() => { document.querySelector('#yt-overlay').dataset.warmup = 'true'; document.querySelector('#yt-overlay-text').textContent = '▶ 中央を1回タップして準備'; });
   await shot(page, 'warmup-overlay');
   await page.evaluate(() => { document.querySelector('#yt-overlay').dataset.warmup = 'false'; });
-  // ブラウザバック → confirm（自動 OK）→ ホームへ
+  // ブラウザバック → 確認ダイアログは出さず、案内トーストを出してプレイ画面に留まる（戻るは常にキャンセル）
+  const dialogsBefore = dialogCount;
   await page.goBack();
+  await page.waitForTimeout(500);
+  assert((await visibleScreen(page)) === 'play', '戻る操作ではプレイ画面に留まる');
+  assert(dialogCount === dialogsBefore, '戻る操作で confirm を出さない');
+  const guardToasts = await page.locator('#toast-host .toast').allTextContents();
+  assert(guardToasts.some((t) => t.includes('ゲーム中です')), `戻る操作で案内トーストが出る（${guardToasts.join(' | ')}）`);
+  assert(await page.evaluate(() => !!(history.state && history.state.introDonGuard)), 'forward() で番兵の履歴に戻っている');
+  assert(/#\/play/.test(await page.evaluate(() => location.hash)), 'hash は #/play のまま');
+  // × でやめる（confirm は自動 OK）→ ホーム。その後の「戻る」は設定画面（プレイには戻らない）
+  await page.click('#btn-quit');
   await page.waitForSelector('[data-screen="home"]:not([hidden])', { timeout: 5000 });
-  const hashAfterBack = await page.evaluate(() => location.hash);
-  assert(/#\/home/.test(hashAfterBack), `戻る操作の確認後にホームへ（${hashAfterBack}）`);
+  assert(dialogCount === dialogsBefore + 1, '× では confirm を出す');
+  const hashAfterQuit = await page.evaluate(() => location.hash);
+  assert(/#\/home/.test(hashAfterQuit), `やめるとホームへ（${hashAfterQuit}）`);
+  await page.goBack();
+  await page.waitForTimeout(500);
+  const afterQuitBack = await visibleScreen(page);
+  assert(afterQuitBack === 'setup', `やめたあとの「戻る」は設定画面（実際 ${afterQuitBack}）`);
   await page.close();
 }
 
@@ -402,6 +480,7 @@ const browser = await chromium.launch();
 try {
   const context = await browser.newContext({ ...iphone });
   await hostFlow(context);
+  await quitBackFlow(context);
   await buzzerFlow(context);
   await importFlow(context);
   await youtubeBuzzerFlow(context);

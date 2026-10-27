@@ -21,7 +21,7 @@ export const PROGRESS_INTERVAL_MS = 100;
 export const PLAY_START_TIMEOUT_MS = 4000;
 
 /** watchdog が発火したときのメッセージ（UI はこの文言をそのまま表示してよい） */
-export const PLAY_START_TIMEOUT_MESSAGE = '再生が始まりませんでした。動画枠を直接タップしてから「どん！」を押してください';
+export const PLAY_START_TIMEOUT_MESSAGE = '再生が始まりませんでした。動画枠の中央を1回タップしてから、もう一度「どん！」を押してください';
 
 /** 既定の adapter ファクトリ（テストではフェイクに差し替える） */
 export const DEFAULT_ADAPTERS = {
@@ -117,20 +117,25 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
     }
   }
 
-  /** 再生タイマーを片付ける。resolve 待ちの play() Promise は started=false で解決 */
-  function clearRun() {
+  /**
+   * 再生タイマーを片付ける。再生開始前に resolve 待ちの play() Promise があれば `value` で解決する
+   * （再生開始後なら startCounting() が true で解決済み）。
+   * - 手動 stop() / prepare() / destroy() / 再 play() による中断 … null（既定）
+   * - watchdog / エラー … false
+   */
+  function clearRun(value = null) {
     if (!run) return;
     if (run.timeoutId != null) t.clearTimeout(run.timeoutId);
     if (run.intervalId != null) t.clearInterval(run.intervalId);
     if (run.watchdogId != null) t.clearTimeout(run.watchdogId);
-    const { resolve, counting } = run;
+    const { resolve } = run;
     run = null;
-    if (resolve) resolve(counting);
+    if (resolve) resolve(value);
   }
 
   function fail(err) {
     lastError = toError(err);
-    clearRun();
+    clearRun(false);
     if (adapter) { try { adapter.stop(); } catch { /* 無視 */ } }
     emit('error', { error: lastError });
   }
@@ -235,7 +240,10 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
     /**
      * 必ずユーザー操作（タップ）ハンドラ内から同期的に呼ぶこと（iOS 対策）。
      * 内部で await せずに adapter.play() を即座に呼ぶ。seconds 後に自動停止。
-     * 戻り値: 実際に再生が始まれば true、始まらなければ false で解決（reject しない。エラーは onStateChange('error') で通知）。
+     * 戻り値（reject しない。エラーは onStateChange('error') で通知）:
+     *   true  … 実際に再生が始まった
+     *   false … 始まらなかった（watchdog / エラー / 準備できていない）
+     *   null  … 始まる前に stop() / prepare() / destroy() / 再 play() で中断された（エラーではない）
      */
     play({ start = 0, seconds } = {}) {
       if (state === 'warming') { player.cancelWarmUp(); state = 'ready'; }
@@ -321,6 +329,29 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
 
     skipWarmUp() {
       if (adapter && typeof adapter.markWarmed === 'function') adapter.markWarmed();
+    },
+
+    /**
+     * 暖機からやり直せる状態に戻す（watchdog で再生が始まらなかったときの復帰用）。
+     * 現在の adapter が「暖機済み」と判断している（needsWarmUp() が false。暖機をスキップした後など）場合は
+     * その adapter を破棄して作り直し対象にする（iframe も作り直される）。戻り値は作り直したか。
+     * いずれの場合も呼び出し側はこの後 prepare() し直すこと。
+     */
+    resetWarmUp() {
+      if (!adapter || typeof adapter.needsWarmUp !== 'function') return false;
+      let needs = true;
+      try { needs = !!adapter.needsWarmUp(); } catch { needs = true; }
+      if (needs) return false;
+      prepareToken++;
+      clearRun();
+      const type = kind;
+      try { adapter.destroy(); } catch { /* 無視 */ }
+      if (cache[type] === adapter) delete cache[type];
+      adapter = null;
+      kind = 'none';
+      state = 'idle';
+      lastError = null;
+      return true;
     },
 
     get state() { return state; },

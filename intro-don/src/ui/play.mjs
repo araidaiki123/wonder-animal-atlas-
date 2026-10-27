@@ -1,6 +1,6 @@
 // 4. プレイ：どん！ボタン・プログレス・ヒント・ストップ・正解者・早押し分割パネル・正解表示
 import * as game from '../game.mjs';
-import { createPlayer } from '../audio/player.mjs';
+import { createPlayer, PLAY_START_TIMEOUT_MESSAGE } from '../audio/player.mjs';
 import * as storage from '../storage.mjs';
 import { $, $$, el, clear, fromTemplate } from './dom.mjs';
 import { toast, toastError } from './toast.mjs';
@@ -12,6 +12,9 @@ const RING = 289.03; // 2π×46
 const WARMUP_TEXT = '▶ 中央を1回タップして準備';
 const WARMUP_HUB_TEXT = '上の動画枠の中央を1回タップして準備';
 const STANDALONE_HINT_KEY = 'intro-don:standaloneHintShown';
+const GUIDE_TOAST_MS = 4000;    // 案内トーストの表示時間
+const GUARD_BACK_TEXT = 'ゲーム中です。やめる場合は左上の × を押してください';
+const LEAVE_FALLBACK_MS = 600;  // 番兵の履歴を history.back() で捨てたあと popstate が来ない場合の保険
 
 let els;
 let player = null;
@@ -20,6 +23,8 @@ let wakeLock = null;
 let wakeLockPending = false;   // acquireWakeLock の再入防止
 let wakeLockHintShown = false; // 失敗時の案内は早押しモードで一度だけ
 let active = false;
+let gameSeq = 0;               // enter() ごとに増える（非同期の案内・準備が別ゲームに漏れないように）
+let prepareSeq = 0;            // prepareCurrent() ごとに増える（古い準備の完了が新しい準備の loading を潰さないように）
 let preparedQid = null;
 let loading = false;           // 音源の準備中（どん！を無効化）
 let ring = { total: 0, remaining: 0, at: 0, running: false, raf: 0 };
@@ -28,6 +33,10 @@ let warmingUp = false;         // iOS 向け YouTube 暖機中（iframe の直�
 let errorNotified = false;     // 1 回の再生／準備につきエラートーストは一度だけ
 let sourceFailNotified = false; // 音源が使えない問題で「別アプリで流して」案内を出したか（問題ごと）
 let soundHintShown = false;    // 「音が出ないときは…」は初回のみ
+let guideShownThisGame = false; // 案内トースト（ホーム画面追加／自動ロック／音量）は 1 ゲームにつき 1 件だけ
+let guideUntil = 0;            // 案内トーストが表示されている間（ms, Date.now 基準）は別の案内を出さない
+let pendingLeave = null;       // 番兵の履歴を捨てたあとに置換遷移する先（'home' | 'result'）
+let pendingLeaveTimer = 0;
 
 // タッチ端末か（iOS/Android では YouTube iframe の初回再生に直接タップが必要になることがある）
 function isTouchDevice() {
@@ -91,7 +100,7 @@ export function initPlay() {
   };
 
   els.quit.addEventListener('click', () => {
-    if (window.confirm('ゲームをやめてホームに戻りますか？')) navigate('home');
+    if (window.confirm('ゲームをやめてホームに戻りますか？')) quitGame();
   });
   // 「どん！」は pointerdown ではなく click（iOS の play() 制約のためユーザー操作内で同期的に呼ぶ）
   els.don.addEventListener('click', onDon);
@@ -124,17 +133,57 @@ export function initPlay() {
     if (document.visibilityState === 'visible' && active) acquireWakeLock();
   });
 
-  // 戻る操作（ブラウザバック・スワイプ）でうっかりゲームを抜けないよう確認する。
-  // enter() で同じ URL の履歴を 1 つ積んでおき、戻った先がまだ #/play なら確認→拒否なら forward() で戻す。
+  // 戻る操作（ブラウザバック・スワイプ）でうっかりゲームを抜けないようにする。
+  // enter() で同じ URL の履歴（番兵）を 1 つ積んでおき、戻った先がまだ #/play なら案内トーストを出して forward() で戻す。
+  // iOS Safari のスワイプバック中は window.confirm が無視されることがあるので確認ダイアログは使わない
+  // （戻る操作は常にキャンセル。やめるのは左上の × だけ）。
   window.addEventListener('popstate', (e) => {
+    if (pendingLeave) {
+      // leaveTo() が番兵の履歴を捨てるために呼んだ history.back()：ここから置換遷移する
+      const name = pendingLeave;
+      pendingLeave = null;
+      clearTimeout(pendingLeaveTimer);
+      navigate(name, {}, { replace: true });
+      return;
+    }
     if (!active) return;
     if (parseHash().name !== 'play') return;        // hash が変わった遷移はルーターに任せる
     if (e.state && e.state.introDonGuard) return;   // forward() で番兵の履歴に戻ってきただけ
-    if (window.confirm('ゲームをやめますか？')) navigate('home');
-    else history.forward();
+    toast(GUARD_BACK_TEXT, { duration: 3000 });
+    history.forward();
   });
 
   return { el: els.section, enter, leave };
+}
+
+/**
+ * ゲームを離れる（× でやめる／最後の問題のあと結果へ）。
+ * enter() で積んだ番兵の履歴を history.back() で捨ててから置換遷移するので、
+ * 遷移先で「戻る」を押しても #/play に戻らず、プレイ前の画面（設定）に戻る。
+ * 番兵が無い（pushState できなかった）環境ではそのまま置換遷移する。
+ */
+function leaveTo(name) {
+  clearTimeout(pendingLeaveTimer);
+  let hasGuard = false;
+  try { hasGuard = !!(history.state && history.state.introDonGuard); } catch (e) { hasGuard = false; }
+  if (!hasGuard) { pendingLeave = null; navigate(name, {}, { replace: true }); return; }
+  pendingLeave = name;
+  pendingLeaveTimer = setTimeout(() => {
+    if (pendingLeave !== name) return;   // popstate が来なかった：保険として直接置換する
+    pendingLeave = null;
+    navigate(name, {}, { replace: true });
+  }, LEAVE_FALLBACK_MS);
+  try { history.back(); } catch (e) {
+    pendingLeave = null;
+    clearTimeout(pendingLeaveTimer);
+    navigate(name, {}, { replace: true });
+  }
+}
+
+function quitGame() {
+  // session を消してから離れる：戻る操作で #/play に来ても enter() が false を返しホームへ置換される（ループしない）
+  state.session = null;
+  leaveTo('home');
 }
 
 // ---------- 画面の出入り ----------
@@ -143,6 +192,10 @@ async function enter() {
   if (!s || !state.set) return false;
   if (s.phase === 'finished') return { redirect: 'result' };
   active = true;
+  gameSeq += 1;
+  guideShownThisGame = false;
+  pendingLeave = null;
+  clearTimeout(pendingLeaveTimer);
   document.body.dataset.activeScreen = 'play';
   const mode = s.settings.mode === 'buzzer' ? 'buzzer' : 'host';
   els.section.dataset.mode = mode;
@@ -152,18 +205,20 @@ async function enter() {
   els.judge.dataset.wrong = 'false';
   buildBuzzGrid();
   pushHistoryGuard();
-  acquireWakeLock();
+  const wakeLockResult = acquireWakeLock();
   preparedQid = null;
   // 先に描いてから音源を準備する（準備中は「どん！」を無効化し、動画枠に「読み込み中…」を出す）
   render();
   prepareCurrent().then(() => { if (active) render(); });
-  showFirstTimeHints(mode);
+  showFirstTimeHints(mode, wakeLockResult);
   return true;
 }
 
 function leave() {
   active = false;
   loading = false;
+  pendingLeave = null;
+  clearTimeout(pendingLeaveTimer);
   delete document.body.dataset.activeScreen;
   if (warmingUp) { setWarmingUp(false); if (player) player.cancelWarmUp(); }
   stopRing();
@@ -178,39 +233,55 @@ function pushHistoryGuard() {
   } catch (e) { /* 履歴操作が許されない環境では確認なしで戻れるだけ */ }
 }
 
-function showFirstTimeHints(mode) {
-  let delay = 0;
-  if (!soundHintShown) {
-    soundHintShown = true;
-    toast('音が出ないときはマナーモード・音量を確認してください。', { duration: 4000 });
-    delay = 4500; // 同時に積み重ねず、順に見せる
-  }
+/**
+ * 案内トースト（エラーではない「お知らせ」）。1 ゲームにつき 1 件だけ、かつ別の案内が表示中なら出さない。
+ * @returns {boolean} 実際に表示したか
+ */
+function showGuide(message) {
+  if (guideShownThisGame || Date.now() < guideUntil) return false;
+  guideShownThisGame = true;
+  guideUntil = Date.now() + GUIDE_TOAST_MS;
+  toast(message, { duration: GUIDE_TOAST_MS });
+  return true;
+}
+
+// 優先順：ホーム画面に追加 → 自動ロック → 音量。表示できなかった案内は次のゲームに持ち越す
+async function showFirstTimeHints(mode, wakeLockResult) {
+  const token = gameSeq;
   if (mode === 'buzzer' && navigator.standalone !== true) {
     let shown = false;
     try { shown = localStorage.getItem(STANDALONE_HINT_KEY) === '1'; } catch (e) { shown = false; }
-    if (!shown) {
+    if (!shown && showGuide('ホーム画面に追加すると全画面で遊べます。')) {
       try { localStorage.setItem(STANDALONE_HINT_KEY, '1'); } catch (e) { /* 記憶できなくても続行 */ }
-      setTimeout(() => { if (active) toast('ホーム画面に追加すると全画面で遊べます。', { duration: 5000 }); }, delay);
+      return;
     }
   }
+  let wakeOk = true;
+  try { wakeOk = await wakeLockResult; } catch (e) { wakeOk = true; }
+  if (!active || token !== gameSeq) return;
+  if (mode === 'buzzer' && wakeOk === false && !wakeLockHintShown) {
+    if (showGuide('自動ロックを「なし」にしておくと画面が消えません。')) { wakeLockHintShown = true; return; }
+  }
+  if (!soundHintShown && showGuide('音が出ないときはマナーモード・音量を確認してください。')) soundHintShown = true;
 }
 
+/**
+ * 画面消灯を防ぐ。戻り値：取得できれば true、request が失敗したら false、非対応・取得済みなら null/true。
+ * 失敗時の案内は showFirstTimeHints が（他の案内と調停して）出す。
+ */
 async function acquireWakeLock() {
-  if (wakeLock || wakeLockPending) return;
-  if (!navigator.wakeLock) return;
+  if (wakeLock || wakeLockPending) return true;
+  if (!navigator.wakeLock) return null;
   wakeLockPending = true;
   try {
     const lock = await navigator.wakeLock.request('screen');
-    if (!active) { lock.release().catch(() => {}); return; }
+    if (!active) { lock.release().catch(() => {}); return true; }
     wakeLock = lock;
     wakeLock.addEventListener('release', () => { wakeLock = null; });
+    return true;
   } catch (e) {
     wakeLock = null;
-    const s = state.session;
-    if (active && s && s.settings.mode === 'buzzer' && !wakeLockHintShown) {
-      wakeLockHintShown = true;
-      toast('自動ロックを「なし」にしておくと画面が消えません。', { duration: 5000 });
-    }
+    return false;
   } finally {
     wakeLockPending = false;
   }
@@ -246,9 +317,14 @@ function notifyError(message) {
   toastError(message);
 }
 
-async function prepareCurrent() {
+/**
+ * 現在の問題の音源を準備する。
+ * @param {{ forceWarmUp?: boolean }} [opts] forceWarmUp: タッチ端末でなくても暖機（中央タップ）を提示する（watchdog 後の復帰用）
+ */
+async function prepareCurrent({ forceWarmUp = false } = {}) {
   const q = currentQuestion();
   if (!q || preparedQid === q.id) return;
+  const token = ++prepareSeq;
   preparedQid = q.id;
   stopRing();
   if (warmingUp) setWarmingUp(false);
@@ -264,20 +340,22 @@ async function prepareCurrent() {
   } catch (e) {
     console.warn(e);
     // player 側が 'error' を通知していればそちらのトーストだけにする
-    notifyError('音源を準備できませんでした。');
+    if (token === prepareSeq && active) notifyError('音源を準備できませんでした。');
   }
-  if (preparedQid !== q.id || !active) { loading = false; return; }
+  // 途中で別の準備が始まった／画面を離れた：loading はその準備（または leave()）が管理するので触らない
+  if (token !== prepareSeq || !active) return;
   loading = false;
   if (getPlayer().state !== 'error' && getPlayer().state !== 'loading') setOverlay(false, q.source ? '「どん！」で再生' : '音源なし');
-  maybeWarmUp(q);
+  maybeWarmUp(q, forceWarmUp);
   render();
 }
 
 // iOS/Android の YouTube：初回だけ iframe を直接タップしてもらう（ミュートで再生→即停止→頭出し）
-function maybeWarmUp(q) {
+// force=true なら（watchdog で再生が始まらなかった後の復帰）タッチ端末でなくても提示する
+function maybeWarmUp(q, force = false) {
   const p = getPlayer();
   if (!q || !q.source || q.source.type !== 'youtube') return;
-  if (!isTouchDevice() || p.state !== 'ready' || !p.needsWarmUp) return;
+  if ((!force && !isTouchDevice()) || p.state !== 'ready' || !p.needsWarmUp) return;
   setWarmingUp(true);
   p.armWarmUp({ start: q.source.start || 0 }).then((ok) => {
     if (!warmingUp) return;
@@ -327,8 +405,13 @@ function onStateChange(st, info = {}) {
     els.buzzDon.dataset.playing = 'false';
     if (st === 'error') {
       setOverlay(false, '再生できません');
-      const detail = info.error && info.error.message ? info.error.message : (navigator.onLine === false ? '圏外のため YouTube は再生できません。' : '');
-      notifyError('再生できませんでした。' + detail);
+      const detail = info.error && info.error.message ? info.error.message : '';
+      if (detail === PLAY_START_TIMEOUT_MESSAGE) {
+        // watchdog：文言は player のものだけ（「再生できませんでした。」を重ねない）。復帰は onDon 側で再 cue + 暖機
+        notifyError(detail);
+      } else {
+        notifyError('再生できませんでした。' + (detail || (navigator.onLine === false ? '圏外のため YouTube は再生できません。' : '')));
+      }
     } else if (st === 'loading') {
       setOverlay(true, '読み込み中…');
     } else if (!warmingUp) {
@@ -401,11 +484,22 @@ function onDon() {
       els.buzzDon.dataset.playing = 'false';
       render();
     };
+    // play() の結果：true=再生中、null=自分で止めた（ストップ・早押し・答え・やめる）→ 何もしない、
+    // false=始まらなかった → player が 'error' のときだけ戻す（watchdog なら再 cue して暖機へ）
+    const onStarted = (started) => {
+      if (started !== false) return;
+      const pl2 = getPlayer();
+      if (pl2.state !== 'error') return;
+      revert();
+      const err = pl2.lastError;
+      if (err && err.message === PLAY_START_TIMEOUT_MESSAGE) recoverFromStartTimeout(q);
+      else notifyError('再生できませんでした。');
+    };
     try {
       // iOS 対策：タップハンドラ内から同期的に呼ぶ
       const p = getPlayer().play({ start, seconds: win.seconds });
       if (p && typeof p.then === 'function') {
-        p.then((started) => { if (started === false) { revert(); notifyError('再生できませんでした。'); } })
+        p.then(onStarted)
           .catch((e) => { console.warn(e); onStateChange('error', { error: e }); revert(); });
       }
     } catch (e) {
@@ -416,6 +510,20 @@ function onDon() {
     }
   }
   render();
+}
+
+/**
+ * watchdog（再生開始が来なかった）後の復帰：同じ問題を cue し直し、暖機（動画枠の中央を 1 回タップ）を提示する。
+ * 暖機をスキップ済みで adapter が「暖機済み」と思っている場合は player.resetWarmUp() で作り直してから cue する。
+ * prepare 自体の失敗（圏外など）は従来どおり 'error' のまま「回数だけ数える」運用になる。
+ */
+async function recoverFromStartTimeout(q) {
+  if (!active) return;
+  const cur = currentQuestion();
+  if (!cur || !q || cur.id !== q.id) return;
+  try { getPlayer().resetWarmUp(); } catch (e) { console.warn(e); }
+  preparedQid = null;
+  await prepareCurrent({ forceWarmUp: true });
 }
 
 function onStop() {
@@ -505,7 +613,8 @@ async function onNext() {
   if (!s || s.phase !== 'revealed') return;
   const next = game.nextQuestion(s);
   state.session = next;
-  if (next.phase === 'finished') { navigate('result'); return; }
+  // 結果へは番兵の履歴を捨ててから置換遷移（結果画面の「戻る」が 1 回で設定画面に戻る）
+  if (next.phase === 'finished') { leaveTo('result'); return; }
   els.ytBox.dataset.revealed = 'false';
   render();
   await prepareCurrent();

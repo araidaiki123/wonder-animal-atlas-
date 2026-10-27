@@ -927,15 +927,112 @@ test('player: stop() で手動停止 → ready、再生中でなければ何も�
   assert.equal(timers.pendingCount(), 0);
 });
 
-test('player: バッファ中に stop() すると play() は false で解決', async () => {
-  const { player, youtube } = makePlayer();
+test('player: バッファ中に stop() すると play() は null で解決（エラーの false と区別）', async () => {
+  const { player, events, youtube } = makePlayer();
   await player.prepare({ type: 'youtube', videoId: 'x' });
   const p = player.play({ seconds: 3 });
   player.stop();
-  assert.equal(await p, false);
+  assert.strictEqual(await p, null);
   assert.equal(player.state, 'ready');
+  assert.equal(player.lastError, null);
+  assert.equal(events.some((e) => e[0] === 'error'), false, 'error は通知されない');
   youtube.instances[0].hooks.onPlaying();   // 遅れて来ても無視
   assert.equal(player.state, 'ready');
+});
+
+test('player: バッファ中の prepare() / destroy() / 再 play() による中断も null、watchdog・エラーは false', async () => {
+  // prepare() で中断
+  const a = makePlayer();
+  await a.player.prepare({ type: 'youtube', videoId: 'x' });
+  const p1 = a.player.play({ seconds: 3 });
+  await a.player.prepare({ type: 'youtube', videoId: 'y' });
+  assert.strictEqual(await p1, null);
+  assert.equal(a.player.state, 'ready');
+
+  // destroy() で中断
+  const b = makePlayer();
+  await b.player.prepare({ type: 'local', blobId: 'b1' });
+  const p2 = b.player.play({ seconds: 3 });
+  b.player.destroy();
+  assert.strictEqual(await p2, null);
+
+  // 再 play() で中断（古い方は null、新しい方は再生開始で true）
+  const c = makePlayer();
+  await c.player.prepare({ type: 'youtube', videoId: 'x' });
+  const p3 = c.player.play({ seconds: 3 });
+  const p4 = c.player.play({ seconds: 3 });
+  assert.strictEqual(await p3, null);
+  c.youtube.instances[0].hooks.onPlaying();
+  assert.strictEqual(await p4, true);
+
+  // adapter のエラー（バッファ中）は false
+  const d = makePlayer();
+  await d.player.prepare({ type: 'youtube', videoId: 'x' });
+  const p5 = d.player.play({ seconds: 3 });
+  d.youtube.instances[0].hooks.onError(new Error('この動画は再生できません'));
+  assert.strictEqual(await p5, false);
+  assert.equal(d.player.state, 'error');
+
+  // 準備できていない状態での play() は false（エラー通知はしない）
+  const e = makePlayer();
+  assert.strictEqual(await e.player.play({ seconds: 1 }), false);
+});
+
+test('player: resetWarmUp は暖機済みと判断している adapter を破棄して作り直し対象にする', async () => {
+  // needsWarmUp / markWarmed を持つフェイク adapter（youtube.mjs と同じ契約）
+  const made = [];
+  const factory = (hooks) => {
+    let warmed = false;
+    const a = {
+      hooks, destroyed: false, prepared: 0,
+      async prepare() { this.prepared += 1; },
+      play() {}, stop() {}, unlock() {},
+      needsWarmUp() { return !warmed; },
+      markWarmed() { warmed = true; },
+      armWarmUp() { return Promise.resolve(true); },
+      cancelWarmUp() {},
+      destroy() { this.destroyed = true; },
+    };
+    made.push(a);
+    return a;
+  };
+  const events = [];
+  const timers = fakeTimers();
+  const player = createPlayer({ adapters: { youtube: factory }, timers, onStateChange: (s) => events.push(s) });
+
+  // 暖機前（needsWarmUp=true）なら作り直さない
+  await player.prepare({ type: 'youtube', videoId: 'x' });
+  assert.equal(player.needsWarmUp, true);
+  assert.equal(player.resetWarmUp(), false);
+  assert.equal(made.length, 1);
+  assert.equal(player.state, 'ready');
+
+  // スキップして暖機済み扱い → watchdog で失敗 → resetWarmUp で破棄、次の prepare で新しい adapter
+  player.skipWarmUp();
+  assert.equal(player.needsWarmUp, false);
+  const p = player.play({ seconds: 1 });
+  timers.advance(PLAY_START_TIMEOUT_MS);
+  assert.strictEqual(await p, false);
+  assert.equal(player.state, 'error');
+  assert.equal(player.resetWarmUp(), true);
+  assert.equal(made[0].destroyed, true);
+  assert.equal(player.state, 'idle');
+  assert.equal(player.kind, 'none');
+  assert.equal(player.lastError, null);
+  assert.equal(timers.pendingCount(), 0);
+  await player.prepare({ type: 'youtube', videoId: 'x' });
+  assert.equal(made.length, 2, '新しい adapter が作られる');
+  assert.equal(made[1].prepared, 1);
+  assert.equal(player.state, 'ready');
+  assert.equal(player.needsWarmUp, true, '新しい adapter は暖機からやり直せる');
+
+  // adapter が needsWarmUp を持たない（local）場合は何もしない
+  const plain = makePlayer();
+  await plain.player.prepare({ type: 'local', blobId: 'b' });
+  assert.equal(plain.player.resetWarmUp(), false);
+  assert.equal(plain.player.state, 'ready');
+  // adapter が無い（idle）場合も false
+  assert.equal(makePlayer().player.resetWarmUp(), false);
 });
 
 test('player: local は timeupdate でも停止（setTimeout 遅延の保険）、ended でも停止', async () => {
@@ -1085,7 +1182,7 @@ test('player: 再生開始が 4 秒以内に来なければ watchdog が error �
   assert.equal(await p, false);
   assert.equal(player.state, 'error');
   assert.equal(player.lastError.message, PLAY_START_TIMEOUT_MESSAGE);
-  assert.match(player.lastError.message, /動画枠を直接タップ/);
+  assert.match(player.lastError.message, /^再生が始まりませんでした。動画枠の中央を1回タップしてから、もう一度「どん！」を押してください$/);
   assert.deepEqual(events.at(-1), ['error', { error: player.lastError }]);
   assert.equal(log.at(-1), 'stop');
   assert.equal(timers.pendingCount(), 0);
@@ -1108,10 +1205,10 @@ test('player: 再生開始が来れば watchdog は解除され、stop()/prepare
   assert.equal(player.state, 'ready');
   assert.equal(timers.pendingCount(), 0);
 
-  // バッファ中に stop() → watchdog も消える
+  // バッファ中に stop() → watchdog も消える（手動中断なので null）
   const p2 = player.play({ seconds: 1 });
   player.stop();
-  assert.equal(await p2, false);
+  assert.strictEqual(await p2, null);
   assert.equal(timers.pendingCount(), 0);
   timers.advance(10000);
   assert.equal(player.state, 'ready');

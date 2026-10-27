@@ -82,7 +82,8 @@ function again() {
     state.set = last.set;
     state.players = last.players;
     state.resultSaved = false;
-    navigate('play');
+    // 結果の履歴をプレイで置き換える（新しいゲームから「戻る」で古い結果に戻っても意味がないため）
+    navigate('play', {}, { replace: true });
   } catch (e) {
     console.error(e);
     toast('もう一回を開始できませんでした。');

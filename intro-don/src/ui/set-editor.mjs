@@ -19,6 +19,7 @@ let draft = null;      // 問題編集モーダルの作業コピー
 let editingId = null;  // 編集中の question.id（新規は null）
 let originalBlobId = null;
 let draftBlobIds = []; // モーダル中に新規作成した blobId（キャンセル時に掃除）
+let savingBlobIds = []; // 保存処理（saveUserSet の await）中の blobId。保存中にモーダルが閉じられても消さない
 let previewUrls = [];  // モーダル中に作った ObjectURL（閉じるときに revoke）
 let rec = null;        // 録音中のレコーダー
 let recTimer = null;
@@ -355,10 +356,11 @@ function openQuestionDialog(qid) {
 function onDialogClosed() {
   stopPreview();
   if (rec) stopRecording(true);
-  // 保存されなかった新規 blob を掃除
+  closeRecAudioCtx();
+  // 保存されなかった新規 blob を掃除（保存処理中の blob は saveQuestion が結果に応じて片付ける）
   const keep = draft && draft.source && draft.source.type === 'local' && draft.saved ? draft.source.blobId : null;
   for (const id of draftBlobIds) {
-    if (id !== keep) storage.deleteAudio(id).catch(() => {});
+    if (id !== keep && !savingBlobIds.includes(id)) storage.deleteAudio(id).catch(() => {});
   }
   draftBlobIds = [];
   for (const u of previewUrls) { try { URL.revokeObjectURL(u); } catch (e) { /* noop */ } }
@@ -500,6 +502,7 @@ async function toggleRecord() {
       rec = null;
       toastError(e && e.message ? e.message : '録音を開始できませんでした。マイクの許可を確認してください。');
     }
+    closeRecAudioCtx();   // 開始できなかった AudioContext を残さない
     els.recBtn.disabled = false;
     els.recBtn.textContent = '● 録音開始';
     return;
@@ -562,32 +565,10 @@ async function stopRecording(discard) {
   }
 }
 
-// レベルメーター：レコーダーの onLevel を優先。無ければ stream から自前で計測、それも無ければ簡易アニメ。
+// レベルメーター：レコーダーの onLevel（AudioContext が使えるとき）を表示。来なければ簡易アニメ。
 function startLevelMeter() {
-  let analyser = null;
-  let data = null;
-  try {
-    const stream = rec && rec.stream;
-    if (stream && recAudioCtx) {
-      const src = recAudioCtx.createMediaStreamSource(stream);
-      analyser = recAudioCtx.createAnalyser();
-      analyser.fftSize = 256;
-      src.connect(analyser);
-      data = new Uint8Array(analyser.fftSize);
-    }
-  } catch (e) { analyser = null; }
   const tick = () => {
-    let level = 0;
-    if (recLevelValue >= 0) {
-      level = recLevelValue;
-    } else if (analyser) {
-      analyser.getByteTimeDomainData(data);
-      let sum = 0;
-      for (let i = 0; i < data.length; i++) { const v = (data[i] - 128) / 128; sum += v * v; }
-      level = Math.min(1, Math.sqrt(sum / data.length) * 3);
-    } else {
-      level = 0.3 + 0.2 * Math.abs(Math.sin(Date.now() / 300));
-    }
+    const level = recLevelValue >= 0 ? recLevelValue : 0.3 + 0.2 * Math.abs(Math.sin(Date.now() / 300));
     els.recLevel.style.width = `${Math.round(level * 100)}%`;
     recLevelRaf = requestAnimationFrame(tick);
   };
@@ -598,7 +579,18 @@ function stopLevelMeter() {
   cancelAnimationFrame(recLevelRaf);
   recLevelRaf = 0;
   els.recLevel.style.width = '0%';
-  if (recAudioCtx) { recAudioCtx.close().catch(() => {}); recAudioCtx = null; }
+  closeRecAudioCtx();
+}
+
+// 録音用に UI が作った AudioContext は UI の責務で close する（録音開始の失敗時・モーダルを閉じたときも）
+function closeRecAudioCtx() {
+  const ctx = recAudioCtx;
+  recAudioCtx = null;
+  if (!ctx) return;
+  try {
+    const p = ctx.close();
+    if (p && typeof p.catch === 'function') p.catch(() => {});
+  } catch (e) { /* 既に閉じている等 */ }
 }
 
 // ---------- 試聴（端末・録音のみ、3秒） ----------
@@ -671,24 +663,36 @@ async function saveQuestion() {
   const i = set.questions.findIndex((x) => x.id === editingId);
   const questions = set.questions.slice();
   if (i >= 0) questions[i] = q; else questions.push(q);
+  // await の間にモーダルが閉じられたり別のセットに移ったりしても扱えるよう、必要なものを先に控える
+  const target = set;
+  const d = draft;
+  const origBlobId = originalBlobId;
+  const newBlobId = q.source && q.source.type === 'local' ? q.source.blobId : null;
+  // 保存中にモーダルが閉じられても（画面を離れる等）、保存先の問題が指す blob を onDialogClosed が消さないようにする
+  savingBlobIds = newBlobId && draftBlobIds.includes(newBlobId) ? [newBlobId] : [];
   try {
     // 保存に成功してから set と draft.saved に反映する
-    await storage.saveUserSet({ ...set, questions });
+    await storage.saveUserSet({ ...target, questions });
   } catch (e) {
     console.error(e);
+    const wasSaving = savingBlobIds;
+    savingBlobIds = [];
+    // 保存できず、しかもモーダルが既に閉じられている：新規 blob は誰も参照しないので消す（開いたままなら close 時に掃除）
+    if (draft !== d) for (const id of wasSaving) storage.deleteAudio(id).catch(() => {});
     toastError('保存できませんでした。');
     return;
   }
-  if (!draft) return; // 保存中にモーダルが閉じられた（blob は onDialogClosed が掃除済み）
-  set.questions = questions;
-  upsertUserSet(set);
-  draft.saved = true;
+  savingBlobIds = [];
+  // 保存は成功している：モーダルが閉じられていてもメモリ上のセットに反映する（次の保存で巻き戻らないように）
+  target.questions = questions;
+  upsertUserSet(target);
   // 差し替えられた古い端末音源を削除
-  const newBlobId = q.source && q.source.type === 'local' ? q.source.blobId : null;
-  if (originalBlobId && originalBlobId !== newBlobId) storage.deleteAudio(originalBlobId).catch(() => {});
-  closeDialog(els.dlg);
-  renderQuestions();
-  renderHead();
+  if (origBlobId && origBlobId !== newBlobId) storage.deleteAudio(origBlobId).catch(() => {});
+  if (set === target) { renderQuestions(); renderHead(); }
+  if (draft === d && d) {
+    d.saved = true;
+    closeDialog(els.dlg);
+  }
   toastOk('保存しました');
 }
 

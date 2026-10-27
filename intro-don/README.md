@@ -26,11 +26,13 @@
 
 HTTPS で配信されていれば Service Worker が有効になり、2回目以降は圏外でもアプリが開きます。
 
+**更新をデプロイするときは、必ず `intro-don/sw.js` の `VERSION`（例：`v1.1.0` → `v1.1.1`）を上げてから push してください。** Service Worker はアプリ本体を丸ごとキャッシュしているため、`VERSION` を上げないと既にインストール済みの端末には新しいファイルが届きません（`VERSION` を上げると、次に開いたときに「新しいバージョンがあります」と表示され、再読み込みで更新されます）。
+
 ## 開発
 
 ```bash
 # 単体テスト（Node 22）
-node --test intro-don/tests/
+node --test intro-don/tests/*.test.mjs
 
 # ローカルで動かす（リポジトリのルートで）
 python3 -m http.server 8000
@@ -42,4 +44,6 @@ python3 -m http.server 8000
 ## お題セットの自作・共有
 
 - セット編集画面から JSON で書き出し／読み込みができます（YouTube の音源指定は JSON に含まれます。端末ファイル・録音の音源は端末内にしか保存されないため、JSON には含まれません）。
+- 同梱セットを書き出すと id は `user-<元の id>`（例：`konbini-chime` → `user-konbini-chime`）になります（自作セットとして取り込まれ、同梱セットとは衝突しません）。
 - JSON の形式は ARCHITECTURE.md の第3章のとおりです。
+- お題セット（`data/sets/*.json`）を追加・修正して公開するときも、上の「公開手順」のとおり `sw.js` の `VERSION` を上げてください。

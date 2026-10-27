@@ -98,7 +98,7 @@ export function normalizeSet(obj) -> NormalizedSet       // validate の ok 前�
 export function newUserSet(partial = {}) -> NormalizedSet // id は "user-" + 乱数、builtin:false
 export function newQuestion(partial = {}) -> Question
 export function parseYouTubeId(text) -> string | null     // URL(watch?v=, youtu.be/, shorts/, embed/, music.youtube.com) か 11文字ID を受け付ける
-export function exportSet(set) -> { json: string, droppedLocalSources: number }  // 整形JSON。builtin は false に落とす（複製として扱う）。builtin:true のセットは id も "user-" 付きに付け替える（元のセットは変更しない）
+export function exportSet(set) -> { json: string, droppedLocalSources: number }  // 整形JSON。builtin は false に落とす（複製として扱う）。builtin:true のセットは id を "user-<元id>"（40 文字で切り詰め）に決定的に付け替える（元のセットは変更しない）
 export function importSet(text) -> { ok, set, errors }     // JSON.parse + validateSet。id が builtin と衝突したら "user-" を付け直す
 export function cloneSetForEditing(set) -> NormalizedSet   // 同梱セットを複製してユーザーセットにする
 ```
@@ -159,12 +159,18 @@ Player = {
   async prepare(source)                 // 問題遷移時に呼ぶ。youtube: cue、local: Blob→ObjectURL。source が null なら 'none'
                                         // adapter を別種別（または none）に切り替えるとき、前の adapter に release() があれば呼ぶ
   async play({ start = 0, seconds })    // 必ずユーザー操作（タップ）ハンドラ内から同期的に呼ぶこと（iOS対策）。seconds 後に自動停止。
-                                        // 戻り値 Promise<boolean>：実際に再生が始まれば true。
+                                        // 戻り値 Promise<true | false | null>（reject しない）：
+                                        //   true  … 実際に再生が始まった
+                                        //   false … 始まらなかった（watchdog／adapter のエラー／準備できていない）。'error' を通知済み
+                                        //   null  … 始まる前に stop() / prepare() / destroy() / 再 play() で中断された（エラーではない。
+                                        //           UI は「ストップ」「早押し」「やめる」などで出るこの値に対してトーストを出してはいけない）
                                         // watchdog：再生開始（PLAYING / playing イベント）が PLAY_START_TIMEOUT_MS（4 秒）以内に
                                         // 来なければ lastError = Error(PLAY_START_TIMEOUT_MESSAGE) で 'error' を通知し false で解決する。
                                         // watchdog は stop() / prepare() / destroy() / 再 play() でも必ず clear される。
   stop()
   unlock()                              // 初回タップで呼ぶ。HTMLAudio の無音再生で iOS のオーディオを解放
+  resetWarmUp() -> boolean              // watchdog 後の復帰用。adapter が「暖機済み」と判断している（needsWarmUp が false。スキップ後など）なら
+                                        // その adapter を destroy() して作り直し対象にし true を返す（state は 'idle'）。呼び出し側は続けて prepare() する
   get state()                           // 'idle'|'loading'|'ready'|'playing'|'error'|'none'
   get kind()                            // 'youtube'|'local'|'none'
   get lastError()
@@ -174,8 +180,13 @@ Player = {
 // play() 直後は onStateChange('playing', { remainingMs, elapsedMs: 0, buffering: true }) を 1 回通知する（バッファ待ち中。
 // UI は buffering:true の間はリングを回さない）。実際に音が出始めてから buffering 無しの 'playing' が 100ms ごとに来る。
 export const PLAY_START_TIMEOUT_MS = 4000;
-export const PLAY_START_TIMEOUT_MESSAGE = '再生が始まりませんでした。動画枠を直接タップしてから「どん！」を押してください';
+export const PLAY_START_TIMEOUT_MESSAGE = '再生が始まりませんでした。動画枠の中央を1回タップしてから、もう一度「どん！」を押してください';
 ```
+
+- UI（`play.mjs`）での扱い：`play()` が `false` で解決し、かつ `player.state === 'error'` のときだけ「どん！」前の状態に戻す。
+  `lastError.message === PLAY_START_TIMEOUT_MESSAGE`（watchdog）なら `resetWarmUp()` → 同じ問題を `prepare()` し直し、
+  タッチ端末でなくても暖機（動画枠の中央を 1 回タップ）を提示する。トーストは `PLAY_START_TIMEOUT_MESSAGE` だけを出す。
+  `prepare()` 自体の失敗（圏外など）は 'error' のまま「どん！で回数だけ数える」運用になる。
 
 - `youtube.mjs`：IFrame API（`https://www.youtube.com/iframe_api`）を遅延ロード。オフライン/ロード失敗は `error`。`YT.Player` 作成（onReady 待ち）が `timeoutMs` でタイムアウトしたら作りかけの player を `destroy()` して holder を mount から除去し、遅れて来た `onReady` は無視する（次回の `prepare` で作り直す。`destroy()` 中の作成も同様に捨てる）。`playsinline:1, controls:0, disablekb:1, rel:0, modestbranding:1, origin`。`seekTo(start,true); playVideo()` → `seconds` 後に `pauseVideo()`。再生開始検知は `onStateChange(PLAYING)` で行い、停止タイマーはそこから数える。**動画の見た目はUI側が不透明オーバーレイで覆う**（サムネ・タイトルがネタバレになるため）。音量0や display:none は使わない（iOS で再生されない恐れ）。
 - `local.mjs`：`<audio playsinline>` 1要素を使い回し。`currentTime=start; play()`。停止は `timeupdate`+`setTimeout` 併用で ±50ms 以内。adapter の `release()` は ObjectURL を revoke し `audio.removeAttribute('src'); audio.load()` する（要素とリスナーは残す。player.mjs が種別切替時に呼ぶ）。録音：`createRecorder({ onLevel, audioContext, env })` → `start()/stop()` → `{ blob, mimeType, duration }`。mimeType は `audio/mp4`→`audio/webm;codecs=opus`→`audio/webm` の順で `MediaRecorder.isTypeSupported`。
@@ -211,6 +222,15 @@ export const PLAY_START_TIMEOUT_MESSAGE = '再生が始まりませんでした�
 4. **プレイ**：大きな「どん！」ボタン、再生プログレス、再生回数、ヒント、「ストップ」「答えを見る」。司会モードは停止後に正解者ボタン群。早押しモードは画面を人数分に分割した巨大ボタン（横向き・縦向き両対応）。正解表示には answer/subtitle/trivia とサムネ（YouTube のみ、正解後だけ）。
 5. **結果**：順位表、共有（Web Share API→クリップボード fallback）、「もう一回」「ホームへ」。
 - 画面遷移中に `screen.orientation`／`wakeLock`（`navigator.wakeLock.request('screen')`）でプレイ中の画面消灯を防ぐ（失敗は無視）。
+- プレイ画面の「戻る」番兵：`enter()` で同じ URL の履歴（`history.state.introDonGuard`）を 1 つ積む。戻る操作（popstate）で
+  まだ `#/play` なら **確認ダイアログは使わず**「ゲーム中です。やめる場合は左上の × を押してください」をトーストして
+  `history.forward()` で戻す（iOS Safari のスワイプバック中は `window.confirm` が無視されることがあるため。やめるのは × のみ）。
+  × でやめる／最後の問題のあと結果へ進むときは `state.session = null`（やめる場合）にしてから番兵を `history.back()` で捨て、
+  popstate 後に `navigate(name, {}, { replace: true })` で置換遷移する（`leaveTo()`）。遷移先で「戻る」を押すとプレイ前の
+  画面（設定）に 1 回で戻り、`#/play` には戻らない（戻っても session が無ければ `enter()` が false を返しホームへ置換）。
+  結果画面の「もう一回」も置換遷移。
+- プレイ画面の案内トースト（「ホーム画面に追加すると…」「自動ロックを…」「音が出ないときは…」）は **1 ゲームにつき 1 件だけ**
+  （優先順：ホーム画面追加 → 自動ロック → 音量）、表示時間 4 秒、別の案内が表示中なら出さない。出せなかった案内は次のゲームに持ち越す。
 - 文言はすべて日本語。タップ領域は 44px 以上。セーフエリア（`env(safe-area-inset-*)`）対応。ダーク配色（屋外の視認性のため高コントラスト）。
 - Web Share Target（Android）：`manifest.share_target` で `?url=` を受け、起動時に「このYouTube動画を問題に追加」導線を出す。
 

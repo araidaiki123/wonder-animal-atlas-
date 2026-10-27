@@ -382,13 +382,14 @@ function idFromUrlToken(token) {
 }
 
 /**
- * 整形 JSON に書き出す。builtin は false に落とし、builtin:true のセットは id も "user-" 付きに付け替える
- * （書き出しは複製扱い。取り込んだ側で同梱セットと id が衝突しないようにする）。
+ * 整形 JSON に書き出す。builtin は false に落とし、builtin:true のセットは id を "user-<元id>" に付け替える
+ * （書き出しは複製扱い。取り込んだ側で同梱セットと id が衝突しないようにする。決定的なので同じセットを
+ * 何度書き出しても同じ id になり、取り込み側で上書き／重複の判断ができる）。
  * local 音源は Blob を持ち出せないので source:null に落とし、件数を _droppedLocalSources に付ける。
  */
 export function exportSet(set) {
   const n = normalizeSet(set);
-  if (n.builtin === true) n.id = newUserSetId();
+  if (n.builtin === true) n.id = `user-${n.id}`.slice(0, LIMITS.id);
   let dropped = 0;
   const questions = n.questions.map((q) => {
     if (q.source && q.source.type === 'local') {

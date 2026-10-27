@@ -290,15 +290,19 @@ describe('exportSet / importSet 往復', () => {
     assert.ok(json.includes('\n  '), '整形 JSON');
   });
 
-  test('builtin:true のセットは id を user- 付きに付け替える（複製扱い）、ユーザーセットの id はそのまま', () => {
+  test('builtin:true のセットは id を user-<元id> に付け替える（複製扱い・決定的）、ユーザーセットの id はそのまま', () => {
     const a = JSON.parse(exportSet(VALID).json);
-    assert.match(a.id, /^user-[a-z0-9]+$/);
-    assert.notEqual(a.id, VALID.id);
+    assert.equal(a.id, 'user-konbini-chime');
     assert.equal(a.builtin, false);
     // 書き出し元は変更しない
     assert.equal(VALID.id, 'konbini-chime');
-    // 2 回書き出すと別の id（乱数）
-    assert.notEqual(JSON.parse(exportSet(VALID).json).id, a.id);
+    // 2 回書き出しても同じ id（乱数ではない）
+    assert.equal(JSON.parse(exportSet(VALID).json).id, a.id);
+    // 40 文字の上限を超えない（id は ^[a-z0-9-]{1,40}$）
+    const long = JSON.parse(exportSet({ ...VALID, id: 'a'.repeat(40) }).json);
+    assert.equal(long.id, ('user-' + 'a'.repeat(40)).slice(0, 40));
+    assert.equal(long.id.length, 40);
+    assert.equal(importSet(exportSet({ ...VALID, id: 'a'.repeat(40) }).json).ok, true);
     // builtin でなければ id を保持
     const user = { ...VALID, id: 'user-keepme', builtin: false };
     assert.equal(JSON.parse(exportSet(user).json).id, 'user-keepme');
