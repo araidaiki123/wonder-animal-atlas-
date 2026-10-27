@@ -2,7 +2,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  PHASES, DEFAULT_SETTINGS, shuffleArray,
+  PHASES, MODES, PLAYER_LIMITS, CASUAL_PLAYER, DEFAULT_SETTINGS, shuffleArray,
   createSession, startPlay, stopPlay, cancelJudging, buzz, judge, openHint, reveal, nextQuestion,
   currentQuestionId, allLockedOut, pointsForPlay, ranking, summaryText, playbackWindow,
 } from '../src/game.mjs';
@@ -329,6 +329,90 @@ describe('早押しモードの遷移', () => {
     s = stopPlay(startPlay(s)); s = stopPlay(startPlay(s)); s = stopPlay(startPlay(s)); s = stopPlay(startPlay(s));
     s = judge(buzz(s, 'p3'), { correct: true });
     assert.equal(s.scores.p3, 1);
+  });
+});
+
+describe('きがるモード（casual）', () => {
+  const casual = (settings = {}, players) => createSession({ set: SET, players, settings: { mode: 'casual', shuffle: false, ...settings }, now: T0 });
+
+  test('MODES / PLAYER_LIMITS に casual がある', () => {
+    assert.deepEqual(MODES, ['host', 'buzzer', 'casual']);
+    assert.deepEqual(PLAYER_LIMITS.casual, [1, 1]);
+    assert.deepEqual(CASUAL_PLAYER, { id: 'solo', name: 'みんな', color: null });
+  });
+
+  test('players が空／省略なら「みんな」1 人を補う', () => {
+    const s = casual();
+    assert.equal(s.settings.mode, 'casual');
+    assert.deepEqual(s.players, [{ id: 'solo', name: 'みんな', color: null }]);
+    assert.deepEqual(s.scores, { solo: 0 });
+    assert.deepEqual(casual({}, []).players, [{ id: 'solo', name: 'みんな', color: null }]);
+    // 明示した 1 人はそのまま使う。2 人以上は 1 人制限で throw
+    assert.deepEqual(casual({}, [{ id: 'me', name: 'わたし' }]).players, [{ id: 'me', name: 'わたし', color: null }]);
+    assert.throws(() => casual({}, PLAYERS), /きがるモードのプレイヤー数は 1〜1 人/);
+    // 既存モードは従来どおり players 必須
+    assert.throws(() => createSession({ set: SET, settings: { mode: 'host' } }), /プレイヤーが必要/);
+  });
+
+  test('どん！→ストップは ready に戻る。buzz／judge は無視', () => {
+    let s = casual();
+    s = pure(startPlay, s);
+    assert.equal(s.phase, 'playing');
+    assert.equal(s.playCount, 1);
+    assert.equal(pure(buzz, s, 'solo'), s, 'buzz は無視');
+    assert.equal(pure(judge, s, { correct: true, playerId: 'solo' }), s, 'judge は無視');
+    s = pure(stopPlay, s);
+    assert.equal(s.phase, 'ready', 'きがるでは judging に行かず ready');
+    assert.equal(stopPlay(s), s, 'ready+playCount>0 でも judging に進まない');
+    assert.equal(judge(s, { correct: true, playerId: 'solo' }), s);
+    assert.equal(buzz(s, 'solo'), s);
+    s = startPlay(s);
+    assert.equal(s.playCount, 2);
+    assert.deepEqual(playbackWindow(s), { start: 0, seconds: 5 });
+    s = openHint(s, 2);
+    assert.equal(s.hintCount, 1);
+    s = pure(reveal, s);
+    assert.equal(s.phase, 'revealed');
+    assert.deepEqual(s.log, [{ questionId: 'q1', winnerId: null, points: 0, playCount: 2, hintCount: 1 }]);
+    assert.deepEqual(s.scores, { solo: 0 }, '得点は増えない');
+    assert.equal(judge(s, { correct: true, playerId: 'solo' }), s);
+    s = pure(nextQuestion, s, T0 + 1000);
+    assert.equal(s.phase, 'ready');
+    assert.equal(s.index, 1);
+    assert.equal(s.playCount, 0);
+  });
+
+  test('全問聴くと finished、ranking は 1 人分で壊れない', () => {
+    let s = casual({ questionLimit: 2 });
+    s = nextQuestion(reveal(startPlay(s)), T0 + 1);
+    s = nextQuestion(reveal(s), T0 + 2);
+    assert.equal(s.phase, 'finished');
+    assert.equal(s.finishedAt, T0 + 2);
+    assert.equal(s.log.length, 2);
+    assert.deepEqual(ranking(s), [{ playerId: 'solo', name: 'みんな', score: 0, rank: 1 }]);
+  });
+
+  test('summaryText は順位ではなく聴いた曲のリスト（log 順、answer は set から）', () => {
+    let s = createSession({ set: SET, settings: { mode: 'casual', shuffle: true, questionLimit: 3 }, random: () => 0, now: T0 });
+    assert.deepEqual(s.order, ['q2', 'q3', 'q4']);
+    s = nextQuestion(reveal(startPlay(s)), T0 + 1);
+    s = nextQuestion(reveal(s), T0 + 2);
+    s = nextQuestion(reveal(startPlay(startPlay(s))), T0 + 3);
+    assert.equal(s.phase, 'finished');
+    assert.equal(summaryText(s, SET), [
+      '🎵 イントロどん（コンビニ入店音）',
+      '全3問 聴きました',
+      '1. B',
+      '2. C',
+      '3. D',
+      '2026-10-27',
+    ].join('\n'));
+    // set が無ければ questionId、タイトル無し
+    assert.equal(summaryText(s).split('\n')[0], '🎵 イントロどん');
+    assert.equal(summaryText(s).split('\n')[2], '1. q2');
+    // 途中（finished 前）でも log にある分だけ並ぶ
+    const mid = reveal(startPlay(casual()));
+    assert.deepEqual(summaryText(mid, SET).split('\n'), ['🎵 イントロどん（コンビニ入店音）', '全4問 聴きました', '1. A', '2026-10-27']);
   });
 });
 

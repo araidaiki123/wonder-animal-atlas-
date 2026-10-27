@@ -11,10 +11,11 @@ GitHub Pages のサブパス（`/wonder-animal-atlas-/intro-don/`）で配信さ
   3. `record` … マイクでその場録音（例：お店の来店曲を店内で録音）。`local` と同じ経路で Blob 保存。**オフライン可**。
   - 音源未設定の問題でも遊べる：「別アプリで再生」モード（司会が自分の音楽アプリで流し、本アプリは早押し・採点・答え表示を担当）。
 - **同梱するのは「お題セット（問題リスト＝メタデータ）」のみ**：答え、別名、ヒント、豆知識、音源探し用の検索語。
-- 遊び方は2モード：
-  - **司会モード**：司会が「どん！」→ 誰かが答えたら「ストップ」→ 正解者をタップして加点。
-  - **早押しモード**：スマホを机の中央に置き、画面を人数分の「早押しボタン」に分割。最初にタッチした人が解答権。司会が○/×判定。
-- 採点：再生回数が少ないほど高得点（1回目=3点、2回目=2点、3回目以降=1点、初期値・変更可）。誤答は 0 点でその問題の解答権を失う（設定で -1 も可）。
+- 遊び方は3モード：
+  - **きがるモード**（`casual`）：対決しない版。プレイヤー登録も得点もなし。「どん！」で流す → 分からなければもう一度「どん！」（少し長く）やヒント → 「答えを見る」→ 次へ、を繰り返すだけ。1人でも、車やピクニックでみんなで聴きながら口頭で当てる用途。ホームの各セットカードの「🎧 聴く」で設定画面を経由せず即開始（前回の秒数設定、シャッフル有り、全問）。
+  - **司会モード**（`host`）：司会が「どん！」→ 誰かが答えたら「ストップ」→ 正解者をタップして加点。
+  - **早押しモード**（`buzzer`）：スマホを机の中央に置き、画面を人数分の「早押しボタン」に分割。最初にタッチした人が解答権。司会が○/×判定。
+- 採点（司会・早押し）：再生回数が少ないほど高得点（1回目=3点、2回目=2点、3回目以降=1点、初期値・変更可）。誤答は 0 点でその問題の解答権を失う（設定で -1 も可）。きがるモードは採点しない。
 - 外出先での利用：PWA（ホーム画面追加）、アプリ殻は Service Worker で完全キャッシュ、`local/record` 音源は IndexedDB で圏外でも再生可。
 
 ## 2. ファイル構成（担当を分けるため、ファイル単位で所有者を固定）
@@ -108,10 +109,15 @@ export function cloneSetForEditing(set) -> NormalizedSet   // 同梱セットを
 ```js
 export const PHASES = ['lobby','ready','playing','buzzed','judging','revealed','finished'];
 
+export const MODES = ['host', 'buzzer', 'casual'];
+export const PLAYER_LIMITS = { host: [1, 8], buzzer: [2, 4], casual: [1, 1] };
+export const CASUAL_PLAYER = { id: 'solo', name: 'みんな', color: null };
+
 export function createSession({ set, players, settings, random = Math.random }) -> Session
-// players: [{ id, name, color }]（1..8人）。早押しモードは 2..4 人。
+// players: [{ id, name, color }]（1..8人）。早押しモードは 2..4 人。きがるモードは 1 人で、
+//   players が空／省略なら CASUAL_PLAYER を自動補完する（UI は補完後の session.players を使う）。
 // settings: {
-//   mode: 'host' | 'buzzer',
+//   mode: 'host' | 'buzzer' | 'casual',
 //   playSeconds, extendSeconds,          // set の値を既定にして上書き可
 //   points: [3, 2, 1],                    // 再生回数 1,2,3+ 回目の得点
 //   wrongPenalty: 0,                      // 誤答のペナルティ（0 or -1）
@@ -135,18 +141,20 @@ Session = {
 
 // 遷移（すべて新しい Session を返す。無効な遷移は同じ Session を返す（throw しない））
 export function startPlay(s)             // ready|revealed→ 'playing', playCount+1  (revealed からは呼ばない。UI が nextQuestion してから)
-export function stopPlay(s)              // playing → mode==='host' ? 'judging' : 'ready'（早押しでは誰も押さなければ ready に戻る）
-export function buzz(s, playerId)        // playing|ready(再生後) → 'buzzed'、buzzedBy=playerId（lockedOut なら無視）
+export function stopPlay(s)              // playing → mode==='host' ? 'judging' : 'ready'（早押し・きがるでは ready に戻る）
+export function buzz(s, playerId)        // playing|ready(再生後) → 'buzzed'、buzzedBy=playerId（lockedOut なら無視。host/casual では無視）
 export function judge(s, { correct, playerId })
 //   host: playerId 必須。correct → points 加算、'revealed'。incorrect → lockedOut に追加、'ready'
 //   buzzer: playerId は buzzedBy。同上。
+//   casual: 常に無視（同じ Session を返す）。きがるの遷移は startPlay / openHint / reveal / nextQuestion だけ
 export function openHint(s)              // hintCount+1（上限は question.hints.length、UI が渡す）→ 得点に影響させない（シンプル維持）
 export function reveal(s)                // 'revealed' に遷移（誰も正解なし、winner null で log）
 export function nextQuestion(s)          // revealed → index+1, playCount/hintCount/buzzedBy/lockedOut リセット、'ready'。最後なら 'finished'
 export function currentQuestionId(s)
 export function pointsForPlay(settings, playCount)  // points[min(playCount,len)-1]
-export function ranking(s) -> [{ playerId, name, score, rank }]  // 同点は同順位
+export function ranking(s) -> [{ playerId, name, score, rank }]  // 同点は同順位（casual でも 1 人分を返す）
 export function summaryText(s, set) -> string   // 共有用テキスト「🎵 イントロどん 結果 …」
+//   casual では順位ではなく「🎵 イントロどん（セット名）／全N問 聴きました／1. 答え…／日付」（log の順、answer は set から引く）
 export function playbackWindow(s) -> { start: 0, seconds }  // 今回の再生秒数 = playSeconds + extendSeconds*(playCount-1)。
 //   ※ 毎回「頭から」再生し、回数ごとに長く聞かせる（イントロどんの定番ルール）
 ```
@@ -207,7 +215,7 @@ export const PLAY_START_TIMEOUT_MESSAGE = '再生が始まりませんでした�
 
 ### Service Worker のキャッシュ方針（`sw.js`）
 
-- **デプロイ時は必ず `sw.js` の `VERSION` を上げる**（現在 `v1.1.0`）。キャッシュ名は `intro-don-<VERSION>`。
+- **デプロイ時は必ず `sw.js` の `VERSION` を上げる**（現在 `v1.2.0`）。キャッシュ名は `intro-don-<VERSION>`。
 - install：`SHELL`（index.html / styles.css / app.js / src/**/*.mjs / manifest / icons / data/sets/index.json）と `index.json` が列挙する `data/sets/*.json` を `cache.add(new Request(u, { cache: 'reload' }))` で precache する（HTTP キャッシュを経由せず必ずネットワークから取る）。
 - fetch：
   - `SHELL` と `data/sets/*`（および navigate）は **バージョン付きキャッシュから cache-first**。バックグラウンド更新（stale-while-revalidate）は**しない**。古い `app.js` と新しい `*.mjs` が混在しないよう、更新は `VERSION` を上げて丸ごと入れ替える（activate で旧キャッシュを削除 → `app.js` が「新しいバージョンがあります」トースト → `SKIP_WAITING` → 再読み込み）。
@@ -216,11 +224,12 @@ export const PLAY_START_TIMEOUT_MESSAGE = '再生が始まりませんでした�
 
 ## 7. 画面（`app.js` + `index.html`）
 
-1. **ホーム**：セット一覧（同梱・自作）。各カードに曲数・難易度・音源設定済み数「🎧 8/12」。「＋ 自作セット」「読み込み(JSON)」。
+1. **ホーム**：セット一覧（同梱・自作）。各カードに曲数・難易度・音源設定済み数「🎧 8/12」、「🎧 聴く」（きがるモードで即開始。`setup.startQuick(set, { mode: 'casual' })`：前回の秒数設定（無ければセットの既定）・シャッフル有り・全問。保存済み設定は変更しない）と「あそぶ」（設定画面へ）。「＋ 自作セット」「読み込み(JSON)」。
 2. **セット詳細／編集**：問題リスト。各問題に音源バッジ（YouTube／端末／録音／未設定）。タップで編集：答え・別解・ヒント・豆知識・音源（YouTube URL貼付 / ファイル選択 / 録音）。「YouTubeで探す」「Apple Musicで探す」ボタンは検索語でアプリ/ブラウザを開く外部リンク。同梱セットは「複製して編集」。
-3. **ゲーム設定**：人数と名前、モード（司会／早押し）、秒数、得点、出題数、シャッフル。
+3. **ゲーム設定**：モード（きがる／司会／早押し、この順）、人数と名前、秒数、得点、出題数、シャッフル。きがる選択時は人数・名前・得点・ペナルティの欄を隠す（秒数・出題数・シャッフルは残す。説明文「得点なし。流して、答えを見て、次へ。」）。保存される設定（`storage.saveSettings`）の `mode` が `casual` でも `playerCount` / `playerNames` / `points` / `wrongPenalty` は上書きしない。
 4. **プレイ**：大きな「どん！」ボタン、再生プログレス、再生回数、ヒント、「ストップ」「答えを見る」。司会モードは停止後に正解者ボタン群。早押しモードは画面を人数分に分割した巨大ボタン（横向き・縦向き両対応）。正解表示には answer/subtitle/trivia とサムネ（YouTube のみ、正解後だけ）。
-5. **結果**：順位表、共有（Web Share API→クリップボード fallback）、「もう一回」「ホームへ」。
+   きがるモード（`section[data-mode="casual"]`）は司会モードのステージを使い回し、問題番号・どん！（＋リング）・「◯回目・N秒」・ヒント・大きめの主ボタン「答えを見る」だけを出す（スコア行・ストップ・正解者パネル・勝者行は非表示、音源なし問題の「再生した」カウンタも無し）。「次の問題」は最後の問題で「おしまい」。YouTube の暖機・watchdog・戻る番兵・案内トースト（音量のみ）は既存ロジックのまま。
+5. **結果**：順位表、共有（Web Share API→クリップボード fallback）、「もう一回」「ホームへ」。きがるモードは順位表の代わりに「全N問 聴きました」と聴いた曲（answer と subtitle）のリスト。共有は `summaryText` の casual 書式。`storage.saveResult` は従来の形（ranking は 1 人分）。
 - 画面遷移中に `screen.orientation`／`wakeLock`（`navigator.wakeLock.request('screen')`）でプレイ中の画面消灯を防ぐ（失敗は無視）。
 - プレイ画面の「戻る」番兵：`enter()` で同じ URL の履歴（`history.state.introDonGuard`）を 1 つ積む。戻る操作（popstate）で
   まだ `#/play` なら **確認ダイアログは使わず**「ゲーム中です。やめる場合は左上の × を押してください」をトーストして

@@ -1,10 +1,11 @@
 // 4. プレイ：どん！ボタン・プログレス・ヒント・ストップ・正解者・早押し分割パネル・正解表示
+//    きがるモード（casual）は司会モードのステージ（#host-stage）を使い回し、得点行・ストップ・正解者パネルを出さない。
 import * as game from '../game.mjs';
 import { createPlayer, PLAY_START_TIMEOUT_MESSAGE } from '../audio/player.mjs';
 import * as storage from '../storage.mjs';
 import { $, $$, el, clear, fromTemplate } from './dom.mjs';
 import { toast, toastError } from './toast.mjs';
-import { state, searchLinks } from './state.mjs';
+import { state, searchLinks, MODE_LABEL } from './state.mjs';
 import { navigate, parseHash } from './router.mjs';
 import { unlockAudio, buzzSound, correctSound, wrongSound } from './sound.mjs';
 
@@ -39,6 +40,12 @@ let guideUntil = 0;            // 案内トーストが表示されている間�
 let pendingLeave = null;       // 番兵の履歴を捨てたあとに置換遷移する先（'home' | 'result'）
 let pendingLeaveTimer = 0;
 
+/** Session のモード（'host' | 'buzzer' | 'casual'。不明なら 'host'） */
+function modeOf(s) {
+  const m = s && s.settings && s.settings.mode;
+  return m === 'buzzer' || m === 'casual' ? m : 'host';
+}
+
 // タッチ端末か（iOS/Android では YouTube iframe の初回再生に直接タップが必要になることがある）
 function isTouchDevice() {
   try { return navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches; } catch (e) { return false; }
@@ -61,6 +68,7 @@ export function initPlay() {
     donRing: $('#don-ring-fg'),
     donSub: $('#don-sub'),
     noSource: $('#no-source-panel'),
+    nsDesc: $('#ns-desc'),
     nsYt: $('#ns-yt-link'),
     nsAm: $('#ns-am-link'),
     countLabel: $('#play-count-label'),
@@ -201,9 +209,9 @@ async function enter() {
   pendingLeave = null;
   clearTimeout(pendingLeaveTimer);
   document.body.dataset.activeScreen = 'play';
-  const mode = s.settings.mode === 'buzzer' ? 'buzzer' : 'host';
+  const mode = modeOf(s);
   els.section.dataset.mode = mode;
-  els.modeBadge.textContent = mode === 'buzzer' ? '早押し' : '司会';
+  els.modeBadge.textContent = MODE_LABEL[mode];
   judgeWrongMode = false;
   els.judgeWrong.checked = false;
   els.judge.dataset.wrong = 'false';
@@ -636,14 +644,15 @@ function render() {
   const s = state.session;
   if (!s || !active) return;
   const q = currentQuestion();
-  const mode = s.settings.mode === 'buzzer' ? 'buzzer' : 'host';
+  const mode = modeOf(s);
+  const casual = mode === 'casual';
   const phase = s.phase;
   els.section.dataset.phase = phase;
   els.counter.textContent = `${Math.min(s.index + 1, s.order.length)} / ${s.order.length}`;
 
-  // 表示するパネル
+  // 表示するパネル（きがるモードは司会モードのステージを使う。judging には遷移しない）
   const revealed = phase === 'revealed';
-  els.hostStage.hidden = !(mode === 'host' && (phase === 'ready' || phase === 'playing'));
+  els.hostStage.hidden = !(mode !== 'buzzer' && (phase === 'ready' || phase === 'playing'));
   els.judge.hidden = !(mode === 'host' && phase === 'judging');
   els.buzzStage.hidden = !(mode === 'buzzer' && !revealed);
   els.revealPanel.hidden = !revealed;
@@ -651,7 +660,11 @@ function render() {
   els.ytBox.hidden = !(q && q.source && q.source.type === 'youtube');
   if (revealed) setOverlay(false, '正解');
 
-  renderScores(s);
+  // きがるモードは得点なし：スコア行・ストップ・得点ラベルを出さない
+  els.scores.hidden = casual;
+  els.stop.hidden = casual;
+  els.pointsLabel.hidden = casual;
+  if (!casual) renderScores(s);
 
   const nextWin = game.playbackWindow({ ...s, playCount: s.playCount + 1 });
   const nextPts = game.pointsForPlay(s.settings, s.playCount + 1);
@@ -659,18 +672,23 @@ function render() {
   const links = searchLinks(q);
   const canDon = !loading && !warmingUp && (phase === 'ready' || phase === 'playing');
 
-  if (mode === 'host') {
+  if (mode !== 'buzzer') {
     els.donWrap.hidden = !hasSource;
     els.noSource.hidden = hasSource;
     if (!hasSource) {
       els.nsYt.href = links.youtube;
       els.nsAm.href = links.apple;
-      ensureNoSourceCounter(els.noSource);
+      els.nsDesc.textContent = casual
+        ? 'この問題には音源が設定されていません。自分の音楽アプリで流してください。'
+        : 'この問題には音源が設定されていません。司会が自分の音楽アプリで流してください。';
+      // きがるモードは採点しないので「再生した（回数）」カウンタは要らない
+      if (casual) { const c = $('.ns-count', els.noSource); if (c) c.hidden = true; }
+      else ensureNoSourceCounter(els.noSource);
     }
     els.donSub.textContent = loading ? '読み込み中…' : `${s.playCount + 1}回目・${nextWin.seconds}秒`;
     els.don.disabled = !canDon;
     els.countLabel.textContent = `再生 ${s.playCount} 回`;
-    els.pointsLabel.textContent = s.playCount > 0 ? `いま正解で ${game.pointsForPlay(s.settings, s.playCount)} 点` : `正解で ${nextPts} 点`;
+    els.pointsLabel.textContent = casual ? '' : (s.playCount > 0 ? `いま正解で ${game.pointsForPlay(s.settings, s.playCount)} 点` : `正解で ${nextPts} 点`);
     renderHints(els.hints, q, s.hintCount);
     els.hint.disabled = !q || !(q.hints || []).length || s.hintCount >= (q.hints || []).length;
     els.hint.textContent = q && (q.hints || []).length ? `ヒント ${s.hintCount}/${q.hints.length}` : 'ヒント';
@@ -711,8 +729,10 @@ function render() {
 
 // 音源なし問題用：「再生した（回数+1）」ボタンを動的に追加（採点のため）
 function ensureNoSourceCounter(panel, small = false) {
-  if ($('.ns-count', panel)) {
-    $('.ns-count', panel).textContent = `再生した（${state.session.playCount + 1}回目）`;
+  const existing = $('.ns-count', panel);
+  if (existing) {
+    existing.hidden = false; // きがるモードで隠していた場合に戻す
+    existing.textContent = `再生した（${state.session.playCount + 1}回目）`;
     return;
   }
   const btn = el('button', { class: `btn btn-primary ns-count${small ? ' btn-sm' : ''}`, type: 'button', text: `再生した（${state.session.playCount + 1}回目）` });
@@ -787,8 +807,13 @@ function renderReveal(s, q) {
   if (!q) return;
   els.revealAnswer.textContent = q.answer;
   els.revealSubtitle.textContent = q.subtitle || '';
+  const casual = modeOf(s) === 'casual';
   const entry = [...s.log].reverse().find((l) => l.questionId === q.id);
-  if (entry && entry.winnerId) {
+  // きがるモードは得点がないので勝者行は出さない
+  els.revealWinner.hidden = casual;
+  if (casual) {
+    els.revealWinner.textContent = '';
+  } else if (entry && entry.winnerId) {
     const p = playerById(entry.winnerId);
     els.revealWinner.textContent = `🏆 ${p ? p.name : entry.winnerId}  +${entry.points}点`;
   } else {
@@ -805,5 +830,5 @@ function renderReveal(s, q) {
   els.revealTrivia.hidden = !q.trivia;
   els.revealAliases.textContent = q.aliases && q.aliases.length ? `別解：${q.aliases.join('、')}` : '';
   const last = s.index >= s.order.length - 1;
-  els.next.textContent = last ? '結果を見る' : '次の問題';
+  els.next.textContent = last ? (casual ? 'おしまい' : '結果を見る') : '次の問題';
 }

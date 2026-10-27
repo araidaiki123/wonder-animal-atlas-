@@ -104,35 +104,40 @@
     </header>
     <p id="setup-set-name" class="setup-set"></p>
 
-    <div class="segment" role="radiogroup" aria-label="モード" id="mode-seg">
-      <button type="button" class="seg-btn" role="radio" data-mode="host" aria-checked="true">🎤 司会モード</button>
-      <button type="button" class="seg-btn" role="radio" data-mode="buzzer" aria-checked="false">✋ 早押しモード</button>
+    <div class="segment segment-3" role="radiogroup" aria-label="モード" id="mode-seg">
+      <button type="button" class="seg-btn" role="radio" data-mode="casual" aria-checked="false"><span class="seg-icon" aria-hidden="true">🎧</span><span class="seg-text">きがるモード</span></button>
+      <button type="button" class="seg-btn" role="radio" data-mode="host" aria-checked="true"><span class="seg-icon" aria-hidden="true">🎤</span><span class="seg-text">司会モード</span></button>
+      <button type="button" class="seg-btn" role="radio" data-mode="buzzer" aria-checked="false"><span class="seg-icon" aria-hidden="true">✋</span><span class="seg-text">早押しモード</span></button>
     </div>
     <p id="mode-desc" class="muted small"></p>
 
-    <div class="field-row field-row-center">
-      <span class="field-label">人数</span>
-      <div class="stepper">
-        <button type="button" id="players-minus" aria-label="人数を減らす">−</button>
-        <output id="players-count">2</output>
-        <button type="button" id="players-plus" aria-label="人数を増やす">＋</button>
+    <!-- 人数・名前（きがるモードでは隠す） -->
+    <div id="players-block" class="players-block">
+      <div class="field-row field-row-center">
+        <span class="field-label">人数</span>
+        <div class="stepper">
+          <button type="button" id="players-minus" aria-label="人数を減らす">−</button>
+          <output id="players-count">2</output>
+          <button type="button" id="players-plus" aria-label="人数を増やす">＋</button>
+        </div>
       </div>
+      <div id="players-list" class="players-list"></div>
     </div>
-    <div id="players-list" class="players-list"></div>
 
     <details class="adv" open>
-      <summary>秒数・得点・出題</summary>
+      <summary id="adv-summary">秒数・得点・出題</summary>
       <div class="field-row">
         <label class="field">初回の秒数<input id="setup-play-seconds" type="number" min="0.5" max="30" step="0.5" inputmode="decimal"></label>
         <label class="field">延長の秒数<input id="setup-extend-seconds" type="number" min="0.5" max="30" step="0.5" inputmode="decimal"></label>
       </div>
-      <div class="field-row">
+      <!-- 得点・ペナルティ（きがるモードでは隠す） -->
+      <div class="field-row" id="setup-points-row">
         <label class="field">1回目の得点<input id="setup-points-1" type="number" min="0" max="99" step="1" inputmode="numeric"></label>
         <label class="field">2回目<input id="setup-points-2" type="number" min="0" max="99" step="1" inputmode="numeric"></label>
         <label class="field">3回目以降<input id="setup-points-3" type="number" min="0" max="99" step="1" inputmode="numeric"></label>
       </div>
       <div class="field-row">
-        <label class="field">誤答
+        <label class="field" id="setup-penalty-field">誤答
           <select id="setup-penalty">
             <option value="0">0点（解答権を失う）</option>
             <option value="-1">−1点</option>
@@ -171,7 +176,7 @@
         </div>
       </div>
 
-      <!-- 司会モード -->
+      <!-- 司会モード・きがるモード（きがるではストップ・得点表示を隠し、「答えを見る」を主ボタンにする） -->
       <div id="host-stage" class="stage">
         <div class="don-wrap">
           <button id="don-button" class="don" type="button">
@@ -185,7 +190,7 @@
         </div>
         <div id="no-source-panel" class="no-source" hidden>
           <p class="no-source-title">別アプリで再生してください</p>
-          <p class="muted small">この問題には音源が設定されていません。司会が自分の音楽アプリで流してください。</p>
+          <p id="ns-desc" class="muted small">この問題には音源が設定されていません。司会が自分の音楽アプリで流してください。</p>
           <div class="search-links">
             <a id="ns-yt-link" class="btn btn-link" target="_blank" rel="noopener">YouTubeで探す</a>
             <a id="ns-am-link" class="btn btn-link" target="_blank" rel="noopener">Apple Musicで探す</a>
@@ -263,10 +268,13 @@
   <!-- ===== 5. 結果 ===== -->
   <section class="screen" data-screen="result" hidden>
     <header class="app-bar">
-      <h1 class="app-bar-title">結果発表</h1>
+      <h1 id="result-title" class="app-bar-title">結果発表</h1>
     </header>
     <p id="result-set" class="muted"></p>
     <ol id="ranking" class="ranking"></ol>
+    <!-- きがるモード：順位表の代わりに聴いた曲のリスト -->
+    <h2 id="listened-title" class="listened-title" hidden></h2>
+    <ol id="listened" class="listened" hidden></ol>
     <pre id="summary-text" class="summary"></pre>
     <div class="result-actions">
       <button id="btn-share" class="btn" type="button">共有</button>
@@ -408,6 +416,7 @@
         <span class="set-meta"></span>
       </span>
     </button>
+    <button class="btn btn-sm btn-listen" type="button" data-action="listen" aria-label="きがるモードで聴く">🎧 聴く</button>
     <button class="btn btn-play" type="button" data-action="play">あそぶ</button>
   </article>
 </template>
@@ -438,6 +447,16 @@
     <span class="buzz-score"></span>
     <span class="buzz-state"></span>
   </div>
+</template>
+
+<template id="tpl-listened-row">
+  <li class="listened-row">
+    <span class="listened-no"></span>
+    <span class="listened-main">
+      <span class="listened-answer"></span>
+      <span class="listened-sub"></span>
+    </span>
+  </li>
 </template>
 
 <template id="tpl-rank-row">

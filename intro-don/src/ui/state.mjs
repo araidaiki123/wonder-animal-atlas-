@@ -2,8 +2,9 @@
 import * as storage from '../storage.mjs';
 
 export const PLAYER_COLORS = ['#ffe600', '#ff2d95', '#2de2ff', '#3cff8f'];
-export const MAX_PLAYERS = { host: 8, buzzer: 4 };
-export const MIN_PLAYERS = { host: 1, buzzer: 2 };
+export const MAX_PLAYERS = { host: 8, buzzer: 4, casual: 1 };
+export const MIN_PLAYERS = { host: 1, buzzer: 2, casual: 1 };
+export const MODE_LABEL = { host: '司会', buzzer: '早押し', casual: 'きがる' };
 
 export const state = {
   builtinSets: [],

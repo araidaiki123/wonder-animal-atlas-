@@ -5,6 +5,7 @@ import { $, clear, fromTemplate, openDialog, closeDialog, bindDialogClose } from
 import { toastError, toastOk } from './toast.mjs';
 import { state, refreshSets, upsertUserSet, sourceStats, difficultyStars } from './state.mjs';
 import { navigate } from './router.mjs';
+import { startQuick } from './setup.mjs';
 
 let els;
 
@@ -89,6 +90,10 @@ function renderList(container, sets) {
     const st = sourceStats(set);
     $('.set-meta', card).textContent = `${st.total}曲・${difficultyStars(set.difficulty)}・🎧 ${st.withSource}/${st.total}`;
     $('[data-action="open"]', card).addEventListener('click', () => navigate('set', { id: set.id }));
+    // 「🎧 聴く」：きがるモードで設定画面を経由せず即スタート
+    const listenBtn = $('[data-action="listen"]', card);
+    listenBtn.disabled = st.total === 0;
+    listenBtn.addEventListener('click', () => startQuick(set, { mode: 'casual' }));
     const playBtn = $('[data-action="play"]', card);
     playBtn.disabled = st.total === 0;
     playBtn.addEventListener('click', () => navigate('setup', { id: set.id }));
