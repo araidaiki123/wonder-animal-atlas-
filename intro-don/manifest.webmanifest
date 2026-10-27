@@ -1,0 +1,22 @@
+{
+  "name": "イントロどん",
+  "short_name": "イントロどん",
+  "description": "スマホ1台でみんなで遊べる早押しイントロクイズ",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0b0f1a",
+  "background_color": "#0b0f1a",
+  "icons": [
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "share_target": {
+    "action": "./",
+    "method": "GET",
+    "params": { "url": "url", "text": "text", "title": "title" }
+  }
+}

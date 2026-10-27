@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0f1a">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="イントロどん">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="スマホ1台でみんなで遊べる早押しイントロクイズ。YouTube・端末の音源・その場録音に対応。">
+  <title>イントロどん｜みんなで早押しイントロクイズ</title>
+  <link rel="apple-touch-icon" href="assets/icon-512.png">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+<div id="app">
+
+  <!-- ===== 1. ホーム ===== -->
+  <section class="screen" data-screen="home" hidden>
+    <header class="app-bar app-bar-home">
+      <h1 class="brand"><span class="brand-mark" aria-hidden="true">♪</span>イントロどん</h1>
+      <p class="tagline">みんなで早押しイントロクイズ</p>
+    </header>
+    <div id="offline-banner" class="banner banner-offline" hidden>圏外：YouTube 音源は再生できません。端末音源・録音は OK</div>
+    <div class="home-actions">
+      <button id="btn-new-set" class="btn btn-primary" type="button">＋ 自作セット</button>
+      <button id="btn-import" class="btn" type="button">読み込み(JSON)</button>
+    </div>
+    <h2 class="section-title">同梱セット</h2>
+    <div id="builtin-list" class="set-list" aria-live="polite"></div>
+    <p id="builtin-empty" class="empty" hidden>同梱セットを読み込めませんでした。</p>
+    <h2 class="section-title">自作セット</h2>
+    <div id="user-list" class="set-list"></div>
+    <p id="user-empty" class="empty" hidden>まだありません。「＋ 自作セット」で作るか、JSON を読み込んでください。</p>
+    <footer class="home-foot">
+      <p id="storage-usage" class="muted small"></p>
+      <p class="muted small">音源はアプリに同梱していません。YouTube・端末のファイル・録音から取り込んでください。</p>
+    </footer>
+  </section>
+
+  <!-- ===== 2. セット詳細／編集 ===== -->
+  <section class="screen" data-screen="set" hidden>
+    <header class="app-bar app-bar-nav">
+      <button class="btn-icon" type="button" data-nav="home" aria-label="ホームへ戻る">‹</button>
+      <h1 id="set-heading" class="app-bar-title">セット</h1>
+      <span id="set-kind-badge" class="kind-badge"></span>
+    </header>
+
+    <div id="set-readonly" class="set-head" hidden>
+      <div class="set-head-row">
+        <span id="set-view-emoji" class="set-emoji-lg" aria-hidden="true"></span>
+        <div class="grow">
+          <h2 id="set-view-title" class="set-view-title"></h2>
+          <p id="set-view-meta" class="muted small"></p>
+        </div>
+      </div>
+      <p id="set-view-desc" class="muted"></p>
+      <p id="set-view-credits" class="muted small"></p>
+      <button id="btn-clone" class="btn" type="button">複製して編集</button>
+    </div>
+
+    <form id="set-form" class="set-head set-form" hidden autocomplete="off">
+      <div class="field-row">
+        <label class="field field-emoji">絵文字<input id="set-emoji" maxlength="2" inputmode="text" placeholder="🎵"></label>
+        <label class="field grow">タイトル<input id="set-title" maxlength="40" required placeholder="セット名"></label>
+      </div>
+      <label class="field">説明<input id="set-desc" maxlength="200" placeholder="どんな曲が出るか（任意）"></label>
+      <div class="field-row">
+        <label class="field">初回の秒数<input id="set-play-seconds" type="number" min="0.5" max="30" step="0.5" inputmode="decimal"></label>
+        <label class="field">延長の秒数<input id="set-extend-seconds" type="number" min="0.5" max="30" step="0.5" inputmode="decimal"></label>
+        <label class="field">難易度
+          <select id="set-difficulty">
+            <option value="1">★☆☆</option>
+            <option value="2">★★☆</option>
+            <option value="3">★★★</option>
+          </select>
+        </label>
+      </div>
+      <p id="set-form-status" class="muted small" aria-live="polite"></p>
+    </form>
+
+    <div class="set-toolbar">
+      <button id="btn-play-set" class="btn btn-primary" type="button">このセットであそぶ</button>
+      <button id="btn-add-question" class="btn" type="button">＋ 問題を追加</button>
+      <button id="btn-export" class="btn" type="button">書き出し(JSON)</button>
+      <button id="btn-delete-set" class="btn btn-danger" type="button">セットを削除</button>
+    </div>
+
+    <ol id="q-list" class="q-list"></ol>
+    <p id="q-empty" class="empty" hidden>問題がありません。「＋ 問題を追加」から作ってください。</p>
+  </section>
+
+  <!-- ===== 3. ゲーム設定 ===== -->
+  <section class="screen" data-screen="setup" hidden>
+    <header class="app-bar app-bar-nav">
+      <button class="btn-icon" type="button" data-nav="back" aria-label="戻る">‹</button>
+      <h1 class="app-bar-title">ゲーム設定</h1>
+    </header>
+    <p id="setup-set-name" class="setup-set"></p>
+
+    <div class="segment" role="radiogroup" aria-label="モード" id="mode-seg">
+      <button type="button" class="seg-btn" role="radio" data-mode="host" aria-checked="true">🎤 司会モード</button>
+      <button type="button" class="seg-btn" role="radio" data-mode="buzzer" aria-checked="false">✋ 早押しモード</button>
+    </div>
+    <p id="mode-desc" class="muted small"></p>
+
+    <div class="field-row field-row-center">
+      <span class="field-label">人数</span>
+      <div class="stepper">
+        <button type="button" id="players-minus" aria-label="人数を減らす">−</button>
+        <output id="players-count">2</output>
+        <button type="button" id="players-plus" aria-label="人数を増やす">＋</button>
+      </div>
+    </div>
+    <div id="players-list" class="players-list"></div>
+
+    <details class="adv" open>
+      <summary>秒数・得点・出題</summary>
+      <div class="field-row">
+        <label class="field">初回の秒数<input id="setup-play-seconds" type="number" min="0.5" max="30" step="0.5" inputmode="decimal"></label>
+        <label class="field">延長の秒数<input id="setup-extend-seconds" type="number" min="0.5" max="30" step="0.5" inputmode="decimal"></label>
+      </div>
+      <div class="field-row">
+        <label class="field">1回目の得点<input id="setup-points-1" type="number" min="0" max="99" step="1" inputmode="numeric"></label>
+        <label class="field">2回目<input id="setup-points-2" type="number" min="0" max="99" step="1" inputmode="numeric"></label>
+        <label class="field">3回目以降<input id="setup-points-3" type="number" min="0" max="99" step="1" inputmode="numeric"></label>
+      </div>
+      <div class="field-row">
+        <label class="field">誤答
+          <select id="setup-penalty">
+            <option value="0">0点（解答権を失う）</option>
+            <option value="-1">−1点</option>
+          </select>
+        </label>
+        <label class="field">出題数<input id="setup-limit" type="number" min="1" max="200" step="1" inputmode="numeric" placeholder="全問"></label>
+      </div>
+      <label class="check"><input type="checkbox" id="setup-shuffle" checked>出題順をシャッフル</label>
+    </details>
+
+    <button id="btn-start" class="btn btn-primary btn-xl" type="button">スタート</button>
+  </section>
+
+  <!-- ===== 4. プレイ ===== -->
+  <section class="screen screen-play" data-screen="play" data-mode="host" hidden>
+    <header class="play-bar">
+      <button class="btn-icon" type="button" id="btn-quit" aria-label="ゲームをやめる">×</button>
+      <span id="play-counter" class="play-counter">1 / 10</span>
+      <span id="play-mode-badge" class="kind-badge"></span>
+    </header>
+    <div id="play-scores" class="scores" aria-label="得点"></div>
+
+    <div class="play-body">
+      <!-- YouTube の iframe はここに mount。問題中は不透明オーバーレイで覆う（display:none は使わない） -->
+      <div class="yt-box" id="yt-box">
+        <div id="yt-mount" class="yt-mount"></div>
+        <div id="yt-overlay" class="yt-overlay">
+          <!-- 暖機中は中央の矩形だけタップを iframe に通す。周囲 4 本の帯はタイトルバー等への誤タップを防ぐ -->
+          <div class="yt-band yt-band-top" aria-hidden="true"></div>
+          <div class="yt-band yt-band-bottom" aria-hidden="true"></div>
+          <div class="yt-band yt-band-left" aria-hidden="true"></div>
+          <div class="yt-band yt-band-right" aria-hidden="true"></div>
+          <span class="yt-q" aria-hidden="true">？</span>
+          <span id="yt-overlay-text" class="yt-overlay-text" aria-live="polite">「どん！」で再生</span>
+          <button type="button" id="yt-warmup-skip" class="yt-skip" hidden>スキップ</button>
+        </div>
+      </div>
+
+      <!-- 司会モード -->
+      <div id="host-stage" class="stage">
+        <div class="don-wrap">
+          <button id="don-button" class="don" type="button">
+            <svg class="don-ring" viewBox="0 0 100 100" aria-hidden="true">
+              <circle class="ring-bg" cx="50" cy="50" r="46"></circle>
+              <circle id="don-ring-fg" class="ring-fg" cx="50" cy="50" r="46"></circle>
+            </svg>
+            <span class="don-label">どん！</span>
+            <span id="don-sub" class="don-sub"></span>
+          </button>
+        </div>
+        <div id="no-source-panel" class="no-source" hidden>
+          <p class="no-source-title">別アプリで再生してください</p>
+          <p class="muted small">この問題には音源が設定されていません。司会が自分の音楽アプリで流してください。</p>
+          <div class="search-links">
+            <a id="ns-yt-link" class="btn btn-link" target="_blank" rel="noopener">YouTubeで探す</a>
+            <a id="ns-am-link" class="btn btn-link" target="_blank" rel="noopener">Apple Musicで探す</a>
+          </div>
+        </div>
+        <div class="play-status">
+          <span id="play-count-label">再生 0 回</span>
+          <span id="play-points-label"></span>
+        </div>
+        <ul id="hint-area" class="hints"></ul>
+        <div class="play-controls">
+          <button id="btn-hint" class="btn" type="button">ヒント</button>
+          <button id="btn-stop" class="btn btn-stop" type="button">ストップ</button>
+          <button id="btn-reveal" class="btn" type="button">答えを見る</button>
+        </div>
+      </div>
+
+      <!-- 司会モード：停止後の正解者選択 -->
+      <div id="judge-panel" class="judge" hidden>
+        <h2 class="judge-title">正解者をタップ</h2>
+        <div id="judge-players" class="judge-players"></div>
+        <label class="check"><input type="checkbox" id="judge-wrong-mode">誤答として記録する（×モード）</label>
+        <div class="judge-tools">
+          <button id="btn-judge-cancel" class="btn" type="button">戻る</button>
+          <button id="btn-judge-reveal" class="btn" type="button">答えを見る</button>
+        </div>
+      </div>
+
+      <!-- 早押しモード：人数分の巨大パネル + 中央ハブ -->
+      <div id="buzz-stage" class="buzz-stage" hidden>
+        <div id="buzz-grid" class="buzz-grid"></div>
+        <div id="buzz-hub" class="buzz-hub">
+          <button id="buzz-don" class="don don-mini" type="button">
+            <svg class="don-ring" viewBox="0 0 100 100" aria-hidden="true">
+              <circle class="ring-bg" cx="50" cy="50" r="46"></circle>
+              <circle id="buzz-ring-fg" class="ring-fg" cx="50" cy="50" r="46"></circle>
+            </svg>
+            <span class="don-label">どん！</span>
+            <span id="buzz-don-sub" class="don-sub"></span>
+          </button>
+          <p id="buzz-status" class="buzz-status"></p>
+          <div id="buzz-judge" class="buzz-judge" hidden>
+            <button id="buzz-correct" class="btn btn-ok" type="button">○ 正解</button>
+            <button id="buzz-wrong" class="btn btn-ng" type="button">× 不正解</button>
+          </div>
+          <div class="buzz-hub-row">
+            <button id="buzz-hint" class="btn btn-sm" type="button">ヒント</button>
+            <button id="buzz-reveal" class="btn btn-sm" type="button">答え</button>
+          </div>
+          <ul id="buzz-hints" class="hints hints-sm"></ul>
+          <div id="buzz-no-source" class="no-source no-source-sm" hidden>
+            <p class="no-source-title">別アプリで再生</p>
+            <div class="search-links">
+              <a id="bz-yt-link" class="btn btn-link btn-sm" target="_blank" rel="noopener">YouTube</a>
+              <a id="bz-am-link" class="btn btn-link btn-sm" target="_blank" rel="noopener">Apple Music</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 正解表示 -->
+      <div id="reveal-panel" class="reveal" hidden>
+        <p class="reveal-label">正解</p>
+        <h2 id="reveal-answer" class="reveal-answer"></h2>
+        <p id="reveal-subtitle" class="reveal-subtitle"></p>
+        <p id="reveal-winner" class="reveal-winner"></p>
+        <img id="reveal-thumb" class="reveal-thumb" alt="" hidden>
+        <p id="reveal-trivia" class="trivia"></p>
+        <p id="reveal-aliases" class="muted small"></p>
+        <button id="btn-next" class="btn btn-primary btn-xl" type="button">次の問題</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. 結果 ===== -->
+  <section class="screen" data-screen="result" hidden>
+    <header class="app-bar">
+      <h1 class="app-bar-title">結果発表</h1>
+    </header>
+    <p id="result-set" class="muted"></p>
+    <ol id="ranking" class="ranking"></ol>
+    <pre id="summary-text" class="summary"></pre>
+    <div class="result-actions">
+      <button id="btn-share" class="btn" type="button">共有</button>
+      <button id="btn-again" class="btn btn-primary" type="button">もう一回</button>
+      <button id="btn-home" class="btn" type="button">ホームへ</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===== 問題編集モーダル ===== -->
+<dialog id="dlg-question" class="dialog" aria-labelledby="q-dialog-title">
+  <form id="q-form" class="dialog-body" autocomplete="off">
+    <header class="dialog-head">
+      <h2 id="q-dialog-title">問題を編集</h2>
+      <button type="button" class="btn-icon" data-close aria-label="閉じる">×</button>
+    </header>
+    <label class="field">答え（必須）<input id="q-answer" maxlength="80" required placeholder="曲名・作品名など"></label>
+    <fieldset class="source-box">
+      <legend>音源</legend>
+      <p id="q-source-status" class="source-status" aria-live="polite"></p>
+      <div class="field-row">
+        <button type="button" id="btn-preview" class="btn btn-sm" hidden>試聴(3秒)</button>
+        <button type="button" id="btn-clear-source" class="btn btn-sm" hidden>音源を外す</button>
+      </div>
+      <div class="tabs" role="tablist" id="source-tabs">
+        <button type="button" class="tab" role="tab" id="tab-youtube" data-tab="youtube" aria-selected="true" aria-controls="panel-youtube">YouTube</button>
+        <button type="button" class="tab" role="tab" id="tab-file" data-tab="file" aria-selected="false" aria-controls="panel-file">端末ファイル</button>
+        <button type="button" class="tab" role="tab" id="tab-record" data-tab="record" aria-selected="false" aria-controls="panel-record">録音</button>
+      </div>
+      <div class="tab-panel" id="panel-youtube" role="tabpanel" aria-labelledby="tab-youtube" data-tab-panel="youtube">
+        <label class="field">YouTube の URL または 動画ID<input id="q-yt-url" inputmode="url" placeholder="https://www.youtube.com/watch?v=…"></label>
+        <div class="field-row field-row-end">
+          <button type="button" id="btn-yt-paste" class="btn btn-sm">クリップボードから貼り付け</button>
+        </div>
+        <div class="field-row field-row-end">
+          <label class="field">開始秒<input id="q-yt-start" type="number" min="0" max="36000" step="1" inputmode="numeric" value="0"></label>
+          <button type="button" id="btn-yt-apply" class="btn">この動画を使う</button>
+        </div>
+        <p id="q-yt-error" class="error" hidden></p>
+      </div>
+      <div class="tab-panel" id="panel-file" role="tabpanel" aria-labelledby="tab-file" data-tab-panel="file" hidden>
+        <label class="btn file-btn">ファイルを選ぶ<input id="q-file" type="file" accept="audio/*,.m4a,.mp3,.aac,.wav,.ogg,.webm,.mp4"></label>
+        <p class="muted small">「ファイル」App の音声やボイスメモ（共有→“ファイルに保存”）、撮影した動画を選べます。ミュージック App の曲は選べません。50MB まで。圏外でも再生できます。</p>
+      </div>
+      <div class="tab-panel" id="panel-record" role="tabpanel" aria-labelledby="tab-record" data-tab-panel="record" hidden>
+        <div class="rec-row">
+          <button type="button" id="btn-rec" class="btn btn-rec">● 録音開始</button>
+          <span id="rec-time" class="rec-time">0:00</span>
+        </div>
+        <div class="level-meter" aria-hidden="true"><div id="rec-level" class="level-bar"></div></div>
+        <p class="muted small">最大60秒。マイクの許可が必要です。</p>
+      </div>
+      <div class="field-row">
+        <label class="field">開始秒（端末・録音）<input id="q-local-start" type="number" min="0" max="36000" step="0.5" inputmode="decimal" value="0"></label>
+      </div>
+      <div class="search-links">
+        <a id="link-yt-search" class="btn btn-link" target="_blank" rel="noopener">YouTubeで探す</a>
+        <a id="link-am-search" class="btn btn-link" target="_blank" rel="noopener">Apple Musicで探す</a>
+      </div>
+    </fieldset>
+    <label class="field">別解（カンマ区切り）<input id="q-aliases" placeholder="略称・別表記など"></label>
+    <label class="field">補足（正解時に表示）<input id="q-subtitle" maxlength="120" placeholder="アーティスト名・作曲者など"></label>
+    <label class="field">ヒント（1行に1つ・最大5）<textarea id="q-hints" rows="3"></textarea></label>
+    <label class="field">豆知識<textarea id="q-trivia" rows="2" maxlength="300"></textarea></label>
+    <label class="field">検索語（音源を探すとき用）<input id="q-search" placeholder="空欄なら答えで検索"></label>
+
+
+    <p id="q-error" class="error" hidden></p>
+    <footer class="dialog-foot">
+      <button type="button" id="btn-q-delete" class="btn btn-danger">この問題を削除</button>
+      <button type="submit" id="btn-q-save" class="btn btn-primary">保存</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- ===== JSON 読み込みモーダル ===== -->
+<dialog id="dlg-import" class="dialog" aria-labelledby="import-dialog-title">
+  <form id="import-form" class="dialog-body" autocomplete="off">
+    <header class="dialog-head">
+      <h2 id="import-dialog-title">JSON を読み込み</h2>
+      <button type="button" class="btn-icon" data-close aria-label="閉じる">×</button>
+    </header>
+    <label class="btn file-btn">ファイルを選ぶ<input id="import-file" type="file" accept=".json,application/json"></label>
+    <label class="field">またはテキストを貼り付け<textarea id="import-text" rows="6" placeholder='{"schemaVersion":1, …}'></textarea></label>
+    <p id="import-error" class="error" hidden></p>
+    <footer class="dialog-foot">
+      <button type="button" class="btn" data-close>キャンセル</button>
+      <button type="submit" id="btn-import-confirm" class="btn btn-primary">読み込む</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- ===== JSON 書き出しモーダル ===== -->
+<dialog id="dlg-export" class="dialog" aria-labelledby="export-dialog-title">
+  <div class="dialog-body">
+    <header class="dialog-head">
+      <h2 id="export-dialog-title">JSON を書き出し</h2>
+      <button type="button" class="btn-icon" data-close aria-label="閉じる">×</button>
+    </header>
+    <p id="export-note" class="muted small"></p>
+    <textarea id="export-text" rows="8" readonly></textarea>
+    <footer class="dialog-foot">
+      <button type="button" id="btn-export-copy" class="btn">コピー</button>
+      <button type="button" id="btn-export-download" class="btn btn-primary">ダウンロード／共有</button>
+    </footer>
+  </div>
+</dialog>
+
+<!-- ===== 共有ターゲット：この動画を問題に追加 ===== -->
+<dialog id="dlg-share" class="dialog" aria-labelledby="share-dialog-title">
+  <form id="share-form" class="dialog-body" autocomplete="off">
+    <header class="dialog-head">
+      <h2 id="share-dialog-title">この動画を問題に追加</h2>
+      <button type="button" class="btn-icon" data-close aria-label="閉じる">×</button>
+    </header>
+    <p class="muted small">動画ID: <code id="share-video-id"></code></p>
+    <label class="field">追加先のセット
+      <select id="share-set-select"></select>
+    </label>
+    <label class="field">答え（必須）<input id="share-answer" maxlength="80" required placeholder="曲名など"></label>
+    <p id="share-error" class="error" hidden></p>
+    <footer class="dialog-foot">
+      <button type="button" class="btn" data-close>キャンセル</button>
+      <button type="submit" class="btn btn-primary">追加</button>
+    </footer>
+  </form>
+</dialog>
+
+<div id="toast-host" class="toast-host" aria-live="polite"></div>
+
+<!-- ===== テンプレート ===== -->
+<template id="tpl-set-card">
+  <article class="set-card">
+    <button class="set-card-main" type="button" data-action="open">
+      <span class="set-emoji" aria-hidden="true"></span>
+      <span class="set-info">
+        <span class="set-title"></span>
+        <span class="set-meta"></span>
+      </span>
+    </button>
+    <button class="btn btn-play" type="button" data-action="play">あそぶ</button>
+  </article>
+</template>
+
+<template id="tpl-q-item">
+  <li class="q-item">
+    <button class="q-item-btn" type="button" data-action="edit">
+      <span class="q-no"></span>
+      <span class="q-main">
+        <span class="q-answer"></span>
+        <span class="q-sub"></span>
+      </span>
+      <span class="q-badge"></span>
+    </button>
+  </li>
+</template>
+
+<template id="tpl-player-row">
+  <div class="player-row">
+    <span class="player-swatch" aria-hidden="true"></span>
+    <input class="player-name" maxlength="12" aria-label="プレイヤー名">
+  </div>
+</template>
+
+<template id="tpl-buzz-panel">
+  <div class="buzz-panel" role="button" tabindex="0">
+    <span class="buzz-name"></span>
+    <span class="buzz-score"></span>
+    <span class="buzz-state"></span>
+  </div>
+</template>
+
+<template id="tpl-rank-row">
+  <li class="rank-row">
+    <span class="rank-no"></span>
+    <span class="rank-swatch" aria-hidden="true"></span>
+    <span class="rank-name"></span>
+    <span class="rank-score"></span>
+  </li>
+</template>
+</body>
+</html>

@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "id": "jpop-hits",
+  "title": "J-POP 国民的ヒット",
+  "emoji": "🎤",
+  "description": "1980年代から2020年代まで、誰もが知るヒット曲。曲名を当てよう（歌手名は補足で表示）。",
+  "difficulty": 2,
+  "tags": [
+    "J-POP",
+    "定番",
+    "年代別"
+  ],
+  "playSeconds": 1.5,
+  "extendSeconds": 2,
+  "builtin": true,
+  "credits": "各アーティスト公式サイト、オリコン等の公開チャート情報を参考。",
+  "questions": [
+    {
+      "id": "q01",
+      "answer": "ルビーの指環",
+      "aliases": [
+        "ルビーの指輪",
+        "るびーのゆびわ"
+      ],
+      "subtitle": "寺尾聰（1981年）",
+      "hints": [
+        "1980年代前半",
+        "俳優が歌って大ヒット",
+        "レコード大賞を受賞"
+      ],
+      "trivia": "1981年のレコード大賞受賞曲。作曲は寺尾聰本人、作詞は松本隆。",
+      "searchQuery": "ルビーの指環 寺尾聰",
+      "source": null
+    },
+    {
+      "id": "q02",
+      "answer": "赤いスイートピー",
+      "aliases": [
+        "あかいスイートピー"
+      ],
+      "subtitle": "松田聖子（1982年）",
+      "hints": [
+        "1980年代前半のアイドル",
+        "作曲はユーミン（呉田軽穂名義）",
+        "「春色の汽車に乗って」"
+      ],
+      "trivia": "作詞は松本隆、作曲は松任谷由実（呉田軽穂名義）。",
+      "searchQuery": "赤いスイートピー 松田聖子",
+      "source": null
+    },
+    {
+      "id": "q03",
+      "answer": "Diamonds",
+      "aliases": [
+        "ダイアモンド",
+        "ダイヤモンド",
+        "ダイアモンズ"
+      ],
+      "subtitle": "プリンセス プリンセス（1989年）",
+      "hints": [
+        "1980年代末",
+        "女性バンド",
+        "「ダイアモンドだね〜」"
+      ],
+      "trivia": "平成最初のミリオンセラー。女性バンドのシングルとして記録的なヒットとなった。",
+      "searchQuery": "Diamonds プリンセスプリンセス",
+      "source": null
+    },
+    {
+      "id": "q04",
+      "answer": "負けないで",
+      "aliases": [
+        "まけないで"
+      ],
+      "subtitle": "ZARD（1993年）",
+      "hints": [
+        "1990年代前半",
+        "坂井泉水",
+        "24時間テレビのマラソンで流れる"
+      ],
+      "trivia": "応援ソングの代名詞。24時間テレビのチャリティーマラソンのゴールで定番。",
+      "searchQuery": "負けないで ZARD",
+      "source": null
+    },
+    {
+      "id": "q05",
+      "answer": "CAN YOU CELEBRATE?",
+      "aliases": [
+        "キャンユーセレブレイト"
+      ],
+      "subtitle": "安室奈美恵（1997年）",
+      "hints": [
+        "1990年代後半",
+        "結婚式の定番",
+        "小室哲哉プロデュース"
+      ],
+      "trivia": "ドラマ『バージンロード』主題歌。女性ソロシングルの売上記録を作った。",
+      "searchQuery": "CAN YOU CELEBRATE 安室奈美恵",
+      "source": null
+    },
+    {
+      "id": "q06",
+      "answer": "Automatic",
+      "aliases": [
+        "オートマティック",
+        "オートマチック"
+      ],
+      "subtitle": "宇多田ヒカル（1998年）",
+      "hints": [
+        "1990年代末",
+        "15歳でのデビュー曲",
+        "「七回目のベルで」"
+      ],
+      "trivia": "1998年のデビューシングル。アルバム『First Love』は日本歴代最高の売上を記録。",
+      "searchQuery": "Automatic 宇多田ヒカル",
+      "source": null
+    },
+    {
+      "id": "q07",
+      "answer": "LOVEマシーン",
+      "aliases": [
+        "ラブマシーン",
+        "ラブマ"
+      ],
+      "subtitle": "モーニング娘。（1999年）",
+      "hints": [
+        "1990年代末",
+        "アイドルグループ",
+        "「日本の未来は」"
+      ],
+      "trivia": "つんく♂のプロデュースによるグループ最大のヒット曲。",
+      "searchQuery": "LOVEマシーン モーニング娘",
+      "source": null
+    },
+    {
+      "id": "q08",
+      "answer": "世界に一つだけの花",
+      "aliases": [
+        "せかいにひとつだけのはな"
+      ],
+      "subtitle": "SMAP（2003年）",
+      "hints": [
+        "2000年代前半",
+        "槇原敬之 作詞作曲",
+        "「ナンバーワンにならなくてもいい」"
+      ],
+      "trivia": "2003年にシングル化。300万枚を超える大ヒットとなった。",
+      "searchQuery": "世界に一つだけの花 SMAP",
+      "source": null
+    },
+    {
+      "id": "q09",
+      "answer": "栄光の架橋",
+      "aliases": [
+        "えいこうのかけはし"
+      ],
+      "subtitle": "ゆず（2004年）",
+      "hints": [
+        "2000年代前半",
+        "アテネ五輪のテーマ",
+        "体操の実況で有名に"
+      ],
+      "trivia": "NHKアテネオリンピック放送テーマソング。体操男子団体の実況とともに記憶される。",
+      "searchQuery": "栄光の架橋 ゆず",
+      "source": null
+    },
+    {
+      "id": "q10",
+      "answer": "ポリリズム",
+      "aliases": [
+        "Polyrhythm",
+        "ぽりりずむ"
+      ],
+      "subtitle": "Perfume（2007年）",
+      "hints": [
+        "2000年代後半",
+        "テクノポップ",
+        "リサイクルのCMソング"
+      ],
+      "trivia": "中田ヤスタカ作詞作曲。公共広告のリサイクルキャンペーンで注目を集めた。",
+      "searchQuery": "ポリリズム Perfume",
+      "source": null
+    },
+    {
+      "id": "q11",
+      "answer": "ヘビーローテーション",
+      "aliases": [
+        "ヘビロテ",
+        "Heavy Rotation"
+      ],
+      "subtitle": "AKB48（2010年）",
+      "hints": [
+        "2010年代前半",
+        "選抜総選挙の後の曲",
+        "「I want you I need you」"
+      ],
+      "trivia": "2010年の選抜総選挙を経てリリース。AKB48を代表する曲となった。",
+      "searchQuery": "ヘビーローテーション AKB48",
+      "source": null
+    },
+    {
+      "id": "q12",
+      "answer": "恋",
+      "aliases": [
+        "こい",
+        "恋ダンス"
+      ],
+      "subtitle": "星野源（2016年）",
+      "hints": [
+        "2010年代後半",
+        "ドラマ『逃げ恥』主題歌",
+        "エンディングのダンスが社会現象に"
+      ],
+      "trivia": "ドラマ『逃げるは恥だが役に立つ』の主題歌。「恋ダンス」が大流行した。",
+      "searchQuery": "恋 星野源",
+      "source": null
+    },
+    {
+      "id": "q13",
+      "answer": "Lemon",
+      "aliases": [
+        "レモン",
+        "れもん"
+      ],
+      "subtitle": "米津玄師（2018年）",
+      "hints": [
+        "2010年代後半",
+        "ドラマ『アンナチュラル』主題歌",
+        "「夢ならばどれほどよかったでしょう」"
+      ],
+      "trivia": "2018年の年間チャートを席巻。米津玄師の代表曲。",
+      "searchQuery": "Lemon 米津玄師",
+      "source": null
+    },
+    {
+      "id": "q14",
+      "answer": "夜に駆ける",
+      "aliases": [
+        "よるにかける"
+      ],
+      "subtitle": "YOASOBI（2019年）",
+      "hints": [
+        "2010年代末〜2020年",
+        "小説を音楽にするユニット",
+        "デビュー曲"
+      ],
+      "trivia": "2019年11月にMVが公開され、12月15日に配信リリースされたデビュー曲。ストリーミングで記録的な再生数を達成した。",
+      "searchQuery": "夜に駆ける YOASOBI",
+      "source": null
+    },
+    {
+      "id": "q15",
+      "answer": "アイドル",
+      "aliases": [
+        "あいどる",
+        "Idol"
+      ],
+      "subtitle": "YOASOBI（2023年）",
+      "hints": [
+        "2020年代",
+        "アニメ『【推しの子】』主題歌",
+        "「無敵の笑顔で荒らすメディア」"
+      ],
+      "trivia": "アニメ『【推しの子】』オープニング。ビルボードグローバルチャートでも首位を獲得。",
+      "searchQuery": "アイドル YOASOBI",
+      "source": null
+    },
+    {
+      "id": "q16",
+      "answer": "Bling-Bang-Bang-Born",
+      "aliases": [
+        "ブリンバンバンボン",
+        "BBBB"
+      ],
+      "subtitle": "Creepy Nuts（2024年）",
+      "hints": [
+        "2020年代",
+        "アニメ『マッシュル』主題歌",
+        "ダンス動画が世界的に流行"
+      ],
+      "trivia": "アニメ『マッシュル-MASHLE-』第2期オープニング。「BBBBダンス」が世界的にバズった。",
+      "searchQuery": "Bling-Bang-Bang-Born Creepy Nuts",
+      "source": null
+    }
+  ]
+}
