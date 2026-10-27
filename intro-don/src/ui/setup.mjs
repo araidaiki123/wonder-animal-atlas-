@@ -11,6 +11,7 @@ let set = null;
 let mode = 'host';
 let playerCount = 2;
 let names = [];
+let starting = false; // 「スタート」の二重起動ガード
 
 export function initSetup() {
   els = {
@@ -118,6 +119,18 @@ function readSettings() {
 }
 
 async function start() {
+  if (starting) return;
+  starting = true;
+  els.start.disabled = true;
+  try {
+    await doStart();
+  } finally {
+    starting = false;
+    els.start.disabled = false;
+  }
+}
+
+async function doStart() {
   const settings = readSettings();
   const players = [];
   for (let i = 0; i < playerCount; i++) {

@@ -23,6 +23,7 @@ async function boot() {
   registerScreen('result', initResult());
 
   updateOffline();
+  bindViewportHeight();
   startRouter();
 
   handleShareTarget();
@@ -34,6 +35,21 @@ async function boot() {
   window.addEventListener('unhandledrejection', (e) => {
     console.error(e.reason);
   });
+}
+
+// ---------- visualViewport の高さを CSS 変数 --vvh に反映（iOS のキーボード表示中もダイアログが収まるように） ----------
+function bindViewportHeight() {
+  const vv = window.visualViewport;
+  const apply = () => {
+    const h = vv && Number.isFinite(vv.height) ? vv.height : window.innerHeight;
+    if (h > 0) document.documentElement.style.setProperty('--vvh', `${Math.round(h)}px`);
+  };
+  apply();
+  if (vv) {
+    vv.addEventListener('resize', apply);
+    vv.addEventListener('scroll', apply);
+  }
+  window.addEventListener('resize', apply);
 }
 
 // ---------- Web Share Target：?url= / ?text= / ?title= から YouTube を拾う ----------
@@ -68,15 +84,16 @@ function openShareDialog(videoId, titleHint) {
   for (const s of state.userSets) select.append(el('option', { value: s.id, text: `${s.emoji || '🎵'} ${s.title}` }));
   select.append(el('option', { value: '__new__', text: '＋ 新しいセットを作る' }));
   if (state.settings.lastSetId && state.userSets.some((s) => s.id === state.settings.lastSetId)) select.value = state.settings.lastSetId;
-  answer.value = '';
-  answer.placeholder = titleHint ? titleHint.slice(0, 80) : '曲名など';
+  // 共有元のタイトルを既定値として入れておく（required と placeholder の矛盾を避ける）
+  answer.value = titleHint ? titleHint.trim().slice(0, 80) : '';
+  answer.placeholder = '曲名など';
   err.hidden = true;
   if (!form.dataset.bound) {
     form.dataset.bound = '1';
     bindDialogClose(dlg);
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const a = answer.value.trim() || answer.placeholder.trim();
+      const a = answer.value.trim();
       if (!a) { err.textContent = '答えを入力してください。'; err.hidden = false; return; }
       try {
         let set = state.userSets.find((s) => s.id === select.value);

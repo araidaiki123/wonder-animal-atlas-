@@ -160,8 +160,13 @@
       <div class="yt-box" id="yt-box">
         <div id="yt-mount" class="yt-mount"></div>
         <div id="yt-overlay" class="yt-overlay">
+          <!-- 暖機中は中央の矩形だけタップを iframe に通す。周囲 4 本の帯はタイトルバー等への誤タップを防ぐ -->
+          <div class="yt-band yt-band-top" aria-hidden="true"></div>
+          <div class="yt-band yt-band-bottom" aria-hidden="true"></div>
+          <div class="yt-band yt-band-left" aria-hidden="true"></div>
+          <div class="yt-band yt-band-right" aria-hidden="true"></div>
           <span class="yt-q" aria-hidden="true">？</span>
-          <span id="yt-overlay-text" class="yt-overlay-text">「どん！」で再生</span>
+          <span id="yt-overlay-text" class="yt-overlay-text" aria-live="polite">「どん！」で再生</span>
           <button type="button" id="yt-warmup-skip" class="yt-skip" hidden>スキップ</button>
         </div>
       </div>
@@ -273,19 +278,13 @@
 </div>
 
 <!-- ===== 問題編集モーダル ===== -->
-<dialog id="dlg-question" class="dialog">
+<dialog id="dlg-question" class="dialog" aria-labelledby="q-dialog-title">
   <form id="q-form" class="dialog-body" autocomplete="off">
     <header class="dialog-head">
       <h2 id="q-dialog-title">問題を編集</h2>
       <button type="button" class="btn-icon" data-close aria-label="閉じる">×</button>
     </header>
     <label class="field">答え（必須）<input id="q-answer" maxlength="80" required placeholder="曲名・作品名など"></label>
-    <label class="field">別解（カンマ区切り）<input id="q-aliases" placeholder="略称・別表記など"></label>
-    <label class="field">補足（正解時に表示）<input id="q-subtitle" maxlength="120" placeholder="アーティスト名・作曲者など"></label>
-    <label class="field">ヒント（1行に1つ・最大5）<textarea id="q-hints" rows="3"></textarea></label>
-    <label class="field">豆知識<textarea id="q-trivia" rows="2" maxlength="300"></textarea></label>
-    <label class="field">検索語（音源を探すとき用）<input id="q-search" placeholder="空欄なら答えで検索"></label>
-
     <fieldset class="source-box">
       <legend>音源</legend>
       <p id="q-source-status" class="source-status" aria-live="polite"></p>
@@ -294,23 +293,26 @@
         <button type="button" id="btn-clear-source" class="btn btn-sm" hidden>音源を外す</button>
       </div>
       <div class="tabs" role="tablist" id="source-tabs">
-        <button type="button" class="tab" role="tab" data-tab="youtube" aria-selected="true">YouTube</button>
-        <button type="button" class="tab" role="tab" data-tab="file" aria-selected="false">端末ファイル</button>
-        <button type="button" class="tab" role="tab" data-tab="record" aria-selected="false">録音</button>
+        <button type="button" class="tab" role="tab" id="tab-youtube" data-tab="youtube" aria-selected="true" aria-controls="panel-youtube">YouTube</button>
+        <button type="button" class="tab" role="tab" id="tab-file" data-tab="file" aria-selected="false" aria-controls="panel-file">端末ファイル</button>
+        <button type="button" class="tab" role="tab" id="tab-record" data-tab="record" aria-selected="false" aria-controls="panel-record">録音</button>
       </div>
-      <div class="tab-panel" data-tab-panel="youtube">
+      <div class="tab-panel" id="panel-youtube" role="tabpanel" aria-labelledby="tab-youtube" data-tab-panel="youtube">
         <label class="field">YouTube の URL または 動画ID<input id="q-yt-url" inputmode="url" placeholder="https://www.youtube.com/watch?v=…"></label>
+        <div class="field-row field-row-end">
+          <button type="button" id="btn-yt-paste" class="btn btn-sm">クリップボードから貼り付け</button>
+        </div>
         <div class="field-row field-row-end">
           <label class="field">開始秒<input id="q-yt-start" type="number" min="0" max="36000" step="1" inputmode="numeric" value="0"></label>
           <button type="button" id="btn-yt-apply" class="btn">この動画を使う</button>
         </div>
         <p id="q-yt-error" class="error" hidden></p>
       </div>
-      <div class="tab-panel" data-tab-panel="file" hidden>
-        <label class="btn file-btn">ファイルを選ぶ<input id="q-file" type="file" accept="audio/*,video/mp4,.m4a,.mp3,.aac,.wav,.ogg,.webm"></label>
-        <p class="muted small">端末内の音声・動画ファイルを保存します（圏外でも再生可）。</p>
+      <div class="tab-panel" id="panel-file" role="tabpanel" aria-labelledby="tab-file" data-tab-panel="file" hidden>
+        <label class="btn file-btn">ファイルを選ぶ<input id="q-file" type="file" accept="audio/*,.m4a,.mp3,.aac,.wav,.ogg,.webm,.mp4"></label>
+        <p class="muted small">「ファイル」App の音声やボイスメモ（共有→“ファイルに保存”）、撮影した動画を選べます。ミュージック App の曲は選べません。50MB まで。圏外でも再生できます。</p>
       </div>
-      <div class="tab-panel" data-tab-panel="record" hidden>
+      <div class="tab-panel" id="panel-record" role="tabpanel" aria-labelledby="tab-record" data-tab-panel="record" hidden>
         <div class="rec-row">
           <button type="button" id="btn-rec" class="btn btn-rec">● 録音開始</button>
           <span id="rec-time" class="rec-time">0:00</span>
@@ -326,6 +328,12 @@
         <a id="link-am-search" class="btn btn-link" target="_blank" rel="noopener">Apple Musicで探す</a>
       </div>
     </fieldset>
+    <label class="field">別解（カンマ区切り）<input id="q-aliases" placeholder="略称・別表記など"></label>
+    <label class="field">補足（正解時に表示）<input id="q-subtitle" maxlength="120" placeholder="アーティスト名・作曲者など"></label>
+    <label class="field">ヒント（1行に1つ・最大5）<textarea id="q-hints" rows="3"></textarea></label>
+    <label class="field">豆知識<textarea id="q-trivia" rows="2" maxlength="300"></textarea></label>
+    <label class="field">検索語（音源を探すとき用）<input id="q-search" placeholder="空欄なら答えで検索"></label>
+
 
     <p id="q-error" class="error" hidden></p>
     <footer class="dialog-foot">
@@ -336,10 +344,10 @@
 </dialog>
 
 <!-- ===== JSON 読み込みモーダル ===== -->
-<dialog id="dlg-import" class="dialog">
+<dialog id="dlg-import" class="dialog" aria-labelledby="import-dialog-title">
   <form id="import-form" class="dialog-body" autocomplete="off">
     <header class="dialog-head">
-      <h2>JSON を読み込み</h2>
+      <h2 id="import-dialog-title">JSON を読み込み</h2>
       <button type="button" class="btn-icon" data-close aria-label="閉じる">×</button>
     </header>
     <label class="btn file-btn">ファイルを選ぶ<input id="import-file" type="file" accept=".json,application/json"></label>
@@ -353,33 +361,33 @@
 </dialog>
 
 <!-- ===== JSON 書き出しモーダル ===== -->
-<dialog id="dlg-export" class="dialog">
+<dialog id="dlg-export" class="dialog" aria-labelledby="export-dialog-title">
   <div class="dialog-body">
     <header class="dialog-head">
-      <h2>JSON を書き出し</h2>
+      <h2 id="export-dialog-title">JSON を書き出し</h2>
       <button type="button" class="btn-icon" data-close aria-label="閉じる">×</button>
     </header>
     <p id="export-note" class="muted small"></p>
     <textarea id="export-text" rows="8" readonly></textarea>
     <footer class="dialog-foot">
       <button type="button" id="btn-export-copy" class="btn">コピー</button>
-      <button type="button" id="btn-export-download" class="btn btn-primary">ダウンロード</button>
+      <button type="button" id="btn-export-download" class="btn btn-primary">ダウンロード／共有</button>
     </footer>
   </div>
 </dialog>
 
 <!-- ===== 共有ターゲット：この動画を問題に追加 ===== -->
-<dialog id="dlg-share" class="dialog">
+<dialog id="dlg-share" class="dialog" aria-labelledby="share-dialog-title">
   <form id="share-form" class="dialog-body" autocomplete="off">
     <header class="dialog-head">
-      <h2>この動画を問題に追加</h2>
+      <h2 id="share-dialog-title">この動画を問題に追加</h2>
       <button type="button" class="btn-icon" data-close aria-label="閉じる">×</button>
     </header>
     <p class="muted small">動画ID: <code id="share-video-id"></code></p>
     <label class="field">追加先のセット
       <select id="share-set-select"></select>
     </label>
-    <label class="field">答え（必須）<input id="share-answer" maxlength="80" required></label>
+    <label class="field">答え（必須）<input id="share-answer" maxlength="80" required placeholder="曲名など"></label>
     <p id="share-error" class="error" hidden></p>
     <footer class="dialog-foot">
       <button type="button" class="btn" data-close>キャンセル</button>
@@ -425,7 +433,7 @@
 </template>
 
 <template id="tpl-buzz-panel">
-  <div class="buzz-panel">
+  <div class="buzz-panel" role="button" tabindex="0">
     <span class="buzz-name"></span>
     <span class="buzz-score"></span>
     <span class="buzz-state"></span>

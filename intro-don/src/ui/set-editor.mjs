@@ -8,6 +8,9 @@ import { state, findSet, upsertUserSet, removeUserSet, sourceKind, SOURCE_LABEL,
 import { navigate } from './router.mjs';
 
 const MAX_RECORD_SEC = 60;
+const MAX_FILE_BYTES = 50 * 1024 * 1024; // 端末ファイルの上限 50MB
+const PREVIEW_MS = 3000;
+const LAST_TAB_KEY = 'intro-don:lastSourceTab';
 
 let els;
 let set = null;        // 表示中のセット（自作なら編集対象そのもの）
@@ -16,13 +19,16 @@ let draft = null;      // 問題編集モーダルの作業コピー
 let editingId = null;  // 編集中の question.id（新規は null）
 let originalBlobId = null;
 let draftBlobIds = []; // モーダル中に新規作成した blobId（キャンセル時に掃除）
+let previewUrls = [];  // モーダル中に作った ObjectURL（閉じるときに revoke）
 let rec = null;        // 録音中のレコーダー
 let recTimer = null;
 let recLevelRaf = 0;
 let recStartedAt = 0;
 let recAudioCtx = null;
 let recLevelValue = -1; // レコーダーからの実レベル（-1 = 未受信）
-let previewAudio = null;
+let previewAudio = null; // 試聴用 <audio playsinline>（1 要素を使い回す）
+let previewTimer = null;
+let exportFileName = 'set.json';
 
 export function initSetEditor() {
   els = {
@@ -67,6 +73,7 @@ export function initSetEditor() {
     ytUrl: $('#q-yt-url'),
     ytStart: $('#q-yt-start'),
     ytApply: $('#btn-yt-apply'),
+    ytPaste: $('#btn-yt-paste'),
     ytError: $('#q-yt-error'),
     file: $('#q-file'),
     recBtn: $('#btn-rec'),
@@ -103,12 +110,13 @@ export function initSetEditor() {
   els.form.addEventListener('input', () => { applySetForm(); onSetInput(); });
   els.form.addEventListener('change', () => { applySetForm(); onSetInput.flush(); });
 
-  // 問題モーダル
-  bindDialogClose(els.dlg, onDialogClosed);
+  // 問題モーダル（入力途中の誤タップで消えないよう、背景タップでは閉じない）
+  bindDialogClose(els.dlg, onDialogClosed, { backdrop: false });
   els.qForm.addEventListener('submit', (e) => { e.preventDefault(); saveQuestion(); });
   els.qDelete.addEventListener('click', deleteQuestion);
-  $$('.tab', els.tabs).forEach((t) => t.addEventListener('click', () => selectTab(t.dataset.tab)));
+  $$('.tab', els.tabs).forEach((t) => t.addEventListener('click', () => { selectTab(t.dataset.tab); rememberTab(t.dataset.tab); }));
   els.ytApply.addEventListener('click', applyYouTube);
+  els.ytPaste.addEventListener('click', pasteYouTube);
   els.ytUrl.addEventListener('input', () => showYtError(''));
   els.file.addEventListener('change', onFileChosen);
   els.recBtn.addEventListener('click', toggleRecord);
@@ -118,8 +126,14 @@ export function initSetEditor() {
     }
   });
   els.preview.addEventListener('click', previewSource);
-  els.clearSource.addEventListener('click', () => { draft.source = null; renderSourceStatus(); });
+  els.clearSource.addEventListener('click', () => { stopPreview(); draft.source = null; renderSourceStatus(); });
   [els.qAnswer, els.qSearch].forEach((i) => i.addEventListener('input', updateSearchLinks));
+
+  // 試聴用 <audio>：iOS では click ハンドラ内で同期的に play() する必要があるので 1 要素を先に作っておく
+  previewAudio = document.createElement('audio');
+  previewAudio.setAttribute('playsinline', '');
+  previewAudio.preload = 'auto';
+  previewAudio.addEventListener('ended', stopPreview);
 
   // 書き出しモーダル
   bindDialogClose(els.dlgExport);
@@ -127,15 +141,7 @@ export function initSetEditor() {
     try { await navigator.clipboard.writeText(els.exportText.value); toastOk('JSON をコピーしました'); }
     catch (e) { els.exportText.select(); toastError('コピーできませんでした。テキストを選択してコピーしてください。'); }
   });
-  els.exportDownload.addEventListener('click', () => {
-    const blob = new Blob([els.exportText.value], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = el('a', { href: url, download: `${set.id}.json` });
-    document.body.append(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
-  });
+  els.exportDownload.addEventListener('click', downloadOrShareExport);
 
   return { el: els.section, enter, leave };
 }
@@ -155,6 +161,9 @@ async function enter({ id }) {
 function leave() {
   stopPreview();
   if (rec) stopRecording(true);
+  // 画面を離れるときはモーダルも閉じる（close イベントで作業コピーと孤児 blob を掃除）
+  closeDialog(els.dlg);
+  closeDialog(els.dlgExport);
 }
 
 // ---------- セット見出し ----------
@@ -239,6 +248,9 @@ function exportSet() {
   try {
     const { json, droppedLocalSources } = schema.exportSet(set);
     els.exportText.value = json;
+    let exportedId = set.id;
+    try { exportedId = JSON.parse(json).id || set.id; } catch (e) { /* 整形 JSON のはずだが念のため */ }
+    exportFileName = `${String(exportedId).replace(/[^a-z0-9-]/gi, '') || 'set'}.json`;
     els.exportNote.textContent = droppedLocalSources > 0
       ? `端末ファイル・録音の音源 ${droppedLocalSources} 件は持ち出せないため「未設定」になります。`
       : 'YouTube の音源はそのまま含まれます。';
@@ -247,6 +259,32 @@ function exportSet() {
     console.error(e);
     toastError('書き出しできませんでした。');
   }
+}
+
+// 共有シート（ファイル共有に対応していれば）→ ダメなら従来のダウンロード
+async function downloadOrShareExport() {
+  const text = els.exportText.value;
+  try {
+    if (navigator.share && typeof navigator.canShare === 'function' && typeof File === 'function') {
+      const file = new File([text], exportFileName, { type: 'application/json' });
+      if (navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: `イントロどん「${set.title}」` });
+          return;
+        } catch (e) {
+          if (e && e.name === 'AbortError') return;
+          console.warn('共有に失敗したのでダウンロードします', e);
+        }
+      }
+    }
+  } catch (e) { console.warn(e); }
+  const blob = new Blob([text], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = el('a', { href: url, download: exportFileName });
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 
 // ---------- 問題リスト ----------
@@ -271,6 +309,17 @@ function renderQuestions() {
 }
 
 // ---------- 問題編集モーダル ----------
+function lastTab() {
+  try {
+    const v = localStorage.getItem(LAST_TAB_KEY);
+    return ['youtube', 'file', 'record'].includes(v) ? v : 'youtube';
+  } catch (e) { return 'youtube'; }
+}
+
+function rememberTab(name) {
+  try { localStorage.setItem(LAST_TAB_KEY, name); } catch (e) { /* 記憶できなくても続行 */ }
+}
+
 function openQuestionDialog(qid) {
   if (!editable) { toast('同梱セットは「複製して編集」から編集できます。'); return; }
   const q = qid ? set.questions.find((x) => x.id === qid) : null;
@@ -278,6 +327,7 @@ function openQuestionDialog(qid) {
   draft = q ? JSON.parse(JSON.stringify(q)) : schema.newQuestion({});
   originalBlobId = q && q.source && q.source.type === 'local' ? q.source.blobId : null;
   draftBlobIds = [];
+  previewUrls = [];
   els.qTitle.textContent = q ? '問題を編集' : '問題を追加';
   els.qDelete.hidden = !q;
   els.qAnswer.value = draft.answer || '';
@@ -292,11 +342,14 @@ function openQuestionDialog(qid) {
   els.file.value = '';
   showYtError('');
   showQError('');
-  selectTab(sourceKind(draft) === 'none' ? 'youtube' : (sourceKind(draft) === 'record' ? 'record' : sourceKind(draft)));
+  const kind = sourceKind(draft);
+  selectTab(kind === 'none' ? lastTab() : kind);
   renderSourceStatus();
   updateSearchLinks();
   openDialog(els.dlg);
   els.dlg.scrollTop = 0;
+  // 既存の端末音源は試聴用の ObjectURL を先に用意しておく（click 内で同期的に play() するため）
+  if (originalBlobId) ensurePreviewUrl(originalBlobId);
 }
 
 function onDialogClosed() {
@@ -308,6 +361,9 @@ function onDialogClosed() {
     if (id !== keep) storage.deleteAudio(id).catch(() => {});
   }
   draftBlobIds = [];
+  for (const u of previewUrls) { try { URL.revokeObjectURL(u); } catch (e) { /* noop */ } }
+  previewUrls = [];
+  if (previewAudio) { try { previewAudio.removeAttribute('src'); previewAudio.load(); } catch (e) { /* noop */ } }
   draft = null;
 }
 
@@ -345,6 +401,7 @@ function applyYouTube() {
   const id = schema.parseYouTubeId(els.ytUrl.value.trim());
   if (!id) { showYtError('YouTube の URL または 11 文字の動画 ID を入力してください。'); return; }
   const start = clampNum(Math.floor(num(els.ytStart.value, 0)), 0, 36000);
+  stopPreview();
   draft.source = { type: 'youtube', videoId: id, start };
   els.ytUrl.value = id;
   showYtError('');
@@ -352,36 +409,104 @@ function applyYouTube() {
   toastOk('YouTube の動画を設定しました');
 }
 
+async function pasteYouTube() {
+  let text = '';
+  try {
+    if (!navigator.clipboard || typeof navigator.clipboard.readText !== 'function') throw new Error('unsupported');
+    text = (await navigator.clipboard.readText()) || '';
+  } catch (e) {
+    toastError('クリップボードを読めませんでした。URL を入力欄に貼り付けてください。');
+    els.ytUrl.focus();
+    return;
+  }
+  if (!draft) return;
+  text = text.trim();
+  if (!text) { toast('クリップボードが空です。'); return; }
+  els.ytUrl.value = text.slice(0, 200);
+  if (schema.parseYouTubeId(text)) applyYouTube();
+  else showYtError('クリップボードの内容は YouTube の URL ではないようです。');
+}
+
+// blob を取得した時点で試聴用 ObjectURL を用意する（保存時には捨てる）
+function registerPreviewUrl(blob, blobId) {
+  const url = URL.createObjectURL(blob);
+  previewUrls.push(url);
+  if (draft && draft.source && draft.source.type === 'local' && draft.source.blobId === blobId) draft.source._previewUrl = url;
+  return url;
+}
+
+async function ensurePreviewUrl(blobId) {
+  const d = draft;
+  try {
+    const rec_ = await storage.getAudio(blobId);
+    if (draft !== d || !rec_ || !rec_.blob) return;
+    registerPreviewUrl(rec_.blob, blobId);
+  } catch (e) { console.warn(e); }
+}
+
 async function onFileChosen() {
   const f = els.file.files && els.file.files[0];
   if (!f) return;
+  els.file.value = '';
+  if (f.size > MAX_FILE_BYTES) {
+    toastError(`ファイルが大きすぎます（${(f.size / 1048576).toFixed(0)}MB）。50MB 以下のファイルを選んでください。`);
+    return;
+  }
+  if (f.type && !/^(audio|video)\//.test(f.type)) {
+    toastError('音声ファイルを選んでください。');
+    return;
+  }
+  const d = draft;
+  let blobId = null;
   try {
     const duration = await probeDuration(f);
-    const blobId = await storage.putAudio({ blob: f, mimeType: f.type || 'application/octet-stream', name: f.name, duration });
+    blobId = await storage.putAudio({ blob: f, mimeType: f.type || 'application/octet-stream', name: f.name, duration });
+    if (draft !== d) {
+      // await の間にモーダルが閉じられた：孤児 blob を消す
+      storage.deleteAudio(blobId).catch(() => {});
+      return;
+    }
     draftBlobIds.push(blobId);
+    stopPreview();
     draft.source = { type: 'local', blobId, start: 0, name: f.name, duration };
+    registerPreviewUrl(f, blobId);
     renderSourceStatus();
     toastOk('ファイルを保存しました');
   } catch (e) {
     console.error(e);
-    toastError('ファイルを保存できませんでした。');
+    if (draft === d) toastError('ファイルを保存できませんでした。');
   }
-  els.file.value = '';
 }
 
 // ---------- 録音 ----------
 async function toggleRecord() {
   if (rec) { await stopRecording(false); return; }
+  // AudioContext はタップの同期区間で作る（iOS）
   try {
-    recLevelValue = -1;
-    rec = createRecorder({ onLevel: (v) => { recLevelValue = clampNum(num(v, 0), 0, 1); } });
-    await rec.start();
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (AC && !recAudioCtx) recAudioCtx = new AC();
+    if (recAudioCtx && recAudioCtx.state === 'suspended') recAudioCtx.resume().catch(() => {});
+  } catch (e) { recAudioCtx = null; }
+  const r = createRecorder({ onLevel: (v) => { recLevelValue = clampNum(num(v, 0), 0, 1); }, audioContext: recAudioCtx });
+  rec = r;
+  recLevelValue = -1;
+  els.recBtn.disabled = true;
+  els.recBtn.textContent = 'マイク準備中…';
+  try {
+    await r.start();
   } catch (e) {
     console.error(e);
-    rec = null;
-    toastError('録音を開始できませんでした。マイクの許可を確認してください。');
+    if (rec === r) {
+      rec = null;
+      toastError(e && e.message ? e.message : '録音を開始できませんでした。マイクの許可を確認してください。');
+    }
+    els.recBtn.disabled = false;
+    els.recBtn.textContent = '● 録音開始';
     return;
   }
+  els.recBtn.disabled = false;
+  if (rec !== r) return; // 待っている間に中止された
+  stopPreview();
   recStartedAt = Date.now();
   els.recBtn.dataset.recording = 'true';
   els.recBtn.textContent = '■ 停止';
@@ -400,40 +525,50 @@ async function stopRecording(discard) {
   clearInterval(recTimer);
   recTimer = null;
   stopLevelMeter();
+  els.recBtn.disabled = false;
   els.recBtn.dataset.recording = 'false';
   els.recBtn.textContent = '● 録音開始';
   if (!r) return;
+  if (discard && typeof r.cancel === 'function') {
+    try { r.cancel(); } catch (e) { /* noop */ }
+    return;
+  }
+  const d = draft;
   let result = null;
   try { result = await r.stop(); } catch (e) { console.error(e); }
   if (discard || !result || !result.blob) {
-    if (!discard) toastError('録音に失敗しました。');
+    if (!discard && draft === d) toastError('録音に失敗しました。');
     return;
   }
   try {
-    const d = new Date();
-    const name = `録音 ${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    const dt = new Date();
+    const name = `録音 ${dt.getFullYear()}/${dt.getMonth() + 1}/${dt.getDate()} ${String(dt.getHours()).padStart(2, '0')}:${String(dt.getMinutes()).padStart(2, '0')}`;
     const duration = num(result.duration, 0) || (Date.now() - recStartedAt) / 1000;
     const blobId = await storage.putAudio({ blob: result.blob, mimeType: result.mimeType || result.blob.type, name, duration });
-    draftBlobIds.push(blobId);
-    if (draft) {
-      draft.source = { type: 'local', blobId, start: 0, name, duration };
-      renderSourceStatus();
+    if (draft !== d || !draft) {
+      // await の間にモーダルが閉じられた：孤児 blob を消す
+      storage.deleteAudio(blobId).catch(() => {});
+      return;
     }
+    draftBlobIds.push(blobId);
+    stopPreview();
+    draft.source = { type: 'local', blobId, start: 0, name, duration };
+    registerPreviewUrl(result.blob, blobId);
+    renderSourceStatus();
     toastOk(`録音しました（${formatClock(duration)}）`);
   } catch (e) {
     console.error(e);
-    toastError('録音を保存できませんでした。');
+    if (draft === d) toastError('録音を保存できませんでした。');
   }
 }
 
-// レベルメーター：レコーダーが stream か getLevel() を公開していればそれを使う。無ければ簡易アニメ。
+// レベルメーター：レコーダーの onLevel を優先。無ければ stream から自前で計測、それも無ければ簡易アニメ。
 function startLevelMeter() {
   let analyser = null;
   let data = null;
   try {
     const stream = rec && rec.stream;
-    if (stream && (window.AudioContext || window.webkitAudioContext)) {
-      recAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (stream && recAudioCtx) {
       const src = recAudioCtx.createMediaStreamSource(stream);
       analyser = recAudioCtx.createAnalyser();
       analyser.fftSize = 256;
@@ -443,13 +578,13 @@ function startLevelMeter() {
   } catch (e) { analyser = null; }
   const tick = () => {
     let level = 0;
-    if (analyser) {
+    if (recLevelValue >= 0) {
+      level = recLevelValue;
+    } else if (analyser) {
       analyser.getByteTimeDomainData(data);
       let sum = 0;
       for (let i = 0; i < data.length; i++) { const v = (data[i] - 128) / 128; sum += v * v; }
       level = Math.min(1, Math.sqrt(sum / data.length) * 3);
-    } else if (recLevelValue >= 0) {
-      level = recLevelValue;
     } else {
       level = 0.3 + 0.2 * Math.abs(Math.sin(Date.now() / 300));
     }
@@ -467,32 +602,45 @@ function stopLevelMeter() {
 }
 
 // ---------- 試聴（端末・録音のみ、3秒） ----------
-async function previewSource() {
+// iOS では click ハンドラ内で同期的に play() を呼ぶ必要があるため、ここでは await しない。
+function previewSource() {
   stopPreview();
   if (!draft || !draft.source || draft.source.type !== 'local') return;
-  try {
-    const rec_ = await storage.getAudio(draft.source.blobId);
-    if (!rec_ || !rec_.blob) { toastError('音源が見つかりません。'); return; }
-    const url = URL.createObjectURL(rec_.blob);
-    previewAudio = document.createElement('audio');
-    previewAudio.setAttribute('playsinline', '');
-    previewAudio.src = url;
-    previewAudio.currentTime = num(els.localStart.value, 0);
-    previewAudio.addEventListener('ended', stopPreview);
-    await previewAudio.play();
-    setTimeout(stopPreview, 3000);
-    previewAudio._url = url;
-  } catch (e) {
-    console.error(e);
-    toastError('試聴できませんでした。');
+  const url = draft.source._previewUrl;
+  if (!url) {
+    toast('音源を読み込み中です。もう一度タップしてください。');
+    ensurePreviewUrl(draft.source.blobId);
+    return;
   }
+  const a = previewAudio;
+  const start = clampNum(num(els.localStart.value, 0), 0, 36000);
+  const seek = () => { try { a.currentTime = start; } catch (e) { /* noop */ } };
+  if (a.getAttribute('src') !== url) {
+    a.src = url;
+    a.addEventListener('loadedmetadata', seek, { once: true });
+  } else if (a.readyState >= 1) {
+    seek();
+  } else {
+    a.addEventListener('loadedmetadata', seek, { once: true });
+  }
+  let p = null;
+  try { p = a.play(); } catch (e) { toastError('試聴できませんでした。'); return; }
+  if (p && typeof p.catch === 'function') {
+    p.catch((e) => {
+      if (e && e.name === 'AbortError') return;
+      console.warn(e);
+      toastError('試聴できませんでした。');
+    });
+  }
+  els.preview.dataset.playing = 'true';
+  previewTimer = setTimeout(stopPreview, PREVIEW_MS);
 }
 
 function stopPreview() {
+  if (previewTimer) { clearTimeout(previewTimer); previewTimer = null; }
+  if (els && els.preview) els.preview.dataset.playing = 'false';
   if (!previewAudio) return;
   try { previewAudio.pause(); } catch (e) { /* noop */ }
-  if (previewAudio._url) URL.revokeObjectURL(previewAudio._url);
-  previewAudio = null;
 }
 
 // ---------- 保存・削除 ----------
@@ -500,6 +648,8 @@ async function saveQuestion() {
   const answer = els.qAnswer.value.trim();
   if (!answer) { showQError('答えを入力してください。'); els.qAnswer.focus(); return; }
   if (rec) await stopRecording(false);
+  if (!draft) return;
+  stopPreview();
   const split = (s, sep) => s.split(sep).map((x) => x.trim()).filter(Boolean);
   draft.answer = answer.slice(0, 80);
   draft.aliases = split(els.qAliases.value, /[,、，]/);
@@ -510,18 +660,29 @@ async function saveQuestion() {
   if (draft.source && draft.source.type === 'local') {
     draft.source.start = clampNum(num(els.localStart.value, 0), 0, 36000);
   }
-  draft.saved = true;
+  // 保存用の問題：作業用のプロパティ（saved / _previewUrl）は捨てる
   const { saved, ...q } = draft;
+  void saved;
+  if (q.source && q.source.type === 'local') {
+    const { _previewUrl, ...src } = q.source;
+    void _previewUrl;
+    q.source = src;
+  }
   const i = set.questions.findIndex((x) => x.id === editingId);
-  if (i >= 0) set.questions[i] = q; else set.questions.push(q);
+  const questions = set.questions.slice();
+  if (i >= 0) questions[i] = q; else questions.push(q);
   try {
-    await storage.saveUserSet(set);
-    upsertUserSet(set);
+    // 保存に成功してから set と draft.saved に反映する
+    await storage.saveUserSet({ ...set, questions });
   } catch (e) {
     console.error(e);
     toastError('保存できませんでした。');
     return;
   }
+  if (!draft) return; // 保存中にモーダルが閉じられた（blob は onDialogClosed が掃除済み）
+  set.questions = questions;
+  upsertUserSet(set);
+  draft.saved = true;
   // 差し替えられた古い端末音源を削除
   const newBlobId = q.source && q.source.type === 'local' ? q.source.blobId : null;
   if (originalBlobId && originalBlobId !== newBlobId) storage.deleteAudio(originalBlobId).catch(() => {});
@@ -535,9 +696,10 @@ async function deleteQuestion() {
   if (!editingId) return;
   const q = set.questions.find((x) => x.id === editingId);
   if (!q || !window.confirm(`「${q.answer}」を削除しますか？`)) return;
-  set.questions = set.questions.filter((x) => x.id !== editingId);
+  const questions = set.questions.filter((x) => x.id !== editingId);
   try {
-    await storage.saveUserSet(set);
+    await storage.saveUserSet({ ...set, questions });
+    set.questions = questions;
     upsertUserSet(set);
     if (q.source && q.source.type === 'local') storage.deleteAudio(q.source.blobId).catch(() => {});
     closeDialog(els.dlg);

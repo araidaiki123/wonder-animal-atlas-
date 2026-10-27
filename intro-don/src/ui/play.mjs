@@ -3,21 +3,31 @@ import * as game from '../game.mjs';
 import { createPlayer } from '../audio/player.mjs';
 import * as storage from '../storage.mjs';
 import { $, $$, el, clear, fromTemplate } from './dom.mjs';
-import { toastError } from './toast.mjs';
+import { toast, toastError } from './toast.mjs';
 import { state, searchLinks } from './state.mjs';
-import { navigate } from './router.mjs';
+import { navigate, parseHash } from './router.mjs';
 import { unlockAudio, buzzSound, correctSound, wrongSound } from './sound.mjs';
 
 const RING = 289.03; // 2π×46
+const WARMUP_TEXT = '▶ 中央を1回タップして準備';
+const WARMUP_HUB_TEXT = '上の動画枠の中央を1回タップして準備';
+const STANDALONE_HINT_KEY = 'intro-don:standaloneHintShown';
+
 let els;
 let player = null;
 let unlocked = false;
 let wakeLock = null;
+let wakeLockPending = false;   // acquireWakeLock の再入防止
+let wakeLockHintShown = false; // 失敗時の案内は早押しモードで一度だけ
 let active = false;
 let preparedQid = null;
+let loading = false;           // 音源の準備中（どん！を無効化）
 let ring = { total: 0, remaining: 0, at: 0, running: false, raf: 0 };
 let judgeWrongMode = false;
-let warmingUp = false;   // iOS 向け YouTube 暖機中（iframe の直接タップ待ち）
+let warmingUp = false;         // iOS 向け YouTube 暖機中（iframe の直接タップ待ち）
+let errorNotified = false;     // 1 回の再生／準備につきエラートーストは一度だけ
+let sourceFailNotified = false; // 音源が使えない問題で「別アプリで流して」案内を出したか（問題ごと）
+let soundHintShown = false;    // 「音が出ないときは…」は初回のみ
 
 // タッチ端末か（iOS/Android では YouTube iframe の初回再生に直接タップが必要になることがある）
 function isTouchDevice() {
@@ -90,7 +100,12 @@ export function initPlay() {
   els.hint.addEventListener('click', onHint);
   els.buzzHint.addEventListener('click', onHint);
   els.reveal.addEventListener('click', onReveal);
-  els.buzzReveal.addEventListener('click', onReveal);
+  // 早押しハブの「答え」は小さく誤タップしやすいので確認を挟む
+  els.buzzReveal.addEventListener('click', () => {
+    const s = state.session;
+    if (!s || s.phase === 'revealed') return;
+    if (window.confirm('答えを表示しますか？')) onReveal();
+  });
   els.judgeReveal.addEventListener('click', onReveal);
   els.judgeCancel.addEventListener('click', onJudgeCancel);
   els.judgeWrong.addEventListener('change', () => { judgeWrongMode = els.judgeWrong.checked; els.judge.dataset.wrong = String(judgeWrongMode); });
@@ -100,12 +115,23 @@ export function initPlay() {
   els.warmupSkip.addEventListener('click', onWarmupSkip);
   els.revealThumb.addEventListener('error', () => { els.revealThumb.hidden = true; });
   els.buzzGrid.addEventListener('pointerdown', onBuzzPointer);
+  els.buzzGrid.addEventListener('keydown', onBuzzKey);
   els.buzzGrid.addEventListener('contextmenu', (e) => e.preventDefault());
-  // 初回タップでオーディオを解放
-  els.section.addEventListener('pointerdown', () => { unlockAudio(); unlockPlayer(); }, { passive: true });
+  // 初回タップでオーディオを解放（iOS は click などの「本物のユーザー操作」内でないと解放されない）
+  els.section.addEventListener('click', () => { unlockAudio(); unlockPlayer(); });
 
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible' && active) acquireWakeLock();
+  });
+
+  // 戻る操作（ブラウザバック・スワイプ）でうっかりゲームを抜けないよう確認する。
+  // enter() で同じ URL の履歴を 1 つ積んでおき、戻った先がまだ #/play なら確認→拒否なら forward() で戻す。
+  window.addEventListener('popstate', (e) => {
+    if (!active) return;
+    if (parseHash().name !== 'play') return;        // hash が変わった遷移はルーターに任せる
+    if (e.state && e.state.introDonGuard) return;   // forward() で番兵の履歴に戻ってきただけ
+    if (window.confirm('ゲームをやめますか？')) navigate('home');
+    else history.forward();
   });
 
   return { el: els.section, enter, leave };
@@ -117,6 +143,7 @@ async function enter() {
   if (!s || !state.set) return false;
   if (s.phase === 'finished') return { redirect: 'result' };
   active = true;
+  document.body.dataset.activeScreen = 'play';
   const mode = s.settings.mode === 'buzzer' ? 'buzzer' : 'host';
   els.section.dataset.mode = mode;
   els.modeBadge.textContent = mode === 'buzzer' ? '早押し' : '司会';
@@ -124,28 +151,69 @@ async function enter() {
   els.judgeWrong.checked = false;
   els.judge.dataset.wrong = 'false';
   buildBuzzGrid();
+  pushHistoryGuard();
   acquireWakeLock();
   preparedQid = null;
-  await prepareCurrent();
+  // 先に描いてから音源を準備する（準備中は「どん！」を無効化し、動画枠に「読み込み中…」を出す）
   render();
+  prepareCurrent().then(() => { if (active) render(); });
+  showFirstTimeHints(mode);
   return true;
 }
 
 function leave() {
   active = false;
+  loading = false;
+  delete document.body.dataset.activeScreen;
   if (warmingUp) { setWarmingUp(false); if (player) player.cancelWarmUp(); }
   stopRing();
   if (player) { try { player.stop(); } catch (e) { /* noop */ } }
   releaseWakeLock();
 }
 
-async function acquireWakeLock() {
+function pushHistoryGuard() {
   try {
-    if (navigator.wakeLock && !wakeLock) {
-      wakeLock = await navigator.wakeLock.request('screen');
-      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    if (history.state && history.state.introDonGuard) return;
+    history.pushState({ introDonGuard: true }, '', location.href);
+  } catch (e) { /* 履歴操作が許されない環境では確認なしで戻れるだけ */ }
+}
+
+function showFirstTimeHints(mode) {
+  let delay = 0;
+  if (!soundHintShown) {
+    soundHintShown = true;
+    toast('音が出ないときはマナーモード・音量を確認してください。', { duration: 4000 });
+    delay = 4500; // 同時に積み重ねず、順に見せる
+  }
+  if (mode === 'buzzer' && navigator.standalone !== true) {
+    let shown = false;
+    try { shown = localStorage.getItem(STANDALONE_HINT_KEY) === '1'; } catch (e) { shown = false; }
+    if (!shown) {
+      try { localStorage.setItem(STANDALONE_HINT_KEY, '1'); } catch (e) { /* 記憶できなくても続行 */ }
+      setTimeout(() => { if (active) toast('ホーム画面に追加すると全画面で遊べます。', { duration: 5000 }); }, delay);
     }
-  } catch (e) { wakeLock = null; }
+  }
+}
+
+async function acquireWakeLock() {
+  if (wakeLock || wakeLockPending) return;
+  if (!navigator.wakeLock) return;
+  wakeLockPending = true;
+  try {
+    const lock = await navigator.wakeLock.request('screen');
+    if (!active) { lock.release().catch(() => {}); return; }
+    wakeLock = lock;
+    wakeLock.addEventListener('release', () => { wakeLock = null; });
+  } catch (e) {
+    wakeLock = null;
+    const s = state.session;
+    if (active && s && s.settings.mode === 'buzzer' && !wakeLockHintShown) {
+      wakeLockHintShown = true;
+      toast('自動ロックを「なし」にしておくと画面が消えません。', { duration: 5000 });
+    }
+  } finally {
+    wakeLockPending = false;
+  }
 }
 
 function releaseWakeLock() {
@@ -172,23 +240,37 @@ function currentQuestion() {
   return (state.set.questions || []).find((q) => q.id === id) || null;
 }
 
+function notifyError(message) {
+  if (errorNotified) return;
+  errorNotified = true;
+  toastError(message);
+}
+
 async function prepareCurrent() {
   const q = currentQuestion();
   if (!q || preparedQid === q.id) return;
   preparedQid = q.id;
   stopRing();
   if (warmingUp) setWarmingUp(false);
+  errorNotified = false;
+  sourceFailNotified = false;
   // YouTube 以外（端末音源・録音・音源なし）では動画枠は不要なので隠す（iframe を隠したまま再生はしない）
   els.ytBox.hidden = !(q.source && q.source.type === 'youtube');
-  setOverlay(false, q.source ? '「どん！」で再生' : '音源なし');
+  loading = !!q.source;
+  setOverlay(false, q.source ? '読み込み中…' : '音源なし');
+  if (active) render();
   try {
     await getPlayer().prepare(q.source || null);
   } catch (e) {
     console.warn(e);
-    toastError('音源を準備できませんでした。');
+    // player 側が 'error' を通知していればそちらのトーストだけにする
+    notifyError('音源を準備できませんでした。');
   }
-  if (preparedQid !== q.id || !active) return;
+  if (preparedQid !== q.id || !active) { loading = false; return; }
+  loading = false;
+  if (getPlayer().state !== 'error' && getPlayer().state !== 'loading') setOverlay(false, q.source ? '「どん！」で再生' : '音源なし');
   maybeWarmUp(q);
+  render();
 }
 
 // iOS/Android の YouTube：初回だけ iframe を直接タップしてもらう（ミュートで再生→即停止→頭出し）
@@ -209,7 +291,7 @@ function setWarmingUp(on) {
   warmingUp = on;
   els.ytOverlay.dataset.warmup = String(on);
   els.warmupSkip.hidden = !on;
-  if (on) setOverlay(false, '▶ 最初に1回、ここをタップして準備');
+  if (on) setOverlay(false, WARMUP_TEXT);
 }
 
 function onWarmupSkip() {
@@ -225,6 +307,13 @@ function onStateChange(st, info = {}) {
   if (!active) return;
   if (st === 'warming') return;
   if (st === 'playing') {
+    els.don.dataset.playing = 'true';
+    els.buzzDon.dataset.playing = 'true';
+    if (info.buffering === true) {
+      // バッファ待ち：実再生の進捗通知が来るまでリングは回さない
+      setOverlay(true, '読み込み中…');
+      return;
+    }
     const total = ring.total || 1;
     const remaining = typeof info.remainingMs === 'number' ? info.remainingMs : Math.max(0, ring.remaining - (performance.now() - ring.at));
     ring.remaining = remaining;
@@ -232,15 +321,14 @@ function onStateChange(st, info = {}) {
     ring.total = total;
     if (!ring.running) startRing();
     setOverlay(true, '再生中…');
-    els.don.dataset.playing = 'true';
-    els.buzzDon.dataset.playing = 'true';
   } else {
     if (ring.running) stopRing();
     els.don.dataset.playing = 'false';
     els.buzzDon.dataset.playing = 'false';
     if (st === 'error') {
       setOverlay(false, '再生できません');
-      toastError('再生できませんでした。' + (info.error && info.error.message ? info.error.message : navigator.onLine === false ? '圏外のため YouTube は再生できません。' : ''));
+      const detail = info.error && info.error.message ? info.error.message : (navigator.onLine === false ? '圏外のため YouTube は再生できません。' : '');
+      notifyError('再生できませんでした。' + detail);
     } else if (st === 'loading') {
       setOverlay(true, '読み込み中…');
     } else if (!warmingUp) {
@@ -284,24 +372,47 @@ function onDon() {
   unlockPlayer();
   const s = state.session;
   if (!s || !['ready', 'playing'].includes(s.phase)) return;
-  if (warmingUp) return;
+  if (warmingUp || loading) return;
   const next = game.startPlay(s);
   if (next === s) return;
   state.session = next;
   const q = currentQuestion();
   const win = game.playbackWindow(next);
-  if (q && q.source) {
+  const pl = q && q.source ? getPlayer() : null;
+  if (pl && (pl.state === 'error' || pl.state === 'none' || pl.state === 'idle')) {
+    // 音源が準備できていない（読み込み失敗など）：再生せず回数だけ数える（別アプリで流す運用）
+    if (!sourceFailNotified) {
+      sourceFailNotified = true;
+      toast('音源を再生できないため、別アプリで流して「どん！」で回数を数えてください。', { duration: 4500 });
+    }
+  } else if (q && q.source) {
+    errorNotified = false;
     ring.total = Math.max(1, win.seconds * 1000);
     ring.remaining = ring.total;
     ring.at = performance.now();
     const start = (q.source.start || 0) + (win.start || 0);
+    // 再生が始まらなかった（watchdog／エラー）ときは押す前の状態に戻す。
+    // 利用者が先に「ストップ」等で状態を進めていれば（state.session !== next）何もしない。
+    const revert = () => {
+      if (state.session !== next || !active) return;
+      state.session = s;
+      stopRing();
+      els.don.dataset.playing = 'false';
+      els.buzzDon.dataset.playing = 'false';
+      render();
+    };
     try {
       // iOS 対策：タップハンドラ内から同期的に呼ぶ
       const p = getPlayer().play({ start, seconds: win.seconds });
-      if (p && typeof p.catch === 'function') p.catch((e) => { console.warn(e); onStateChange('error', { error: e }); });
+      if (p && typeof p.then === 'function') {
+        p.then((started) => { if (started === false) { revert(); notifyError('再生できませんでした。'); } })
+          .catch((e) => { console.warn(e); onStateChange('error', { error: e }); revert(); });
+      }
     } catch (e) {
       console.warn(e);
       onStateChange('error', { error: e });
+      revert();
+      return;
     }
   }
   render();
@@ -361,6 +472,19 @@ function onBuzzPointer(e) {
   const panel = e.target.closest('.buzz-panel');
   if (!panel) return;
   e.preventDefault();
+  buzzFromPanel(panel);
+}
+
+// キーボード操作（Space / Enter）でも早押しできるように
+function onBuzzKey(e) {
+  if (e.key !== ' ' && e.key !== 'Enter' && e.key !== 'Spacebar') return;
+  const panel = e.target.closest('.buzz-panel');
+  if (!panel) return;
+  e.preventDefault();
+  buzzFromPanel(panel);
+}
+
+function buzzFromPanel(panel) {
   const s = state.session;
   if (!s || s.settings.mode !== 'buzzer') return;
   if (!(s.phase === 'playing' || (s.phase === 'ready' && s.playCount > 0))) return;
@@ -383,6 +507,7 @@ async function onNext() {
   state.session = next;
   if (next.phase === 'finished') { navigate('result'); return; }
   els.ytBox.dataset.revealed = 'false';
+  render();
   await prepareCurrent();
   render();
 }
@@ -413,11 +538,11 @@ function render() {
 
   renderScores(s);
 
-  const win = game.playbackWindow(s);
   const nextWin = game.playbackWindow({ ...s, playCount: s.playCount + 1 });
   const nextPts = game.pointsForPlay(s.settings, s.playCount + 1);
   const hasSource = !!(q && q.source);
   const links = searchLinks(q);
+  const canDon = !loading && !warmingUp && (phase === 'ready' || phase === 'playing');
 
   if (mode === 'host') {
     els.donWrap.hidden = !hasSource;
@@ -427,8 +552,8 @@ function render() {
       els.nsAm.href = links.apple;
       ensureNoSourceCounter(els.noSource);
     }
-    els.donSub.textContent = `${s.playCount + 1}回目・${nextWin.seconds}秒`;
-    els.don.disabled = warmingUp || !(phase === 'ready' || phase === 'playing');
+    els.donSub.textContent = loading ? '読み込み中…' : `${s.playCount + 1}回目・${nextWin.seconds}秒`;
+    els.don.disabled = !canDon;
     els.countLabel.textContent = `再生 ${s.playCount} 回`;
     els.pointsLabel.textContent = s.playCount > 0 ? `いま正解で ${game.pointsForPlay(s.settings, s.playCount)} 点` : `正解で ${nextPts} 点`;
     renderHints(els.hints, q, s.hintCount);
@@ -437,25 +562,36 @@ function render() {
     els.stop.disabled = !(phase === 'playing' || (phase === 'ready' && s.playCount > 0));
     if (phase === 'judging') renderJudge(s);
   } else {
-    els.buzzDonSub.textContent = `${s.playCount + 1}回目・${nextWin.seconds}秒`;
-    els.buzzDon.disabled = warmingUp || !(phase === 'ready' || phase === 'playing');
+    const allLocked = phase !== 'revealed' && game.allLockedOut(s);
+    els.buzzDonSub.textContent = loading ? '読み込み中…' : `${s.playCount + 1}回目・${nextWin.seconds}秒`;
+    els.buzzDon.disabled = !canDon || allLocked;
     els.buzzDon.hidden = !hasSource;
     els.buzzNoSource.hidden = hasSource;
     if (!hasSource) {
       els.bzYt.href = links.youtube;
       els.bzAm.href = links.apple;
       ensureNoSourceCounter(els.buzzNoSource, true);
+      $('.ns-count', els.buzzNoSource).disabled = allLocked;
     }
     const buzzer = phase === 'buzzed' ? playerById(s.buzzedBy) : null;
     els.buzzJudge.hidden = !buzzer;
-    els.buzzStatus.textContent = buzzer ? `${buzzer.name} が解答！` : (phase === 'playing' ? '早押し受付中' : (s.playCount > 0 ? `再生 ${s.playCount} 回・正解で ${game.pointsForPlay(s.settings, s.playCount)} 点` : `正解で ${nextPts} 点`));
+    let status;
+    let statusKind = '';
+    if (buzzer) status = `${buzzer.name} が解答！`;
+    else if (allLocked) { status = '全員お手つき！答えを見る'; statusKind = 'locked'; }
+    else if (warmingUp) { status = WARMUP_HUB_TEXT; statusKind = 'warmup'; }
+    else if (loading) status = '読み込み中…';
+    else if (phase === 'playing') status = '早押し受付中';
+    else if (s.playCount > 0) status = `再生 ${s.playCount} 回・正解で ${game.pointsForPlay(s.settings, s.playCount)} 点`;
+    else status = `正解で ${nextPts} 点`;
+    els.buzzStatus.textContent = status;
+    els.buzzStatus.dataset.kind = statusKind;
     renderHints(els.buzzHints, q, s.hintCount);
     els.buzzHint.disabled = !q || !(q.hints || []).length || s.hintCount >= (q.hints || []).length;
     renderBuzzPanels(s);
   }
 
   if (revealed) renderReveal(s, q);
-  void win;
 }
 
 // 音源なし問題用：「再生した（回数+1）」ボタンを動的に追加（採点のため）
@@ -512,6 +648,7 @@ function buildBuzzGrid() {
     panel.style.setProperty('--chip', p.color);
     // 上段（対面の人）は 180° 回転：2人=1枚目、3人=1枚目、4人=1・2枚目
     panel.dataset.flip = String(n === 4 ? i < 2 : i === 0);
+    panel.setAttribute('aria-label', `${p.name} の早押しボタン`);
     $('.buzz-name', panel).textContent = p.name;
     els.buzzGrid.append(panel);
   });
@@ -525,6 +662,7 @@ function renderBuzzPanels(s) {
     panel.dataset.locked = String(locked);
     panel.dataset.active = String(s.phase === 'buzzed' && s.buzzedBy === id);
     panel.dataset.armed = String(armed && !locked);
+    panel.setAttribute('aria-disabled', String(locked || !armed));
     $('.buzz-score', panel).textContent = `${s.scores[id] ?? 0}`;
     $('.buzz-state', panel).textContent = locked ? '× お手つき' : (s.phase === 'buzzed' && s.buzzedBy === id ? '解答権！' : (armed ? 'タップ！' : ''));
   });

@@ -218,14 +218,148 @@ async function importFlow(context) {
       { id: 'b', answer: '答え2' },
     ],
   });
+  const builtinFirstTitle = await page.locator('#builtin-list .set-title').first().textContent();
   await page.fill('#import-text', good);
   await page.click('#btn-import-confirm');
   await page.waitForSelector('#dlg-import[open]', { state: 'hidden' });
+  // 同梱 id と衝突する読み込みは "user-" の id に付け替えられてセット画面へ遷移する
+  await page.waitForSelector('[data-screen="set"]:not([hidden])');
+  const hashAfterImport = await page.evaluate(() => location.hash);
+  assert(/^#\/set\/user-/.test(hashAfterImport), `読み込んだセットの id が user- に付け替わる（${hashAfterImport}）`);
+  const kindBadge = await page.locator('#set-kind-badge').textContent();
+  assert(kindBadge === '自作', `読み込んだセットは自作扱い（${kindBadge}）`);
+  await page.goto(BASE + '#/home', { waitUntil: 'networkidle' });
+  await page.waitForSelector('#builtin-list .set-card');
   await page.waitForTimeout(300);
   const userTitles = await page.locator('#user-list .set-title').allTextContents();
   assert(userTitles.some((t) => t.includes('読み込みテスト')), `読み込んだセットが自作一覧に出る（${userTitles.join(',')}）`);
+  const builtinTitles = await page.locator('#builtin-list .set-title').allTextContents();
+  assert(builtinTitles.length === 10 && builtinTitles[0] === builtinFirstTitle && !builtinTitles.includes('読み込みテスト'),
+    `同梱カードは同梱のまま（${builtinTitles[0]}）`);
   await shot(page, 'home-after-import');
   await page.close();
+}
+
+// YouTube 音源付きセットを読み込み → 早押し → 正解表示（動画枠と正解パネルが重ならない）
+async function youtubeBuzzerFlow(context) {
+  const page = await newPage(context);
+  await page.goto(BASE + '#/home', { waitUntil: 'networkidle' });
+  await page.waitForSelector('#builtin-list .set-card');
+  await page.click('#btn-import');
+  await page.waitForSelector('#dlg-import[open]');
+  const ytSet = JSON.stringify({
+    schemaVersion: 1, id: 'user-e2e-youtube', title: 'YouTube テスト', emoji: '📺', questions: [
+      { id: 'a', answer: 'YouTube の答え1', subtitle: '補足1', trivia: '豆知識1', source: { type: 'youtube', videoId: 'dQw4w9WgXcQ' } },
+      { id: 'b', answer: 'YouTube の答え2', source: { type: 'youtube', videoId: 'dQw4w9WgXcQ', start: 10 } },
+    ],
+  });
+  await page.fill('#import-text', ytSet);
+  await page.click('#btn-import-confirm');
+  await page.waitForSelector('[data-screen="set"]:not([hidden])');
+  await page.click('#btn-play-set');
+  await page.waitForSelector('#btn-start:visible');
+  await page.click('#mode-seg [data-mode="buzzer"]');
+  await page.click('#btn-start');
+  await page.waitForSelector('#buzz-stage:not([hidden])');
+  await page.waitForSelector('#yt-box:not([hidden])');
+  await page.waitForTimeout(300);
+  const toastTop = await page.evaluate(() => {
+    const host = document.querySelector('.toast-host');
+    const r = host.getBoundingClientRect();
+    return r.top;
+  });
+  assert(toastTop < 200, `プレイ画面ではトーストが上部に出る（top=${toastTop}）`);
+  await shot(page, 'play-buzzer-youtube');
+
+  // 暖機オーバーレイ：中央だけタップが iframe 側に通り、周囲の帯は通らない（DOM を直接暖機状態にして検証）
+  const hit = await page.evaluate(() => {
+    const ov = document.querySelector('#yt-overlay');
+    ov.dataset.warmup = 'true';
+    const box = document.querySelector('#yt-box').getBoundingClientRect();
+    const at = (fx, fy) => {
+      const e = document.elementFromPoint(box.left + box.width * fx, box.top + box.height * fy);
+      return e ? (e.id || e.className || e.tagName) : null;
+    };
+    const res = { center: at(0.5, 0.5), top: at(0.5, 0.1), bottom: at(0.5, 0.9), left: at(0.05, 0.5), right: at(0.95, 0.5) };
+    ov.dataset.warmup = 'false';
+    return res;
+  });
+  assert(hit.center === 'yt-mount' || /iframe/i.test(hit.center), `暖機中は中央のタップが動画に届く（${hit.center}）`);
+  assert(/yt-band/.test(hit.top) && /yt-band/.test(hit.bottom) && /yt-band/.test(hit.left) && /yt-band/.test(hit.right),
+    `暖機中は周囲の帯がタップを遮る（${JSON.stringify(hit)}）`);
+
+  // どん！（サンドボックスでは YouTube に繋がらないので回数だけ数える）→ 早押し → 正解
+  await page.click('#buzz-don');
+  await page.waitForTimeout(150);
+  let phase = await page.getAttribute('[data-screen="play"]', 'data-phase');
+  assert(phase === 'playing', `YouTube 問題でもどん！で playing（実際 ${phase}）`);
+  const panels = page.locator('#buzz-grid .buzz-panel');
+  const box = await panels.nth(1).boundingBox();
+  await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
+  await page.waitForTimeout(100);
+  await page.click('#buzz-correct');
+  await page.waitForSelector('#reveal-panel:not([hidden])');
+  await page.waitForTimeout(300);
+  const layout = await page.evaluate(() => {
+    const yt = document.querySelector('#yt-box').getBoundingClientRect();
+    const rv = document.querySelector('#reveal-panel').getBoundingClientRect();
+    const ans = document.querySelector('#reveal-answer').getBoundingClientRect();
+    return { ytBottom: yt.bottom, ytTop: yt.top, revealTop: rv.top, answerTop: ans.top, answerH: ans.height };
+  });
+  assert(layout.revealTop >= layout.ytBottom - 1, `正解パネルが動画枠の下に来る（yt.bottom=${layout.ytBottom}, reveal.top=${layout.revealTop}）`);
+  assert(layout.answerH > 0 && layout.answerTop >= layout.ytBottom - 1, '正解テキストが動画枠に隠れない');
+  const answerText = await page.locator('#reveal-answer').textContent();
+  assert(answerText.includes('YouTube の答え'), `正解が表示される（${answerText}）`);
+  await shot(page, 'reveal-buzzer-youtube');
+  // 戻る操作の確認：pushState の番兵があり、戻っても #/play のまま（confirm は自動で OK → ホームへ）
+  const guard = await page.evaluate(() => !!(history.state && history.state.introDonGuard));
+  assert(guard, '戻る確認用の履歴が積まれている');
+  // 暖機中の見た目（帯と中央の枠）
+  await page.click('#btn-next');
+  await page.waitForSelector('#buzz-stage:not([hidden])');
+  await page.evaluate(() => { document.querySelector('#yt-overlay').dataset.warmup = 'true'; document.querySelector('#yt-overlay-text').textContent = '▶ 中央を1回タップして準備'; });
+  await shot(page, 'warmup-overlay');
+  await page.evaluate(() => { document.querySelector('#yt-overlay').dataset.warmup = 'false'; });
+  // ブラウザバック → confirm（自動 OK）→ ホームへ
+  await page.goBack();
+  await page.waitForSelector('[data-screen="home"]:not([hidden])', { timeout: 5000 });
+  const hashAfterBack = await page.evaluate(() => location.hash);
+  assert(/#\/home/.test(hashAfterBack), `戻る操作の確認後にホームへ（${hashAfterBack}）`);
+  await page.close();
+}
+
+// 横向き：動画枠が左上に退避し、ハブと重ならない
+async function landscapeYoutubeFlow(browser) {
+  const context = await browser.newContext({ ...iphone, viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
+  const page = await newPage(context);
+  await page.goto(BASE + '#/home', { waitUntil: 'networkidle' });
+  await page.waitForSelector('#builtin-list .set-card');
+  await page.click('#btn-import');
+  await page.waitForSelector('#dlg-import[open]');
+  await page.fill('#import-text', JSON.stringify({
+    schemaVersion: 1, id: 'user-e2e-landscape', title: '横向きテスト', questions: [
+      { id: 'a', answer: '答え', source: { type: 'youtube', videoId: 'dQw4w9WgXcQ' } },
+    ],
+  }));
+  await page.click('#btn-import-confirm');
+  await page.waitForSelector('[data-screen="set"]:not([hidden])');
+  await page.click('#btn-play-set');
+  await page.waitForSelector('#btn-start:visible');
+  await page.click('#mode-seg [data-mode="buzzer"]');
+  await page.click('#btn-start');
+  await page.waitForSelector('#buzz-stage:not([hidden])');
+  await page.waitForSelector('#yt-box:not([hidden])');
+  await page.waitForTimeout(300);
+  const r = await page.evaluate(() => {
+    const yt = document.querySelector('#yt-box').getBoundingClientRect();
+    const hub = document.querySelector('#buzz-hub').getBoundingClientRect();
+    const overlap = !(yt.right <= hub.left || yt.left >= hub.right || yt.bottom <= hub.top || yt.top >= hub.bottom);
+    return { ytLeft: yt.left, ytRight: yt.right, hubLeft: hub.left, hubWidth: hub.width, overlap };
+  });
+  assert(!r.overlap, `横向きで動画枠がハブと重ならない（${JSON.stringify(r)}）`);
+  assert(r.hubWidth <= 221, `横向きでハブが縮小される（${r.hubWidth}）`);
+  await shot(page, 'buzzer-landscape-youtube');
+  await context.close();
 }
 
 async function offlineFlow(context) {
@@ -270,9 +404,11 @@ try {
   await hostFlow(context);
   await buzzerFlow(context);
   await importFlow(context);
+  await youtubeBuzzerFlow(context);
   await offlineFlow(context);
   await context.close();
   await landscapeShot(browser);
+  await landscapeYoutubeFlow(browser);
 } finally {
   await browser.close();
 }

@@ -117,13 +117,22 @@ async function doImport() {
   const text = els.importText.value.trim();
   if (!text) { showImportError('JSON ファイルを選ぶか、テキストを貼り付けてください。'); return; }
   let result;
-  try { result = schema.importSet(text); }
+  // 同梱セットと同じ id は "user-" に付け替えてもらう（同梱カードの乗っ取り防止）
+  try { result = schema.importSet(text, { builtinIds: state.builtinSets.map((s) => s.id) }); }
   catch (e) { result = { ok: false, errors: [String(e && e.message || e)] }; }
   if (!result || !result.ok) {
     const errs = (result && result.errors) || ['読み込めませんでした。'];
     showImportError('読み込めませんでした：' + errs.slice(0, 3).join(' / '));
     return;
   }
+  // 念のため UI 側でも同梱 id との衝突を弾く（schema 側の付け替えが効かなかった場合の保険）
+  if (state.builtinSets.some((b) => b.id === result.set.id)) {
+    showImportError('読み込めませんでした：同梱セットと同じ ID です。');
+    return;
+  }
+  // 同じ ID の自作セットがあれば上書き確認
+  const existing = state.userSets.find((u) => u.id === result.set.id);
+  if (existing && !window.confirm(`同じIDのセットを上書きしますか？\n「${existing.title}」→「${result.set.title}」`)) return;
   try {
     await storage.saveUserSet(result.set);
     upsertUserSet(result.set);
