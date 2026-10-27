@@ -15,7 +15,7 @@
       "emoji": "🛒",
       "description": "店内でエンドレスに流れているあの曲。店名を当てよう。店内で録音して遊ぶのもおすすめ。",
       "difficulty": 1,
-      "questionCount": 12,
+      "questionCount": 8,
       "file": "store-songs.json"
     },
     {
