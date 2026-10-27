@@ -1,4 +1,5 @@
 // 5. 結果：順位表、共有（Web Share → クリップボード）、もう一回、ホームへ
+//    きがるモードは順位表の代わりに「全N問 聴きました」と聴いた曲のリストを出す。
 import * as game from '../game.mjs';
 import * as storage from '../storage.mjs';
 import { $, clear, fromTemplate } from './dom.mjs';
@@ -12,8 +13,11 @@ let summary = '';
 export function initResult() {
   els = {
     section: $('[data-screen="result"]'),
+    title: $('#result-title'),
     setName: $('#result-set'),
     ranking: $('#ranking'),
+    listenedTitle: $('#listened-title'),
+    listened: $('#listened'),
     summary: $('#summary-text'),
     share: $('#btn-share'),
     again: $('#btn-again'),
@@ -29,18 +33,29 @@ async function enter() {
   const s = state.session;
   const set = state.set;
   if (!s || !set) return false;
+  const casual = s.settings && s.settings.mode === 'casual';
+  els.section.dataset.mode = casual ? 'casual' : 'score';
+  els.title.textContent = casual ? 'おしまい' : '結果発表';
   els.setName.textContent = `${set.emoji || '🎵'} ${set.title}・${s.log.length}問`;
   const rows = game.ranking(s);
-  const colorById = Object.fromEntries(state.players.map((p) => [p.id, p.color]));
+  els.ranking.hidden = casual;
+  els.listenedTitle.hidden = !casual;
+  els.listened.hidden = !casual;
   clear(els.ranking);
-  for (const r of rows) {
-    const li = fromTemplate('tpl-rank-row');
-    li.dataset.rank = String(r.rank);
-    $('.rank-no', li).textContent = r.rank === 1 ? '🏆' : `${r.rank}位`;
-    $('.rank-swatch', li).style.background = colorById[r.playerId] || '#fff';
-    $('.rank-name', li).textContent = r.name;
-    $('.rank-score', li).textContent = `${r.score}点`;
-    els.ranking.append(li);
+  clear(els.listened);
+  if (casual) {
+    renderListened(s, set);
+  } else {
+    const colorById = Object.fromEntries(state.players.map((p) => [p.id, p.color]));
+    for (const r of rows) {
+      const li = fromTemplate('tpl-rank-row');
+      li.dataset.rank = String(r.rank);
+      $('.rank-no', li).textContent = r.rank === 1 ? '🏆' : `${r.rank}位`;
+      $('.rank-swatch', li).style.background = colorById[r.playerId] || '#fff';
+      $('.rank-name', li).textContent = r.name;
+      $('.rank-score', li).textContent = `${r.score}点`;
+      els.ranking.append(li);
+    }
   }
   try { summary = game.summaryText(s, set); } catch (e) { summary = ''; }
   els.summary.textContent = summary;
@@ -60,10 +75,28 @@ async function enter() {
 
 function leave() {}
 
+// きがるモード：聴いた曲（answer と subtitle）を log の順に並べる
+function renderListened(s, set) {
+  els.listenedTitle.textContent = `🎧 全${s.order.length}問 聴きました`;
+  const questions = set.questions || [];
+  s.log.forEach((entry, i) => {
+    const q = questions.find((x) => x.id === entry.questionId);
+    const li = fromTemplate('tpl-listened-row');
+    $('.listened-no', li).textContent = `${i + 1}.`;
+    $('.listened-answer', li).textContent = q ? q.answer : String(entry.questionId);
+    const sub = $('.listened-sub', li);
+    sub.textContent = q && q.subtitle ? q.subtitle : '';
+    sub.hidden = !(q && q.subtitle);
+    els.listened.append(li);
+  });
+}
+
 async function share() {
   if (!summary) return;
+  const s = state.session;
+  const title = s && s.settings && s.settings.mode === 'casual' ? 'イントロどん' : 'イントロどん 結果';
   if (navigator.share) {
-    try { await navigator.share({ title: 'イントロどん 結果', text: summary }); return; }
+    try { await navigator.share({ title, text: summary }); return; }
     catch (e) { if (e && e.name === 'AbortError') return; }
   }
   try {

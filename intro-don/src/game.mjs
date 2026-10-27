@@ -5,7 +5,8 @@
 
 export const PHASES = ['lobby', 'ready', 'playing', 'buzzed', 'judging', 'revealed', 'finished'];
 
-export const MODES = ['host', 'buzzer'];
+// host: 司会モード、buzzer: 早押しモード、casual: きがるモード（得点なし。流して、答えを見て、次へ）
+export const MODES = ['host', 'buzzer', 'casual'];
 
 export const DEFAULT_SETTINGS = Object.freeze({
   mode: 'host',
@@ -17,7 +18,12 @@ export const DEFAULT_SETTINGS = Object.freeze({
   questionLimit: null,
 });
 
-export const PLAYER_LIMITS = Object.freeze({ host: [1, 8], buzzer: [2, 4] });
+export const PLAYER_LIMITS = Object.freeze({ host: [1, 8], buzzer: [2, 4], casual: [1, 1] });
+
+// きがるモードでプレイヤーが省略されたときに補う 1 人
+export const CASUAL_PLAYER = Object.freeze({ id: 'solo', name: 'みんな', color: null });
+
+const MODE_LABEL = { host: '司会', buzzer: '早押し', casual: 'きがる' };
 
 // ---------------------------------------------------------------------------
 // 内部ユーティリティ
@@ -80,7 +86,8 @@ function toRevealed(s, { winnerId, points }) {
 
 /**
  * セッションを作る。
- * - players: [{ id, name, color }] 司会モード 1..8 人、早押しモード 2..4 人
+ * - players: [{ id, name, color }] 司会モード 1..8 人、早押しモード 2..4 人、きがるモード 1 人
+ *   （きがるモードで players が空／省略なら CASUAL_PLAYER を 1 人補う）
  * - settings: 省略部分は set の値 → 既定値で補う
  * - random: シャッフル用乱数（テストで決定的に）、now: 開始時刻（ms）
  * 引数が不正なときは Error を throw する（遷移関数と違い、ここは呼び出し側のバグ）。
@@ -91,12 +98,15 @@ export function createSession({ set, players, settings, random = Math.random, no
   }
   const resolved = normalizeSettings(settings, set);
 
+  if (resolved.mode === 'casual' && (!Array.isArray(players) || players.length === 0)) {
+    players = [{ ...CASUAL_PLAYER }];
+  }
   if (!Array.isArray(players) || players.length === 0) {
     throw new Error('プレイヤーが必要です');
   }
   const [minP, maxP] = PLAYER_LIMITS[resolved.mode];
   if (players.length < minP || players.length > maxP) {
-    throw new Error(`${resolved.mode === 'buzzer' ? '早押し' : '司会'}モードのプレイヤー数は ${minP}〜${maxP} 人です`);
+    throw new Error(`${MODE_LABEL[resolved.mode]}モードのプレイヤー数は ${minP}〜${maxP} 人です`);
   }
   const normPlayers = players.map((p, i) => {
     const src = p && typeof p === 'object' ? p : {};
@@ -145,7 +155,7 @@ export function startPlay(s) {
 }
 
 /**
- * playing → 司会モードは judging、早押しモードは ready（誰も押さなければ押し直せる）。
+ * playing → 司会モードは judging、早押し・きがるモードは ready（早押しは誰も押さなければ押し直せる）。
  * 司会モードでは、誤答のあと再生せずに別の人が答えた場合（ready かつ playCount>0）も judging へ進める。
  */
 export function stopPlay(s) {
@@ -166,7 +176,7 @@ export function cancelJudging(s) {
 
 /**
  * 早押し。playing、または再生停止後の ready（playCount>0）でのみ受け付ける。
- * lockedOut のプレイヤー・存在しないプレイヤー・司会モードでは無視。
+ * lockedOut のプレイヤー・存在しないプレイヤー・司会／きがるモードでは無視。
  */
 export function buzz(s, playerId) {
   if (s.settings.mode !== 'buzzer') return s;
@@ -180,10 +190,12 @@ export function buzz(s, playerId) {
  * 判定。
  * - host: judging で playerId 必須。
  * - buzzer: buzzed で playerId は buzzedBy（引数は無視）。
+ * - casual: 得点がないので常に無視（同じ Session を返す）。
  * 正解 → pointsForPlay の得点を加算して revealed。
  * 誤答 → lockedOut に追加、wrongPenalty（負値のみ、下限なし）を加算して ready。
  */
 export function judge(s, { correct, playerId } = {}) {
+  if (s.settings.mode === 'casual') return s;
   let target;
   if (s.settings.mode === 'buzzer') {
     if (s.phase !== 'buzzed' || !s.buzzedBy) return s;
@@ -279,9 +291,29 @@ function formatDate(ts) {
  *   🥈 じろう 6点
  *   全12問 / 2026-10-27
  * 同点は同じメダル、4位以降は「4. 名前 点」。
+ *
+ * きがるモード（得点なし）は順位の代わりに聴いた曲を log の順に並べる：
+ *   🎵 イントロどん（コンビニ入店音）
+ *   全12問 聴きました
+ *   1. ファミリーマート
+ *   2. セブン-イレブン
+ *   …
+ *   2026-10-27
+ * answer は set から引く（set が無い／見つからない問題は questionId を出す）。
  */
 export function summaryText(s, set) {
   const title = set && typeof set.title === 'string' && set.title.trim() ? `（${set.title.trim()}）` : '';
+  if (s.settings && s.settings.mode === 'casual') {
+    const questions = set && Array.isArray(set.questions) ? set.questions : [];
+    const lines = [`🎵 イントロどん${title}`, `全${s.order.length}問 聴きました`];
+    s.log.forEach((entry, i) => {
+      const q = questions.find((x) => x && x.id === entry.questionId);
+      const answer = q && typeof q.answer === 'string' && q.answer.trim() ? q.answer.trim() : String(entry.questionId);
+      lines.push(`${i + 1}. ${answer}`);
+    });
+    lines.push(formatDate(s.finishedAt ?? s.startedAt ?? Date.now()));
+    return lines.join('\n');
+  }
   const lines = [`🎵 イントロどん 結果${title}`];
   for (const r of ranking(s)) {
     const prefix = MEDALS[r.rank] ?? `${r.rank}.`;

@@ -440,6 +440,153 @@ async function landscapeYoutubeFlow(browser) {
   await context.close();
 }
 
+// きがるモード：ホームの「🎧 聴く」→ プレイ（casual）→ 答え → 次 → … → 結果に曲リスト → 共有テキスト
+async function casualFlow(context) {
+  const page = await newPage(context);
+  await page.goto(BASE + '#/home', { waitUntil: 'networkidle' });
+  await page.waitForSelector('#builtin-list .set-card');
+  const card = page.locator('#builtin-list .set-card').first();
+  const total = parseInt((await card.locator('.set-meta').textContent()).match(/(\d+)曲/)[1], 10);
+  assert(total > 0, `セットの曲数（${total}）`);
+  const listen = card.locator('[data-action="listen"]');
+  const listenBox = await listen.boundingBox();
+  assert(listenBox && listenBox.height >= 44, `「聴く」のタップ領域が 44px 以上（${listenBox && listenBox.height}）`);
+  await listen.click();
+  await page.waitForSelector('[data-screen="play"]:not([hidden])');
+  await page.waitForTimeout(300);
+  assert((await page.getAttribute('[data-screen="play"]', 'data-mode')) === 'casual', 'プレイ画面が casual');
+  assert(/^#\/play/.test(await page.evaluate(() => location.hash)), '設定画面を経由せずプレイへ');
+  assert((await page.locator('#play-mode-badge').textContent()) === 'きがる', 'モードバッジ');
+  assert((await page.locator('#play-counter').textContent()).trim() === `1 / ${total}`, '全問出題');
+  assert(!(await page.locator('#play-scores').isVisible()), 'スコア行は非表示');
+  assert(!(await page.locator('#btn-stop').isVisible()), 'ストップは非表示');
+  assert(await page.locator('#btn-reveal').isVisible(), '「答えを見る」が表示される');
+  const revealBox = await page.locator('#btn-reveal').boundingBox();
+  const hintBox = await page.locator('#btn-hint').boundingBox();
+  assert(revealBox.width > hintBox.width && revealBox.height >= 56, `「答えを見る」が大きめの主ボタン（${revealBox.width}x${revealBox.height}）`);
+  const guides = await guideToasts(page);
+  assert(guides.length <= 1 && guides.every((t) => /音が出ないとき/.test(t)), `きがるの案内は音量だけ（${guides.join(' | ')}）`);
+  await shot(page, 'play-casual');
+
+  for (let q = 0; q < total; q += 1) {
+    const hasDon = await page.locator('#don-button:visible').count();
+    if (hasDon) {
+      await page.click('#don-button');
+      await page.waitForTimeout(200);
+      const phase = await page.getAttribute('[data-screen="play"]', 'data-phase');
+      assert(phase === 'playing', `どん！で playing（実際 ${phase}）`);
+      assert(/2回目/.test(await page.locator('#don-sub').textContent()), '「◯回目・N秒」が進む');
+    } else {
+      // 音源なし：別アプリで再生パネルが出る（「再生した」カウンタは出ない）
+      assert(await page.locator('#no-source-panel').isVisible(), '音源なしでは別アプリパネル');
+      assert((await page.locator('#no-source-panel .ns-count:visible').count()) === 0, 'きがるでは「再生した」カウンタ無し');
+    }
+    await page.click('#btn-reveal');
+    await page.waitForSelector('#reveal-panel:not([hidden])');
+    assert(!(await page.locator('#reveal-winner').isVisible()), '勝者行は出ない');
+    const nextText = (await page.locator('#btn-next').textContent()).trim();
+    assert(nextText === (q === total - 1 ? 'おしまい' : '次の問題'), `次ボタンの文言（${nextText}）`);
+    if (q === 0) await shot(page, 'reveal-casual');
+    await page.click('#btn-next');
+    await page.waitForTimeout(200);
+  }
+  await page.waitForSelector('[data-screen="result"]:not([hidden])');
+  await page.waitForTimeout(200);
+  assert(!(await page.locator('#ranking').isVisible()), '順位表は出ない');
+  const listenedTitle = await page.locator('#listened-title').textContent();
+  assert(listenedTitle.includes(`全${total}問 聴きました`), `「全N問 聴きました」（${listenedTitle}）`);
+  const items = await page.locator('#listened li').count();
+  assert(items === total, `聴いた曲が ${total} 件（実際 ${items}）`);
+  const summary = await page.locator('#summary-text').textContent();
+  assert(summary.includes('聴きました') && !summary.includes('点'), `共有テキストに「聴きました」（${summary.split('\n')[1]}）`);
+  assert(summary.split('\n').length === total + 3, '共有テキストに全曲');
+  await shot(page, 'result-casual');
+  // もう一回 → きがるのまま
+  await page.click('#btn-again');
+  await page.waitForSelector('[data-screen="play"]:not([hidden])');
+  await page.waitForTimeout(300);
+  assert((await page.getAttribute('[data-screen="play"]', 'data-mode')) === 'casual', 'もう一回も casual');
+  await page.click('#btn-quit');
+  await page.waitForSelector('[data-screen="home"]:not([hidden])', { timeout: 5000 });
+  await page.close();
+}
+
+// 設定画面からきがるモードを選ぶ経路：人数・得点欄が隠れ、YouTube 音源の問題でどん！が使える。
+// 保存される設定の mode が casual になっても人数・得点は壊れない
+async function casualSetupFlow(context) {
+  const page = await newPage(context);
+  await page.goto(BASE + '#/home', { waitUntil: 'networkidle' });
+  await page.waitForSelector('#builtin-list .set-card');
+  await page.click('#btn-import');
+  await page.waitForSelector('#dlg-import[open]');
+  await page.fill('#import-text', JSON.stringify({
+    schemaVersion: 1, id: 'user-e2e-casual', title: 'きがるテスト', emoji: '🎧', questions: [
+      { id: 'a', answer: 'きがるの答え1', subtitle: '補足A', source: { type: 'youtube', videoId: 'dQw4w9WgXcQ' } },
+      { id: 'b', answer: 'きがるの答え2' },
+    ],
+  }));
+  await page.click('#btn-import-confirm');
+  await page.waitForSelector('[data-screen="set"]:not([hidden])');
+  await page.click('#btn-play-set');
+  await page.waitForSelector('#btn-start:visible');
+  // 保存済みの人数・得点（前のフローのもの）は、きがるで開始しても上書きされない
+  const before = await page.evaluate(() => JSON.parse(localStorage.getItem('intro-don:settings') || '{}'));
+  assert(typeof before.playerCount === 'number' && Array.isArray(before.points), `保存済み設定がある（${JSON.stringify(before)}）`);
+  await page.click('#mode-seg [data-mode="host"]');
+  assert(await page.locator('#players-block').isVisible(), '司会では人数欄が見える');
+  await page.click('#mode-seg [data-mode="casual"]');
+  assert((await page.getAttribute('#mode-seg [data-mode="casual"]', 'aria-checked')) === 'true', 'きがるが選択される');
+  assert(!(await page.locator('#players-block').isVisible()), 'きがるでは人数欄が隠れる');
+  assert(!(await page.locator('#setup-points-row').isVisible()), 'きがるでは得点欄が隠れる');
+  assert(!(await page.locator('#setup-penalty-field').isVisible()), 'きがるではペナルティ欄が隠れる');
+  assert(await page.locator('#setup-play-seconds').isVisible() && await page.locator('#setup-limit').isVisible() && await page.locator('#setup-shuffle').isVisible(), '秒数・出題数・シャッフルは残る');
+  const desc = await page.locator('#mode-desc').textContent();
+  assert(desc.includes('得点なし'), `説明文（${desc}）`);
+  await shot(page, 'setup-casual');
+  await page.click('#btn-start');
+  await page.waitForSelector('[data-screen="play"]:not([hidden])');
+  await page.waitForTimeout(300);
+  assert((await page.getAttribute('[data-screen="play"]', 'data-mode')) === 'casual', '設定画面からも casual');
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('intro-don:settings') || '{}'));
+  assert(saved.mode === 'casual', `設定に mode=casual が保存される（${saved.mode}）`);
+  assert(saved.playerCount === before.playerCount && JSON.stringify(saved.points) === JSON.stringify(before.points)
+    && saved.wrongPenalty === before.wrongPenalty && JSON.stringify(saved.playerNames) === JSON.stringify(before.playerNames),
+    `きがるで保存しても人数・名前・得点・ペナルティは壊れない（${JSON.stringify(saved)}）`);
+  // 2 問とも流す：YouTube 問題はどん！（サンドボックスでは回数だけ）、音源なしは別アプリパネル
+  let donShot = false;
+  for (let q = 0; q < 2; q += 1) {
+    const hasDon = await page.locator('#don-button:visible').count();
+    if (hasDon) {
+      if (!donShot) { donShot = true; await shot(page, 'play-casual-don'); }
+      await page.click('#don-button');
+      await page.waitForTimeout(200);
+      assert((await page.getAttribute('[data-screen="play"]', 'data-phase')) === 'playing', 'YouTube 問題でもどん！で playing');
+      await page.click('#don-button');
+      await page.waitForTimeout(200);
+      assert(/3回目/.test(await page.locator('#don-sub').textContent()), 'もう一度どん！で回数が増える');
+    } else {
+      assert(await page.locator('#no-source-panel').isVisible(), '音源なしでは別アプリパネル');
+    }
+    await page.click('#btn-reveal');
+    await page.waitForSelector('#reveal-panel:not([hidden])');
+    await page.click('#btn-next');
+    await page.waitForTimeout(200);
+  }
+  await page.waitForSelector('[data-screen="result"]:not([hidden])');
+  const subs = await page.locator('#listened .listened-sub:visible').allTextContents();
+  assert(subs.length === 1 && subs[0] === '補足A', `曲リストに subtitle（${subs.join(',')}）`);
+  // 次に設定画面を開くときはきがるが既定で選ばれている
+  await page.goBack();
+  await page.waitForTimeout(500);
+  assert((await visibleScreen(page)) === 'setup', '結果から戻ると設定画面');
+  assert((await page.getAttribute('#mode-seg [data-mode="casual"]', 'aria-checked')) === 'true', '前回のモード（きがる）が復元される');
+  await page.click('#mode-seg [data-mode="host"]');
+  assert(await page.locator('#players-block').isVisible(), '司会に戻すと人数欄が出る');
+  const cnt = await page.locator('#players-list .player-name').count();
+  assert(cnt === before.playerCount, `司会に戻すと保存済みの人数（${before.playerCount}）が残っている（実際 ${cnt}）`);
+  await page.close();
+}
+
 async function offlineFlow(context) {
   const page = await newPage(context);
   await page.goto(BASE, { waitUntil: 'networkidle' });
@@ -484,6 +631,8 @@ try {
   await buzzerFlow(context);
   await importFlow(context);
   await youtubeBuzzerFlow(context);
+  await casualFlow(context);
+  await casualSetupFlow(context);
   await offlineFlow(context);
   await context.close();
   await landscapeShot(browser);

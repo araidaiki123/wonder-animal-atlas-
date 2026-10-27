@@ -139,19 +139,23 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .home-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .set-list { display: flex; flex-direction: column; gap: 10px; }
 .set-card {
-  display: flex; align-items: stretch; gap: 8px;
+  /* 1 段目：絵文字＋タイトル（全幅）、2 段目：「聴く」「あそぶ」を右寄せ。タイトルを途中で折らない */
+  display: grid; grid-template-columns: 1fr auto auto; grid-template-areas: "main main main" ". listen play";
+  column-gap: 8px; row-gap: 6px;
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px;
 }
 .set-card-main {
-  flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 12px; text-align: left;
+  grid-area: main; min-width: 0; display: flex; align-items: center; gap: 12px; text-align: left;
   background: none; border: 0; padding: 6px; border-radius: var(--radius-sm); min-height: var(--tap);
 }
 .set-card-main:active { background: var(--surface-2); }
 .set-emoji { font-size: 30px; width: 44px; text-align: center; flex: 0 0 auto; }
 .set-info { display: flex; flex-direction: column; min-width: 0; }
-.set-title { font-weight: 800; font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.set-title { font-weight: 800; font-size: 17px; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .set-meta { font-size: 13px; color: var(--muted); }
-.btn-play { flex: 0 0 auto; align-self: center; background: var(--yellow); color: var(--ink); border-color: transparent; }
+.btn-play { grid-area: play; background: var(--yellow); color: var(--ink); border-color: transparent; padding: 10px 18px; }
+/* 「🎧 聴く」：きがるモードで即スタート（「あそぶ」より控えめ。タップ領域は 44px を確保） */
+.btn-listen { grid-area: listen; padding: 6px 12px; font-size: 14px; gap: 4px; white-space: nowrap; }
 .home-foot { margin-top: auto; padding-top: 12px; display: flex; flex-direction: column; gap: 4px; }
 
 /* ---------- セット詳細／編集 ---------- */
@@ -214,8 +218,13 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 /* ---------- ゲーム設定 ---------- */
 .setup-set { font-weight: 800; font-size: 18px; }
 .segment { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--surface); padding: 4px; border-radius: 14px; border: 1px solid var(--line); }
+.segment-3 { grid-template-columns: repeat(3, 1fr); }
 .seg-btn { min-height: 48px; border: 0; border-radius: 11px; background: transparent; color: var(--muted); font-weight: 800; font-size: 16px; }
 .seg-btn[aria-checked="true"] { background: var(--yellow); color: var(--ink); }
+/* 3 択（きがる／司会／早押し）は絵文字を上段、文字を下段に積んで狭い画面でも収める */
+.segment-3 .seg-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; min-height: 56px; padding: 4px 2px; font-size: 13px; line-height: 1.2; }
+.segment-3 .seg-icon { font-size: 20px; line-height: 1; }
+.players-block { display: flex; flex-direction: column; gap: 14px; }
 .stepper { display: flex; align-items: center; gap: 4px; background: var(--surface); border-radius: 12px; border: 1px solid var(--line); padding: 2px; }
 .stepper button { width: var(--tap); height: var(--tap); border: 0; border-radius: 10px; background: var(--surface-2); font-size: 22px; font-weight: 800; }
 .stepper output { min-width: 44px; text-align: center; font-size: 20px; font-weight: 800; }
@@ -333,6 +342,11 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .judge[data-wrong="true"] .judge-btn { background: var(--surface-2); color: var(--red); border: 2px solid var(--red); }
 .judge-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
+/* きがるモード：得点・ストップ・正解者は無く、「答えを見る」が主ボタン */
+.screen-play[data-mode="casual"] .play-controls { grid-template-columns: 1fr 2fr; }
+.screen-play[data-mode="casual"] #btn-reveal { background: var(--yellow); color: var(--ink); border-color: transparent; min-height: 60px; font-size: 20px; border-radius: 16px; }
+.screen-play[data-mode="casual"] #btn-reveal:active { background: #e6cf00; }
+
 /* 早押しモード */
 .buzz-stage { position: relative; flex: 1 1 auto; min-height: 60dvh; border-radius: var(--radius); overflow: hidden; }
 .buzz-grid { position: absolute; inset: 0; display: grid; gap: 4px; touch-action: none; }
@@ -397,6 +411,14 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .reveal .btn-xl { margin-top: 6px; }
 
 /* ---------- 結果 ---------- */
+/* きがるモード：聴いた曲のリスト */
+.listened-title { font-size: 20px; font-weight: 900; }
+.listened { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.listened-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); min-height: var(--tap); }
+.listened-no { color: var(--muted); font-size: 13px; font-weight: 800; width: 28px; flex: 0 0 auto; text-align: right; font-variant-numeric: tabular-nums; }
+.listened-main { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+.listened-answer { font-weight: 800; word-break: break-word; }
+.listened-sub { font-size: 13px; color: var(--muted); word-break: break-word; }
 .ranking { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .rank-row {
   display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px;

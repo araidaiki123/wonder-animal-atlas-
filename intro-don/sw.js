@@ -7,7 +7,7 @@
      （activate で旧バージョンのキャッシュを削除 → 次回ロードで新しい殻が揃う）。
    - SHELL 以外の同一オリジン（将来の追加ファイル）は network-first + キャッシュ fallback。
    - YouTube 等のクロスオリジンには触らない。navigate はオフライン時に index.html を返す。 */
-const VERSION = 'v1.1.1';
+const VERSION = 'v1.2.0';
 const CACHE_NAME = `intro-don-${VERSION}`;
 
 const SHELL = [
