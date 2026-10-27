@@ -1,0 +1,312 @@
+{
+  "schemaVersion": 1,
+  "id": "device-sounds",
+  "title": "家電・端末・生活の音",
+  "emoji": "📱",
+  "description": "起動音、着信音、通知音、決済音、時報。毎日聞いているのに名前が出てこない音たち。",
+  "difficulty": 2,
+  "tags": [
+    "生活音",
+    "端末",
+    "家電"
+  ],
+  "playSeconds": 1,
+  "extendSeconds": 1,
+  "builtin": true,
+  "credits": "ノーリツ公式リリース（音商標登録・原曲「人形の夢と目覚め」）、iPhone Mania・ライフハッカー（iOSの標準着信音の変遷）、各社公式情報を参考。",
+  "questions": [
+    {
+      "id": "q01",
+      "answer": "Windows XP 起動音",
+      "aliases": [
+        "Windows XP",
+        "ウィンドウズXP",
+        "XP 起動音"
+      ],
+      "subtitle": "Microsoft Windows XP（2001年）のスタートアップ音",
+      "hints": [
+        "パソコンの起動音",
+        "2001年のOS",
+        "緑の丘の壁紙でおなじみ"
+      ],
+      "trivia": "作曲はビル・ブラウン。壁紙「草原（Bliss）」とともに2000年代の象徴的なPC体験。",
+      "searchQuery": "Windows XP 起動音",
+      "source": null
+    },
+    {
+      "id": "q02",
+      "answer": "Windows 95 起動音",
+      "aliases": [
+        "Windows 95",
+        "ウィンドウズ95",
+        "The Microsoft Sound"
+      ],
+      "subtitle": "Microsoft Windows 95（1995年）のスタートアップ音",
+      "hints": [
+        "パソコンの起動音",
+        "1995年のOS",
+        "作ったのは有名なアンビエント音楽家"
+      ],
+      "trivia": "ブライアン・イーノが作曲した「The Microsoft Sound」。約6秒の短い曲だが、依頼時の条件は「3秒ちょっとで感動的に」だったという。",
+      "searchQuery": "Windows 95 起動音",
+      "source": null
+    },
+    {
+      "id": "q03",
+      "answer": "Mac 起動音",
+      "aliases": [
+        "Macintosh 起動音",
+        "マック 起動音",
+        "Mac スタートアップサウンド",
+        "ジャーン"
+      ],
+      "subtitle": "Apple Macintosh のスタートアップチャイム（ジャーン♪）",
+      "hints": [
+        "パソコンの起動音",
+        "りんごのマーク",
+        "「ジャーン」の和音"
+      ],
+      "trivia": "現在の和音のチャイムは1991年のQuadra向けにジム・リークスが作ったもの。2016年のMacBook Proで一度消え、2020年に復活した。",
+      "searchQuery": "Mac 起動音 ジャーン",
+      "source": null
+    },
+    {
+      "id": "q04",
+      "answer": "iPhone 着信音「オープニング」",
+      "aliases": [
+        "オープニング",
+        "Opening",
+        "iPhone 着信音"
+      ],
+      "subtitle": "iOS 7以降のiPhone標準着信音（2013年〜）",
+      "hints": [
+        "スマホの着信音",
+        "2013年から標準",
+        "マリンバの後継"
+      ],
+      "trivia": "iOS 7で標準着信音に採用。iPhone X以降は「リフレクション」が標準になったが、設定から選べる。",
+      "searchQuery": "iPhone 着信音 オープニング",
+      "source": null
+    },
+    {
+      "id": "q05",
+      "answer": "iPhone 着信音「マリンバ」",
+      "aliases": [
+        "マリンバ",
+        "Marimba",
+        "初代iPhone 着信音"
+      ],
+      "subtitle": "初代iPhone〜iOS 6の標準着信音（2007年〜）",
+      "hints": [
+        "スマホの着信音",
+        "2007年の初代から",
+        "木琴系の楽器名"
+      ],
+      "trivia": "初代iPhoneの標準着信音。今も「サウンド」→「着信音」→「クラシック」の中に残っている。",
+      "searchQuery": "iPhone 着信音 マリンバ",
+      "source": null
+    },
+    {
+      "id": "q06",
+      "answer": "iPhone アラーム「レーダー」",
+      "aliases": [
+        "レーダー",
+        "Radar",
+        "iPhone アラーム"
+      ],
+      "subtitle": "iPhoneのアラーム既定音（iOS 7〜）",
+      "hints": [
+        "朝、世界中の人を起こしている音",
+        "iPhoneの時計アプリ",
+        "「レーダー」"
+      ],
+      "trivia": "iOS 7以降のアラーム既定音。名前を知らなくても音を聞けば飛び起きる人多数。",
+      "searchQuery": "iPhone アラーム レーダー",
+      "source": null
+    },
+    {
+      "id": "q07",
+      "answer": "LINE 通知音",
+      "aliases": [
+        "LINE",
+        "ライン",
+        "LINE 着信音"
+      ],
+      "subtitle": "LINEのメッセージ通知音・着信音",
+      "hints": [
+        "メッセージアプリ",
+        "緑のアイコン",
+        "「ピロン」と「ライン♪」"
+      ],
+      "trivia": "通知音は短い「ピロン♪」、無料通話の着信音は「LINE」と歌うメロディ。どちらも街中で鳴ると反射的に確認してしまう。",
+      "searchQuery": "LINE 通知音",
+      "source": null
+    },
+    {
+      "id": "q08",
+      "answer": "Nokia Tune（ノキア着信音）",
+      "aliases": [
+        "ノキア",
+        "Nokia",
+        "ノキア 着信音"
+      ],
+      "subtitle": "ノキア携帯の標準着信音（原曲：タレガ「グラン・ワルツ」）",
+      "hints": [
+        "海外の携帯電話の着信音",
+        "フィンランドのメーカー",
+        "原曲はクラシックギター曲"
+      ],
+      "trivia": "原曲はスペインのギタリスト、フランシスコ・タレガの「グラン・ワルツ（Gran Vals）」の一節。世界で最も鳴った着信音と言われる。",
+      "searchQuery": "Nokia Tune",
+      "source": null
+    },
+    {
+      "id": "q09",
+      "answer": "プレイステーション 起動音",
+      "aliases": [
+        "PlayStation",
+        "PS1",
+        "初代プレステ",
+        "プレステ 起動音"
+      ],
+      "subtitle": "初代PlayStation（1994年）の起動音",
+      "hints": [
+        "ゲーム機の起動音",
+        "1994年発売",
+        "ディスクを入れて電源を入れると流れる重厚な音"
+      ],
+      "trivia": "作曲は藤澤孝史。PS5のUIにもこの起動音をモチーフにした演出がある。",
+      "searchQuery": "PlayStation 起動音",
+      "source": null
+    },
+    {
+      "id": "q10",
+      "answer": "ゲームキューブ 起動音",
+      "aliases": [
+        "GameCube",
+        "ゲームキューブ",
+        "GC 起動音"
+      ],
+      "subtitle": "ニンテンドーゲームキューブ（2001年）の起動音",
+      "hints": [
+        "任天堂のゲーム機",
+        "立方体のロゴが転がる",
+        "2001年発売"
+      ],
+      "trivia": "立方体が転がってロゴになる映像とともに流れる。起動時にZボタンを押し続けると別の音になる隠し要素も有名。",
+      "searchQuery": "ゲームキューブ 起動音",
+      "source": null
+    },
+    {
+      "id": "q11",
+      "answer": "Nintendo Switch サウンドロゴ",
+      "aliases": [
+        "Switch",
+        "スイッチ",
+        "ニンテンドースイッチ",
+        "カチッ"
+      ],
+      "subtitle": "Nintendo Switch の「カチッ」サウンドロゴ",
+      "hints": [
+        "任天堂のゲーム機",
+        "Joy-Conを本体に差す音",
+        "CMの最後に必ず鳴る"
+      ],
+      "trivia": "Joy-Conを装着する「カチッ」という音がそのままブランドのサウンドロゴに。本体の起動時にも流れる。",
+      "searchQuery": "Nintendo Switch サウンドロゴ カチッ",
+      "source": null
+    },
+    {
+      "id": "q12",
+      "answer": "ノーリツ 給湯器（お風呂が沸きました）",
+      "aliases": [
+        "ノーリツ",
+        "NORITZ",
+        "お風呂が沸きました",
+        "給湯器"
+      ],
+      "subtitle": "原曲：エステン「人形の夢と目覚め」",
+      "hints": [
+        "家にある機械が歌う",
+        "お湯はりが終わると流れる",
+        "「お風呂が沸きました」"
+      ],
+      "trivia": "ドイツの作曲家テオドール・エステンのピアノ曲「人形の夢と目覚め」の一節。2021年にメロディと音声が音商標として登録された。",
+      "searchQuery": "ノーリツ お風呂が沸きました メロディ",
+      "source": null
+    },
+    {
+      "id": "q13",
+      "answer": "PayPay 決済音",
+      "aliases": [
+        "PayPay",
+        "ペイペイ"
+      ],
+      "subtitle": "PayPayで支払いが完了したときの「ペイペイ♪」",
+      "hints": [
+        "スマホ決済",
+        "赤いロゴ",
+        "サービス名を叫ぶ"
+      ],
+      "trivia": "決済完了時にサービス名を歌う音。レジで鳴ると周りの人も反応する。",
+      "searchQuery": "PayPay 決済音",
+      "source": null
+    },
+    {
+      "id": "q14",
+      "answer": "楽天Edy 決済音",
+      "aliases": [
+        "Edy",
+        "エディ",
+        "楽天Edy",
+        "シャリーン"
+      ],
+      "subtitle": "電子マネーEdyの決済音「シャリーン」",
+      "hints": [
+        "電子マネー",
+        "コンビニのレジで鳴る",
+        "「シャリーン」"
+      ],
+      "trivia": "「シャリーン」という音で決済完了を知らせる。2001年開始の老舗電子マネー。",
+      "searchQuery": "楽天Edy 決済音 シャリーン",
+      "source": null
+    },
+    {
+      "id": "q15",
+      "answer": "NHKの時報",
+      "aliases": [
+        "時報",
+        "NHK 時報",
+        "ポッポッポッピーン"
+      ],
+      "subtitle": "NHKラジオ・テレビの時報（ポッ・ポッ・ポッ・ピーン）",
+      "hints": [
+        "正午や毎正時に流れる",
+        "ラジオで聞く",
+        "最後の音だけ高い"
+      ],
+      "trivia": "440Hzの予報音3回と880Hzの正報音1回。正報音の立ち上がりが正時を示す。",
+      "searchQuery": "NHK 時報",
+      "source": null
+    },
+    {
+      "id": "q16",
+      "answer": "防災行政無線の夕方チャイム",
+      "aliases": [
+        "防災無線",
+        "夕方のチャイム",
+        "5時のチャイム",
+        "夕焼け小焼け"
+      ],
+      "subtitle": "多くの市町村で流れる「夕焼け小焼け」（作曲：草川信）",
+      "hints": [
+        "夕方に街に響く",
+        "子どもが帰る合図",
+        "童謡"
+      ],
+      "trivia": "防災行政無線の動作確認を兼ねて夕方に流す自治体が多い。曲は「夕焼け小焼け」のほか、地域により異なる。",
+      "searchQuery": "防災無線 夕焼け小焼け チャイム",
+      "source": null
+    }
+  ]
+}

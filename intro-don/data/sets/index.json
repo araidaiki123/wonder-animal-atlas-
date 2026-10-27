@@ -1,0 +1,94 @@
+{
+  "sets": [
+    {
+      "id": "konbini-chime",
+      "title": "コンビニ入店音",
+      "emoji": "🏪",
+      "description": "自動ドアが開くと鳴るあの音。店名を当てよう。短い音なので再生は1秒ずつ。",
+      "difficulty": 1,
+      "questionCount": 8,
+      "file": "konbini-chime.json"
+    },
+    {
+      "id": "store-songs",
+      "title": "お店の来店曲・店内ソング",
+      "emoji": "🛒",
+      "description": "店内でエンドレスに流れているあの曲。店名を当てよう。店内で録音して遊ぶのもおすすめ。",
+      "difficulty": 1,
+      "questionCount": 12,
+      "file": "store-songs.json"
+    },
+    {
+      "id": "eki-melo",
+      "title": "駅の発車メロディ",
+      "emoji": "🚉",
+      "description": "ご当地発車メロディ。駅名を当てよう（曲名が分かれば大ヒント）。",
+      "difficulty": 2,
+      "questionCount": 16,
+      "file": "eki-melo.json"
+    },
+    {
+      "id": "train-chime",
+      "title": "新幹線・飛行機のチャイム",
+      "emoji": "🚄",
+      "description": "車内放送の前に流れるチャイムや、搭乗時に流れる曲。どの列車・航空会社かを当てよう。",
+      "difficulty": 2,
+      "questionCount": 11,
+      "file": "train-chime.json"
+    },
+    {
+      "id": "cm-songs",
+      "title": "CMソング・サウンドロゴ",
+      "emoji": "📣",
+      "description": "一瞬で企業や商品が浮かぶ、あのCMソングとサウンドロゴ。企業名・商品名を当てよう。",
+      "difficulty": 1,
+      "questionCount": 16,
+      "file": "cm-songs.json"
+    },
+    {
+      "id": "device-sounds",
+      "title": "家電・端末・生活の音",
+      "emoji": "📱",
+      "description": "起動音、着信音、通知音、決済音、時報。毎日聞いているのに名前が出てこない音たち。",
+      "difficulty": 2,
+      "questionCount": 16,
+      "file": "device-sounds.json"
+    },
+    {
+      "id": "tv-themes",
+      "title": "テレビ番組テーマ",
+      "emoji": "📺",
+      "description": "イントロを聞けば番組が浮かぶ。長寿番組からドラマまで、番組名を当てよう。",
+      "difficulty": 1,
+      "questionCount": 16,
+      "file": "tv-themes.json"
+    },
+    {
+      "id": "anime-op",
+      "title": "アニメ主題歌 定番",
+      "emoji": "🎬",
+      "description": "誰もが口ずさめるアニメ主題歌。作品名を当てよう（曲名・歌手が分かればボーナス）。",
+      "difficulty": 1,
+      "questionCount": 16,
+      "file": "anime-op.json"
+    },
+    {
+      "id": "game-bgm",
+      "title": "ゲームBGM 定番",
+      "emoji": "🎮",
+      "description": "最初の数音で分かるゲーム音楽。作品名を当てよう。",
+      "difficulty": 2,
+      "questionCount": 16,
+      "file": "game-bgm.json"
+    },
+    {
+      "id": "jpop-hits",
+      "title": "J-POP 国民的ヒット",
+      "emoji": "🎤",
+      "description": "1980年代から2020年代まで、誰もが知るヒット曲。曲名を当てよう（歌手名は補足で表示）。",
+      "difficulty": 2,
+      "questionCount": 16,
+      "file": "jpop-hits.json"
+    }
+  ]
+}
