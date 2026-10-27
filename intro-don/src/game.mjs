@@ -134,16 +134,34 @@ export function createSession({ set, players, settings, random = Math.random, no
   };
 }
 
-/** ready → playing、playCount+1。（revealed からは呼ばない：UI が nextQuestion してから） */
+/**
+ * ready|playing → playing、playCount+1。
+ * playing からも受け付ける（音が止まったあと誰も分からず「もう一回どん！」するため）。
+ * revealed からは呼ばない（UI が nextQuestion してから）。
+ */
 export function startPlay(s) {
-  if (s.phase !== 'ready') return s;
+  if (s.phase !== 'ready' && s.phase !== 'playing') return s;
   return { ...s, phase: 'playing', playCount: s.playCount + 1 };
 }
 
-/** playing → 司会モードは judging、早押しモードは ready（誰も押さなければ押し直せる） */
+/**
+ * playing → 司会モードは judging、早押しモードは ready（誰も押さなければ押し直せる）。
+ * 司会モードでは、誤答のあと再生せずに別の人が答えた場合（ready かつ playCount>0）も judging へ進める。
+ */
 export function stopPlay(s) {
-  if (s.phase !== 'playing') return s;
-  return { ...s, phase: s.settings.mode === 'host' ? 'judging' : 'ready' };
+  if (s.phase === 'playing') {
+    return { ...s, phase: s.settings.mode === 'host' ? 'judging' : 'ready' };
+  }
+  if (s.phase === 'ready' && s.playCount > 0 && s.settings.mode === 'host') {
+    return { ...s, phase: 'judging' };
+  }
+  return s;
+}
+
+/** 司会モードの judging → ready（正解者選択をやめて続きを再生する） */
+export function cancelJudging(s) {
+  if (s.phase !== 'judging') return s;
+  return { ...s, phase: 'ready' };
 }
 
 /**

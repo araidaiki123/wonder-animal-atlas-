@@ -21,6 +21,7 @@ let recTimer = null;
 let recLevelRaf = 0;
 let recStartedAt = 0;
 let recAudioCtx = null;
+let recLevelValue = -1; // レコーダーからの実レベル（-1 = 未受信）
 let previewAudio = null;
 
 export function initSetEditor() {
@@ -372,7 +373,8 @@ async function onFileChosen() {
 async function toggleRecord() {
   if (rec) { await stopRecording(false); return; }
   try {
-    rec = createRecorder();
+    recLevelValue = -1;
+    rec = createRecorder({ onLevel: (v) => { recLevelValue = clampNum(num(v, 0), 0, 1); } });
     await rec.start();
   } catch (e) {
     console.error(e);
@@ -446,8 +448,8 @@ function startLevelMeter() {
       let sum = 0;
       for (let i = 0; i < data.length; i++) { const v = (data[i] - 128) / 128; sum += v * v; }
       level = Math.min(1, Math.sqrt(sum / data.length) * 3);
-    } else if (rec && typeof rec.getLevel === 'function') {
-      level = clampNum(num(rec.getLevel(), 0), 0, 1);
+    } else if (recLevelValue >= 0) {
+      level = recLevelValue;
     } else {
       level = 0.3 + 0.2 * Math.abs(Math.sin(Date.now() / 300));
     }

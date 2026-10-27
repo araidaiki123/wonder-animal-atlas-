@@ -145,6 +145,11 @@ export function createYouTubeAdapter({
   let pendingCue = null;      // { resolve, reject, timer }
   let holder = null;          // mountEl の中に作る要素（YT.Player がこれを iframe に置き換える）
   let destroyed = false;
+  // iOS 対策の「暖機」：親ページのタップでは cross-origin iframe の再生が許可されないことがあるので、
+  // 初回だけ利用者に iframe を直接タップしてもらい（ミュート状態で）即座に一時停止→頭出しする。
+  // 一度でも PLAYING になれば以後は playVideo() が通るので warmed=true にする。
+  let warmed = false;
+  let warming = null;         // { start, resolve }
 
   const safe = (fn, ...args) => { if (typeof fn === 'function') { try { fn(...args); } catch { /* 無視 */ } } };
 
@@ -156,10 +161,28 @@ export function createYouTubeAdapter({
     if (ok) p.resolve(value); else p.reject(value);
   }
 
+  function finishWarmUp(ok) {
+    if (!warming) return;
+    const w = warming;
+    warming = null;
+    if (player) { try { player.unMute(); } catch { /* 無視 */ } }
+    w.resolve(ok);
+  }
+
   function handleStateChange(event) {
     const s = event && event.data;
-    if (s === PlayerState.CUED) settleCue(true);
-    else if (s === PlayerState.PLAYING) safe(onPlaying);
+    if (s === PlayerState.CUED) { settleCue(true); return; }
+    if (warming) {
+      // 暖機中：音が出始めたら即停止して頭出し。onPlaying/onPaused は UI に伝えない
+      if (s === PlayerState.PLAYING) {
+        try { player.pauseVideo(); } catch { /* 無視 */ }
+        try { player.seekTo(warming.start, true); } catch { /* 無視 */ }
+        warmed = true;
+        finishWarmUp(true);
+      }
+      return;
+    }
+    if (s === PlayerState.PLAYING) { warmed = true; safe(onPlaying); }
     else if (s === PlayerState.PAUSED) safe(onPaused);
     else if (s === PlayerState.ENDED) safe(onEnded);
   }
@@ -284,11 +307,32 @@ export function createYouTubeAdapter({
     /** YouTube は iframe 側の制御なので解放処理はない（local の <audio> が担当） */
     unlock() {},
 
+    /** まだ一度も iframe 内で再生が始まっていなければ true（タッチ端末では暖機を促す） */
+    needsWarmUp() { return !warmed; },
+
+    /**
+     * 暖機を開始する。ミュートして利用者のタップ（iframe 直接）を待ち、PLAYING になった瞬間に
+     * 一時停止・頭出し・ミュート解除して true で解決する。cancelWarmUp() で false。
+     */
+    armWarmUp({ start = 0 } = {}) {
+      if (!player) return Promise.reject(new Error('動画の準備ができていません'));
+      if (warmed) return Promise.resolve(true);
+      if (warming) finishWarmUp(false);
+      try { player.mute(); } catch { /* 無視 */ }
+      return new Promise((resolve) => { warming = { start: Math.max(0, Number(start) || 0), resolve }; });
+    },
+
+    cancelWarmUp() { finishWarmUp(false); },
+
+    /** 利用者が暖機をスキップした（playVideo() を直接試す） */
+    markWarmed() { warmed = true; finishWarmUp(false); },
+
     /** テスト・デバッグ用 */
     getPlayer() { return player; },
 
     destroy() {
       destroyed = true;
+      finishWarmUp(false);
       settleCue(false, new Error('プレイヤーは破棄されています'));
       if (player) { try { player.destroy(); } catch { /* 無視 */ } }
       player = null;

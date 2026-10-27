@@ -10,7 +10,7 @@ import { createYouTubeAdapter } from './youtube.mjs';
 import { createLocalAdapter } from './local.mjs';
 
 /** Player.state が取りうる値 */
-export const STATES = ['idle', 'loading', 'ready', 'playing', 'error', 'none'];
+export const STATES = ['idle', 'loading', 'ready', 'warming', 'playing', 'error', 'none'];
 
 /** 進捗通知の間隔（ms） */
 export const PROGRESS_INTERVAL_MS = 100;
@@ -184,7 +184,10 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
     async prepare(source) {
       const token = ++prepareToken;
       clearRun();
-      if (adapter) { try { adapter.stop(); } catch { /* 無視 */ } }
+      if (adapter) {
+        if (typeof adapter.cancelWarmUp === 'function') { try { adapter.cancelWarmUp(); } catch { /* 無視 */ } }
+        try { adapter.stop(); } catch { /* 無視 */ }
+      }
       lastError = null;
 
       if (!source) {
@@ -220,6 +223,7 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
      * 戻り値: 実際に再生が始まれば true、始まらなければ false で解決（reject しない。エラーは onStateChange('error') で通知）。
      */
     play({ start = 0, seconds } = {}) {
+      if (state === 'warming') { player.cancelWarmUp(); state = 'ready'; }
       if (!adapter || (state !== 'ready' && state !== 'playing')) {
         return Promise.resolve(false);
       }
@@ -268,6 +272,34 @@ export function createPlayer({ youtubeMount = null, onStateChange = null, getAud
           }
         } catch { /* 無視 */ }
       }
+    },
+
+    /** 現在の adapter が暖機（iOS 向け：iframe の直接タップ）を必要としているか */
+    get needsWarmUp() {
+      return !!(adapter && typeof adapter.needsWarmUp === 'function' && adapter.needsWarmUp());
+    },
+
+    /**
+     * 暖機を開始する（YouTube のみ）。'warming' を通知し、利用者が iframe をタップして
+     * 再生→即停止できたら 'ready' に戻して true で解決する。中断・非対応は false。
+     */
+    async armWarmUp({ start = 0 } = {}) {
+      if (!adapter || typeof adapter.armWarmUp !== 'function' || state !== 'ready') return false;
+      const token = prepareToken;
+      emit('warming', {});
+      let ok = false;
+      try { ok = await adapter.armWarmUp({ start }); } catch { ok = false; }
+      if (token !== prepareToken) return false;      // 途中で別の問題に移った
+      if (state === 'warming') emit('ready', {});
+      return ok;
+    },
+
+    cancelWarmUp() {
+      if (adapter && typeof adapter.cancelWarmUp === 'function') adapter.cancelWarmUp();
+    },
+
+    skipWarmUp() {
+      if (adapter && typeof adapter.markWarmed === 'function') adapter.markWarmed();
     },
 
     get state() { return state; },

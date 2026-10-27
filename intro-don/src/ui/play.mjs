@@ -1,6 +1,7 @@
 // 4. プレイ：どん！ボタン・プログレス・ヒント・ストップ・正解者・早押し分割パネル・正解表示
 import * as game from '../game.mjs';
 import { createPlayer } from '../audio/player.mjs';
+import * as storage from '../storage.mjs';
 import { $, $$, el, clear, fromTemplate } from './dom.mjs';
 import { toastError } from './toast.mjs';
 import { state, searchLinks } from './state.mjs';
@@ -16,6 +17,12 @@ let active = false;
 let preparedQid = null;
 let ring = { total: 0, remaining: 0, at: 0, running: false, raf: 0 };
 let judgeWrongMode = false;
+let warmingUp = false;   // iOS 向け YouTube 暖機中（iframe の直接タップ待ち）
+
+// タッチ端末か（iOS/Android では YouTube iframe の初回再生に直接タップが必要になることがある）
+function isTouchDevice() {
+  try { return navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches; } catch (e) { return false; }
+}
 
 export function initPlay() {
   els = {
@@ -70,6 +77,7 @@ export function initPlay() {
     revealTrivia: $('#reveal-trivia'),
     revealAliases: $('#reveal-aliases'),
     next: $('#btn-next'),
+    warmupSkip: $('#yt-warmup-skip'),
   };
 
   els.quit.addEventListener('click', () => {
@@ -89,6 +97,7 @@ export function initPlay() {
   els.buzzCorrect.addEventListener('click', () => onJudge(true, state.session.buzzedBy));
   els.buzzWrong.addEventListener('click', () => onJudge(false, state.session.buzzedBy));
   els.next.addEventListener('click', onNext);
+  els.warmupSkip.addEventListener('click', onWarmupSkip);
   els.revealThumb.addEventListener('error', () => { els.revealThumb.hidden = true; });
   els.buzzGrid.addEventListener('pointerdown', onBuzzPointer);
   els.buzzGrid.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -124,6 +133,7 @@ async function enter() {
 
 function leave() {
   active = false;
+  if (warmingUp) { setWarmingUp(false); if (player) player.cancelWarmUp(); }
   stopRing();
   if (player) { try { player.stop(); } catch (e) { /* noop */ } }
   releaseWakeLock();
@@ -145,7 +155,7 @@ function releaseWakeLock() {
 // ---------- プレイヤー ----------
 function getPlayer() {
   if (!player) {
-    player = createPlayer({ youtubeMount: els.ytMount, onStateChange });
+    player = createPlayer({ youtubeMount: els.ytMount, onStateChange, getAudio: (blobId) => storage.getAudio(blobId) });
   }
   return player;
 }
@@ -167,18 +177,53 @@ async function prepareCurrent() {
   if (!q || preparedQid === q.id) return;
   preparedQid = q.id;
   stopRing();
-  setOverlay(false, q.source ? 'タップで再生' : '音源なし');
+  if (warmingUp) setWarmingUp(false);
+  // YouTube 以外（端末音源・録音・音源なし）では動画枠は不要なので隠す（iframe を隠したまま再生はしない）
+  els.ytBox.hidden = !(q.source && q.source.type === 'youtube');
+  setOverlay(false, q.source ? '「どん！」で再生' : '音源なし');
   try {
     await getPlayer().prepare(q.source || null);
   } catch (e) {
     console.warn(e);
     toastError('音源を準備できませんでした。');
   }
+  if (preparedQid !== q.id || !active) return;
+  maybeWarmUp(q);
+}
+
+// iOS/Android の YouTube：初回だけ iframe を直接タップしてもらう（ミュートで再生→即停止→頭出し）
+function maybeWarmUp(q) {
+  const p = getPlayer();
+  if (!q || !q.source || q.source.type !== 'youtube') return;
+  if (!isTouchDevice() || p.state !== 'ready' || !p.needsWarmUp) return;
+  setWarmingUp(true);
+  p.armWarmUp({ start: q.source.start || 0 }).then((ok) => {
+    if (!warmingUp) return;
+    setWarmingUp(false);
+    if (ok) setOverlay(false, '準備OK！「どん！」で再生');
+    render();
+  });
+}
+
+function setWarmingUp(on) {
+  warmingUp = on;
+  els.ytOverlay.dataset.warmup = String(on);
+  els.warmupSkip.hidden = !on;
+  if (on) setOverlay(false, '▶ 最初に1回、ここをタップして準備');
+}
+
+function onWarmupSkip() {
+  if (!warmingUp) return;
+  setWarmingUp(false);
+  getPlayer().skipWarmUp();
+  setOverlay(false, '「どん！」で再生');
+  render();
 }
 
 // プレイヤーからの状態通知（100ms 程度の間隔で remainingMs が来る想定）
 function onStateChange(st, info = {}) {
   if (!active) return;
+  if (st === 'warming') return;
   if (st === 'playing') {
     const total = ring.total || 1;
     const remaining = typeof info.remainingMs === 'number' ? info.remainingMs : Math.max(0, ring.remaining - (performance.now() - ring.at));
@@ -198,9 +243,9 @@ function onStateChange(st, info = {}) {
       toastError('再生できませんでした。' + (info.error && info.error.message ? info.error.message : navigator.onLine === false ? '圏外のため YouTube は再生できません。' : ''));
     } else if (st === 'loading') {
       setOverlay(true, '読み込み中…');
-    } else {
+    } else if (!warmingUp) {
       const q = currentQuestion();
-      setOverlay(false, q && q.source ? 'タップで再生' : '音源なし');
+      setOverlay(false, q && q.source ? '「どん！」で再生' : '音源なし');
     }
   }
 }
@@ -233,22 +278,14 @@ function stopRing() {
   els.buzzRing.style.strokeDashoffset = String(RING);
 }
 
-// ---------- 状態機械の補助（API に無い遷移の暫定対応） ----------
-function withPhase(s, phase, extra = {}) {
-  return { ...s, phase, ...extra };
-}
-
 // ---------- 操作 ----------
 function onDon() {
   unlockAudio();
   unlockPlayer();
   const s = state.session;
   if (!s || !['ready', 'playing'].includes(s.phase)) return;
-  let next = game.startPlay(s);
-  if (next === s && s.phase === 'playing') {
-    // 再生中（or 再生終了後）の再押し：状態機械が受け付けない場合は回数だけ進める（暫定）
-    next = withPhase(s, 'playing', { playCount: s.playCount + 1 });
-  }
+  if (warmingUp) return;
+  const next = game.startPlay(s);
   if (next === s) return;
   state.session = next;
   const q = currentQuestion();
@@ -275,12 +312,7 @@ function onStop() {
   if (!s) return;
   if (player) { try { player.stop(); } catch (e) { /* noop */ } }
   stopRing();
-  let next = game.stopPlay(s);
-  if (next === s && s.phase === 'ready' && s.playCount > 0 && s.settings.mode === 'host') {
-    // 誤答のあと再生せずに別の人が答えた場合（暫定：直接 judging へ）
-    next = withPhase(s, 'judging');
-  }
-  state.session = next;
+  state.session = game.stopPlay(s);
   render();
 }
 
@@ -290,8 +322,7 @@ function onHint() {
   if (!s || !q) return;
   const max = (q.hints || []).length;
   if (s.hintCount >= max) return;
-  const next = game.openHint(s);
-  state.session = next === s ? { ...s, hintCount: Math.min(max, s.hintCount + 1) } : next;
+  state.session = game.openHint(s, max);
   render();
 }
 
@@ -300,17 +331,14 @@ function onReveal() {
   if (!s || s.phase === 'revealed') return;
   if (player) { try { player.stop(); } catch (e) { /* noop */ } }
   stopRing();
-  let next = game.reveal(s);
-  if (next === s) next = withPhase(s, 'revealed');
-  state.session = next;
+  state.session = game.reveal(s);
   render();
 }
 
 function onJudgeCancel() {
   const s = state.session;
   if (!s || s.phase !== 'judging') return;
-  // judging → ready に戻す遷移が API に無いため暫定
-  state.session = withPhase(s, 'ready');
+  state.session = game.cancelJudging(s);
   render();
 }
 
@@ -380,6 +408,7 @@ function render() {
   els.buzzStage.hidden = !(mode === 'buzzer' && !revealed);
   els.revealPanel.hidden = !revealed;
   els.ytBox.dataset.revealed = String(revealed);
+  els.ytBox.hidden = !(q && q.source && q.source.type === 'youtube');
   if (revealed) setOverlay(false, '正解');
 
   renderScores(s);
@@ -399,7 +428,7 @@ function render() {
       ensureNoSourceCounter(els.noSource);
     }
     els.donSub.textContent = `${s.playCount + 1}回目・${nextWin.seconds}秒`;
-    els.don.disabled = !(phase === 'ready' || phase === 'playing');
+    els.don.disabled = warmingUp || !(phase === 'ready' || phase === 'playing');
     els.countLabel.textContent = `再生 ${s.playCount} 回`;
     els.pointsLabel.textContent = s.playCount > 0 ? `いま正解で ${game.pointsForPlay(s.settings, s.playCount)} 点` : `正解で ${nextPts} 点`;
     renderHints(els.hints, q, s.hintCount);
@@ -409,7 +438,7 @@ function render() {
     if (phase === 'judging') renderJudge(s);
   } else {
     els.buzzDonSub.textContent = `${s.playCount + 1}回目・${nextWin.seconds}秒`;
-    els.buzzDon.disabled = !(phase === 'ready' || phase === 'playing');
+    els.buzzDon.disabled = warmingUp || !(phase === 'ready' || phase === 'playing');
     els.buzzDon.hidden = !hasSource;
     els.buzzNoSource.hidden = hasSource;
     if (!hasSource) {

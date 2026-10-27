@@ -255,6 +255,11 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 }
 .yt-overlay .yt-q { font-size: 56px; line-height: 1; color: var(--yellow); text-shadow: 0 0 24px rgba(255, 230, 0, 0.5); }
 .yt-overlay-text { font-size: 14px; color: var(--muted); }
+/* 暖機中はオーバーレイを透過させ、タップを下の YouTube iframe に届ける（見た目は不透明のまま） */
+.yt-overlay[data-warmup="true"] { pointer-events: none; }
+.yt-overlay[data-warmup="true"] .yt-overlay-text { color: var(--yellow); font-weight: 700; }
+.yt-overlay[data-warmup="true"] .yt-q { animation: pulse 0.8s ease-in-out infinite alternate; }
+.yt-skip { pointer-events: auto; position: absolute; right: 8px; bottom: 8px; min-height: 32px; padding: 4px 10px; font-size: 12px; color: var(--muted); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; }
 .yt-overlay[data-playing="true"] .yt-q { animation: pulse 0.8s ease-in-out infinite alternate; }
 @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.12); } }
 .yt-box[data-revealed="true"] .yt-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s; }

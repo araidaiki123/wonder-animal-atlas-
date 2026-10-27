@@ -3,7 +3,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   PHASES, DEFAULT_SETTINGS, shuffleArray,
-  createSession, startPlay, stopPlay, buzz, judge, openHint, reveal, nextQuestion,
+  createSession, startPlay, stopPlay, cancelJudging, buzz, judge, openHint, reveal, nextQuestion,
   currentQuestionId, allLockedOut, pointsForPlay, ranking, summaryText, playbackWindow,
 } from '../src/game.mjs';
 
@@ -174,20 +174,30 @@ describe('司会モードの遷移', () => {
     assert.equal(s2.scores.p1, 0, '正のペナルティは加点しない');
   });
 
+  test('司会モード：誤答のあと再生せずに stopPlay すると judging へ', () => {
+    let s = judge(stopPlay(startPlay(host())), { correct: false, playerId: 'p1' });
+    assert.equal(s.phase, 'ready');
+    s = stopPlay(s);
+    assert.equal(s.phase, 'judging');
+  });
+
   test('無効な遷移は同じオブジェクトを返す', () => {
     const s = host();
-    assert.equal(stopPlay(s), s);
+    assert.equal(stopPlay(s), s, 'まだ一度も再生していなければ stopPlay は無効');
     assert.equal(judge(s, { correct: true, playerId: 'p1' }), s);
     assert.equal(nextQuestion(s), s);
     assert.equal(buzz(s, 'p1'), s, '司会モードでは buzz を無視');
     const playing = startPlay(s);
-    assert.equal(startPlay(playing), playing);
+    assert.equal(startPlay(playing).playCount, 2, 'playing からの再押しは回数が増える');
+    assert.equal(startPlay(playing).phase, 'playing');
     assert.equal(judge(playing, { correct: true, playerId: 'p1' }), playing);
     assert.equal(nextQuestion(playing), playing);
     const judging = stopPlay(playing);
     assert.equal(judge(judging, { correct: true, playerId: 'nobody' }), judging);
     assert.equal(judge(judging, { correct: true }), judging);
     assert.equal(startPlay(judging), judging);
+    assert.equal(cancelJudging(judging).phase, 'ready');
+    assert.equal(cancelJudging(playing), playing);
     const revealed = reveal(judging);
     assert.equal(reveal(revealed), revealed);
     assert.equal(startPlay(revealed), revealed, 'revealed からは startPlay しない');
